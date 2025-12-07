@@ -148,7 +148,7 @@ export default function GlobalSettingsPage() {
                                     <input
                                         type="text"
                                         name="companyName"
-                                        value={settings.companyName}
+                                        value={settings?.companyName}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-primary/20 outline-none"
                                     />
@@ -195,7 +195,7 @@ export default function GlobalSettingsPage() {
                                     <input
                                         type="text"
                                         name="contactPerson2"
-                                        value={settings.contactPerson2}
+                                        value={settings?.contactPerson2}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-primary/20 outline-none"
                                     />
@@ -205,7 +205,7 @@ export default function GlobalSettingsPage() {
                                     <input
                                         type="text"
                                         name="mobileNumber1"
-                                        value={settings.mobileNumber1}
+                                        value={settings?.mobileNumber1}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-primary/20 outline-none"
                                     />
@@ -215,7 +215,7 @@ export default function GlobalSettingsPage() {
                                     <input
                                         type="text"
                                         name="mobileNumber2"
-                                        value={settings.mobileNumber2}
+                                        value={settings?.mobileNumber2}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-primary/20 outline-none"
                                     />

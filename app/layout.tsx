@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";  // ← change here
 import "./globals.css";
 import Header from "@/components/Utils/Header/Header";
+import Footer from "@/components/Utils/Footer/Footer";
 
 const instrumentSans = Instrument_Sans({                // ← and here
   variable: "--primaryfont",
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body className={`${instrumentSans.variable} antialiased`}>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

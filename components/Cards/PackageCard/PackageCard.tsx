@@ -9,8 +9,6 @@ interface PackageCardProps {
 }
 
 export const PackageCard = ({ data }: PackageCardProps) => {
-  console.log(data);
-  
 
   return (
     <div className='card group shadow-custom-shadow rounded-lg border border-primary/5'>
@@ -25,7 +23,7 @@ export const PackageCard = ({ data }: PackageCardProps) => {
           />
         </Link>
          {data.tripFacts?.['status-ribbon'] && (
-            <div className="absolute top-[22px] -left-[45px] w-[160px] -rotate-45 bg-primary text-white text-[11px] font-bold py-1 text-center uppercase tracking-wider shadow-lg z-10">
+            <div className="absolute top-[22px] -left-[45px] w-[160px] -rotate-45 bg-primary text-white text-[11px] font-semibold py-1 text-center uppercase tracking-wider shadow-lg z-10">
               {data.tripFacts['status-ribbon']}
             </div>
          )}

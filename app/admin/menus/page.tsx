@@ -4,7 +4,7 @@ import { MainLayout } from '@/app/admin/components/MainLayout';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
-import { Search, Edit, ChevronRight, ChevronDown } from 'lucide-react';
+import { Search, Edit, ChevronRight, ChevronDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
 
 interface Menu {
@@ -33,6 +33,7 @@ export default function MenusPage() {
     const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
     const [selectedMenus, setSelectedMenus] = useState<number[]>([]);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [reordering, setReordering] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -54,6 +55,8 @@ export default function MenusPage() {
                 throw new Error(data.message || 'Failed to fetch menus');
             }
 
+            // Sort logic should happen in buildTree ideally or here if flat. 
+            // The backend sends sorted by displayOrder, but let's trust that.
             setMenus(Array.isArray(data) ? data : []);
         } catch (err: any) {
             setError(err.message || 'An error occurred while fetching menus');
@@ -64,6 +67,47 @@ export default function MenusPage() {
 
     const handleEdit = (id: number) => {
         router.push(`/admin/menus/edit/${id}`);
+    };
+
+    const handleReorder = async (item: Menu, direction: 'up' | 'down', siblings: Menu[]) => {
+        if (reordering) return;
+        const currentIndex = siblings.findIndex(s => s.id === item.id);
+        if (currentIndex === -1) return;
+
+        const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+        if (newIndex < 0 || newIndex >= siblings.length) return;
+
+        setReordering(true);
+        try {
+            // Create a copy of siblings to manipulate
+            const orderedSiblings = [...siblings];
+            
+            // Swap
+            [orderedSiblings[currentIndex], orderedSiblings[newIndex]] = [orderedSiblings[newIndex], orderedSiblings[currentIndex]];
+
+            // Prepare payload: Update displayOrder for ALL siblings based on their new array position
+            const updates = orderedSiblings.map((menu, index) => ({
+                id: menu.id,
+                displayOrder: index
+            }));
+
+            const response = await fetch(getApiUrl('menus/reorder'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: updates }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to reorder');
+            }
+
+            await fetchMenus();
+        } catch (err: any) {
+            console.error('Reorder error:', err);
+            // Optionally show error toast
+        } finally {
+            setReordering(false);
+        }
     };
 
     const handleConfirmDelete = async () => {
@@ -146,6 +190,16 @@ export default function MenusPage() {
             }
         });
 
+        // Ensure children are sorted by displayOrder
+        itemMap.forEach(item => {
+             if (item.children) {
+                 item.children.sort((a, b) => a.displayOrder - b.displayOrder);
+             }
+        });
+
+        // Sort roots
+        roots.sort((a, b) => a.displayOrder - b.displayOrder);
+
         return roots;
     };
 
@@ -166,9 +220,11 @@ export default function MenusPage() {
             menu.url?.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
-    const renderMenuRow = (menu: Menu, index: number, depth: number = 0): React.JSX.Element => {
+    const renderMenuRow = (menu: Menu, index: number, siblings: Menu[], depth: number = 0): React.JSX.Element => {
         const hasChildren = menu.children && menu.children.length > 0;
         const isExpanded = expandedRows.has(menu.id);
+        const isFirst = index === 0;
+        const isLast = index === siblings.length - 1;
 
         return (
             <React.Fragment key={menu.id}>
@@ -182,7 +238,7 @@ export default function MenusPage() {
                         />
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                        {depth === 0 ? index + 1 : ''}
+                         {depth === 0 ? index + 1 : ''}
                     </td>
                     <td className="px-6 py-4">
                         {hasChildren && (
@@ -217,19 +273,41 @@ export default function MenusPage() {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{formatDate(menu.updatedAt)}</td>
                     <td className="px-6 py-4">
-                        <Button
-                            onClick={() => handleEdit(menu.id)}
-                            variant="outline"
-                            size="sm"
-                            className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-800"
-                        >
-                            <Edit className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                        </Button>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                onClick={() => handleReorder(menu, 'up', siblings)}
+                                disabled={isFirst || reordering}
+                                variant="outline"
+                                size="sm"
+                                className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-800 disabled:opacity-30"
+                                title="Move Up"
+                            >
+                                <ArrowUp className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                            </Button>
+                            <Button
+                                onClick={() => handleReorder(menu, 'down', siblings)}
+                                disabled={isLast || reordering}
+                                variant="outline"
+                                size="sm"
+                                className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-800 disabled:opacity-30"
+                                title="Move Down"
+                            >
+                                <ArrowDown className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                            </Button>
+                            <Button
+                                onClick={() => handleEdit(menu.id)}
+                                variant="outline"
+                                size="sm"
+                                className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-800"
+                            >
+                                <Edit className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                            </Button>
+                        </div>
                     </td>
                 </tr>
                 {isExpanded && menu.children?.map((child, childIndex) => (
                     <React.Fragment key={child.id}>
-                        {renderMenuRow(child, childIndex, depth + 1)}
+                        {renderMenuRow(child, childIndex, menu.children! as Menu[], depth + 1)}
                     </React.Fragment>
                 ))}
             </React.Fragment>
@@ -343,7 +421,7 @@ export default function MenusPage() {
                                             </td>
                                         </tr>
                                     ) : (
-                                        headerMenus.map((menu, index) => renderMenuRow(menu, index))
+                                        headerMenus.map((menu, index) => renderMenuRow(menu, index, headerMenus))
                                     )}
                                 </tbody>
                             </table>
@@ -388,7 +466,7 @@ export default function MenusPage() {
                                             </td>
                                         </tr>
                                     ) : (
-                                        footerMenus.map((menu, index) => renderMenuRow(menu, index))
+                                        footerMenus.map((menu, index) => renderMenuRow(menu, index, footerMenus))
                                     )}
                                 </tbody>
                             </table>

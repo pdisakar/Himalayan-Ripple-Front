@@ -32,7 +32,7 @@ export default function BlogsPage() {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
         if (!token) {
             router.push('/login');
         } else {

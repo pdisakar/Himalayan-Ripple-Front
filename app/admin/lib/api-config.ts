@@ -1,7 +1,8 @@
 // Admin API configuration
 // Use environment variable for production, fallback to localhost for development
-export const ADMIN_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-export const ADMIN_API_BASE = `${ADMIN_API_URL}/api`;
+export const ADMIN_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+// If the URL already ends with /api, use it as is. Otherwise append /api.
+export const ADMIN_API_BASE = ADMIN_API_URL.endsWith('/api') ? ADMIN_API_URL : `${ADMIN_API_URL}/api`;
 
 // Helper function to build API URLs
 export const getApiUrl = (path: string) => {

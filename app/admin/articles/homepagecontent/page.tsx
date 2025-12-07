@@ -30,7 +30,7 @@ export default function HomeContentPage() {
     const [initialRichTextImages, setInitialRichTextImages] = useState<string[]>([]);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
         if (!token) {
             router.push('/login');
         } else {

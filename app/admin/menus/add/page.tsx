@@ -45,7 +45,7 @@ export default function AddMenuPage() {
     const [places, setPlaces] = useState<Place[]>([]);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
         if (!token) {
             router.push('/login');
         } else {

@@ -30,7 +30,7 @@ export default function MenusTrashPage() {
     const [bulkDeleteStep, setBulkDeleteStep] = useState(1);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
         if (!token) router.push('/login');
         else fetchTrash();
     }, [router]);

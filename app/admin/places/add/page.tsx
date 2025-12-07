@@ -66,7 +66,7 @@ export default function AddplacePage() {
 
   // Redirect if not authenticated
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     if (!token) router.push('/login');
   }, [router]);
 

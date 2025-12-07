@@ -61,7 +61,7 @@ export default function AddTestimonialPage() {
     const [hoverRating, setHoverRating] = useState(0);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
         if (!token) router.push('/login');
 
         // Fetch packages and teams

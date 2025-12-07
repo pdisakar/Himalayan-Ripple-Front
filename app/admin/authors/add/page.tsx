@@ -50,7 +50,7 @@ export default function AddAuthorPage() {
   const [showImageCrop, setShowImageCrop] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     if (!token) router.push('/login');
   }, [router]);
 

@@ -1,6 +1,6 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
-const CACHE_REVALIDATE_TIME = 21600; // 6 hours
+const CACHE_REVALIDATE_TIME = 1; // 6 hours
 
 export interface Package {
     id: number;
@@ -31,6 +31,8 @@ export interface Blog {
     featuredImage: string;
     isFeatured: number;
     carouselOrder?: number;
+    featuredImageAlt?: string;
+    authorName?: string;
 }
 
 export interface Testimonial {
@@ -142,7 +144,7 @@ export const fetchFeaturedBlogs = async (): Promise<Blog[]> => {
     const res = await fetch(`${BASE_URL}/blogs?isFeatured=1`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
     const data = await res.json();
     if (Array.isArray(data)) {
-        return data.slice(0, 4);
+        return data.slice(0, 3);
     }
     return [];
 };

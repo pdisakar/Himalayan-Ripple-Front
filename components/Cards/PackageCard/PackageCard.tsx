@@ -9,10 +9,12 @@ interface PackageCardProps {
 }
 
 export const PackageCard = ({ data }: PackageCardProps) => {
+  console.log(data);
+  
 
   return (
     <div className='card group shadow-custom-shadow rounded-lg border border-primary/5'>
-      <figure className='image-slot aspect-[420/350] rounded-t-lg'>
+      <figure className='image-slot aspect-[420/350] rounded-t-lg relative overflow-hidden'>
         <Link href={`/${data.slug}`} className='group'>
           <Image
             src={data.featuredImage ? `${IMAGE_URL}${data.featuredImage}` : '/placeholder.jpg'}
@@ -22,6 +24,11 @@ export const PackageCard = ({ data }: PackageCardProps) => {
             className='rounded-lg transition-all duration-500 ease-out group-hover:scale-110 group-hover:blur-[0.5px]'
           />
         </Link>
+         {data.tripFacts?.['status-ribbon'] && (
+            <div className="absolute top-[22px] -left-[45px] w-[160px] -rotate-45 bg-primary text-white text-[11px] font-bold py-1 text-center uppercase tracking-wider shadow-lg z-10">
+              {data.tripFacts['status-ribbon']}
+            </div>
+         )}
       </figure>
       <figcaption className=' '>
         <div className="top-section p-4 md:p-6">

@@ -20,6 +20,7 @@ export interface Package {
     groupSize?: number;
     maxAltitude?: number;
     featuredImageAlt?: string;
+    tripFacts?: { [key: string]: any };
 }
 
 export interface Blog {

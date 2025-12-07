@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { MainLayout } from '@/app/admin/components/MainLayout';
 import { useState, useEffect } from 'react';
@@ -27,7 +27,7 @@ export default function EditUserPage() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     if (!token) {
       router.push('/login');
       return;

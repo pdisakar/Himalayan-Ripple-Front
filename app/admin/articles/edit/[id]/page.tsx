@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { MainLayout } from '@/app/admin/components/MainLayout';
 import React, { useState, useEffect } from 'react';
@@ -69,7 +69,7 @@ export default function EditArticlePage() {
 
   // Redirect if not authenticated
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     if (!token) router.push('/login');
   }, [router]);
 

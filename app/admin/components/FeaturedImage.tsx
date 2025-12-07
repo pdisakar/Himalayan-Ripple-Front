@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Trash2, UploadCloud, Image as ImageIcon } from 'lucide-react';
 import { ASPECT_RATIOS } from '@/app/admin/lib/aspect-ratios';
 import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';

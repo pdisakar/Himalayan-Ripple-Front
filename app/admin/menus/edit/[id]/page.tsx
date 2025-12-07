@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { MainLayout } from '@/app/admin/components/MainLayout';
 import React, { useState, useEffect, use } from 'react';
@@ -52,7 +52,7 @@ export default function EditMenuPage({ params }: { params: Promise<{ id: string 
     const [places, setPlaces] = useState<Place[]>([]);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
         if (!token) {
             router.push('/login');
         } else {

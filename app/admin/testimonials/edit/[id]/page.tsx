@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { MainLayout } from '@/app/admin/components/MainLayout';
 import React, { useState, useEffect } from 'react';
@@ -64,7 +64,7 @@ export default function EditTestimonialPage() {
     const [hoverRating, setHoverRating] = useState(0);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
         if (!token) router.push('/login');
 
         const fetchData = async () => {

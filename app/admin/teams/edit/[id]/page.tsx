@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { MainLayout } from '@/app/admin/components/MainLayout';
 import React, { useState, useEffect } from 'react';
@@ -51,7 +51,7 @@ export default function EditTeamPage() {
     const [showImageCrop, setShowImageCrop] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
         if (!token) router.push('/login');
         else fetchTeamMember();
     }, [router, params.id]);

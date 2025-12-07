@@ -1384,21 +1384,6 @@ export default function AddPackagePage() {
                         </div>
                       ))}
 
-                      {/* Status (Ribbon) */}
-                      <div>
-                        <label htmlFor="statusRibbon" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          Status (Ribbon)
-                        </label>
-                        <input
-                          type="text"
-                          id="statusRibbon"
-                          name="statusRibbon"
-                          value={formData.statusRibbon}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                          placeholder="e.g., New, Popular, Bestseller"
-                        />
-                      </div>
 
                       {/* Group Size */}
                       <div>

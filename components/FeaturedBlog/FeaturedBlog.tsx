@@ -1,6 +1,7 @@
 import { fetchFeaturedBlogs } from '@/lib/api';
 import React from 'react'
 import { BlogCard } from '@/components/Cards/BlogCard/BlogCard';
+import PrimaryButton from '../Buttons/PrimaryButton/PrimaryButton';
 
 interface FeaturedBlogProps {
     pretitle?: string;
@@ -14,7 +15,9 @@ export default async function FeaturedBlog({ pretitle, title, subtitle }: Featur
     return (
         <section className='featured-blog common-box pt-0'>
             <div className="container">
-                <div className="title">
+                <div className="title-container flex gap-6 items-end justify-between">
+
+                <div className="title mb-0!">
                     {pretitle && <span className='justify-start!'>
                         <svg
                             className="icon text-primary"
@@ -30,6 +33,12 @@ export default async function FeaturedBlog({ pretitle, title, subtitle }: Featur
                     {title && <h2 className='text-left!' dangerouslySetInnerHTML={{ __html: title }} />}
                     {subtitle && <p className='text-left! ml-0!' dangerouslySetInnerHTML={{ __html: subtitle }} />}
                 </div>
+                  <PrimaryButton href='/blogs'>
+                Read All Blog
+              </PrimaryButton>
+                        
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
                     {Blogs.slice(0, 3).map((blog) => (
                         <BlogCard key={blog.id} blog={blog} />

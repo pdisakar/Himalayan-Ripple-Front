@@ -1,0 +1,230 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  --color-primary: #3983C7;
+  --color-headings: #172541;
+  --color-navbar: #143254;
+  --color-body-text: #000000;
+  --color-page-body: #fafdff;
+  --color-muted: #6c757d;
+
+
+  --font-family-primary: var(--primaryfont);
+
+}
+
+
+::selection {
+  @apply bg-primary;
+  color: #f0f6fc;
+}
+
+
+/* Size of the Container */
+@utility container {
+  @apply mx-auto px-3.75 max-w-[1280px];
+}
+/* Common Box */
+@utility common-box {
+    @apply relative pt-[3rem]  pb-[3rem] md:pt-[4rem]  md:pb-[4rem] lg:pt-[6rem] lg:pb-[6rem];
+  }
+
+@utility font-primary {
+  font-family: var(--primaryfont);
+}
+
+
+/* Body Style */
+@layer base {
+  body {
+    @apply font-primary text-body-text bg-page-body leading-[1.7] min-w-[320px] scroll-smooth;
+  }
+}
+
+/*home title h2 and span style */
+.title {
+  @apply mb-4;
+
+  h1 {
+    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
+    font-size: clamp(1.75rem, 5vw, 2.125rem);
+  }
+
+  h2 {
+    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
+    font-size: clamp(1.75rem, 5vw, 2.125rem);
+  }
+
+  h3 {
+    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
+    font-size: clamp(1.5rem, 4vw, 1.75rem);
+  }
+
+  h4 {
+    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
+    font-size: clamp(1.5rem, 3.5vw, 1.5rem);
+  }
+
+  p {
+    @apply text-sm leading-[160%] font-medium max-w-[664px] mx-auto text-body-text/80 block tracking-[0.05px] text-center mt-[10px];
+  }
+
+  span {
+    @apply text-sm font-semibold text-primary flex items-center justify-center mb-1 gap-2 tracking-[0.5px];
+  }
+}
+
+/* Custom animations */
+@layer utilities {
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fadeInScale {
+    animation: fadeInScale 0.3s ease-out;
+  }
+}
+
+@layer utilities {
+  .image-slot {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .image-slot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #c0bfbf 25%, #7a7a7a 50%, #c0bfbf 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    z-index: 0;
+  }
+
+  .image-slot img {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+
+    100% {
+      background-position: 200% 0;
+    }
+  }
+}
+
+@layer utilities {
+  .text-shadow-xs {
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  }
+
+  .text-shadow-sm {
+    text-shadow: 0 2px 4px rgb(0 0 0 / 0.45);
+  }
+
+  .text-shadow {
+    text-shadow: 0 3px 6px rgb(0 0 0 / 0.5);
+  }
+
+  .text-shadow-md {
+    text-shadow: 0 4px 8px rgb(0 0 0 / 0.55);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 6px 12px rgb(0 0 0 / 0.6);
+  }
+
+  .text-shadow-xl {
+    text-shadow: 0 8px 16px rgb(0 0 0 / 0.65);
+  }
+
+  .text-shadow-2xl {
+    text-shadow: 0 10px 20px rgb(0 0 0 / 0.7);
+  }
+
+  .text-shadow-none {
+    text-shadow: none;
+  }
+
+}
+
+@layer utilities {
+  .shadow-custom-shadow {
+   box-shadow: 0 1px 1px rgba(57, 131, 199, 0.1), 0 1px 2px rgba(57, 131, 199, 0.08);
+
+  }
+}
+
+article {
+  h2 {
+    @apply text-headings font-black text-3xl mb-2;
+  }
+
+  h2 {
+    @apply text-headings  font-black text-2xl mb-2;
+  }
+  h3 {
+    @apply text-headings  font-black text-[22px] mb-2;
+  }
+  h4 {
+    @apply text-headings  font-black text-[20px] mb-2;
+  }
+
+  p {
+    @apply mb-[1rem] leading-[180%];
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  img {
+    @apply py-3;
+  }
+
+  a {
+    @apply underline decoration-primary text-primary decoration-1 underline-offset-1 cursor-pointer font-medium;
+  }
+
+   .responsive-table {
+    @apply w-full overflow-x-auto mb-5 ;
+
+    table {
+      @apply w-full border border-primary/20 border-collapse min-w-[450px] mb-4 mt-2;
+
+      tr:nth-child(odd) {
+        @apply bg-primary/5;
+      }
+
+      th,
+      td {
+        @apply border border-primary/20 p-[10px];
+      }
+
+      th {
+        @apply font-semibold text-left text-headings bg-primary/15;
+      }
+    }
+  }
+
+}
+

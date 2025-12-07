@@ -48,15 +48,15 @@ export const PackageCard = ({ data }: PackageCardProps) => {
           <div className="duration flex items-center gap-1 mt-[10px]">
             <svg
               className="icon text-muted"
-              width="15"
-              height="15"
+              width="20"
+              height="20"
             >
               <use
                 xlinkHref="/icons.svg#package_card_duration"
                 fill="currentColor"
               ></use>
             </svg>
-            <span className="text-muted font-medium">
+            <span className="text-muted">
               {data.durationUnit === "days" ? (
                 <span className="text-sm leading-[100%]">
                   {data.duration} Days {data.duration + 1} Nights

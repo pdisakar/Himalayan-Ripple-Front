@@ -41,8 +41,27 @@ export default function Footer() {
     }
 
     return (
-        <footer className="bg-gray-900 text-white pt-16 pb-8">
-            footer
+        <footer className="bg-footer common-box">
+
+            <ul className='container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4'>
+                {footerMenu.map((column) => (
+                    <li key={column.id} className="space-y-3">
+                        <h3 className="text-lg font-semibold text-white/90">{column.title}</h3>
+                        <ul className="space-y-1.5">
+                            {column.children?.map((link) => (
+                                <li key={link.id}>
+                                    <Link
+                                        href={link.url}
+                                        className="text-white/70 text-[15px]"
+                                    >
+                                        {link.title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </ li >
+                ))}
+            </ul>
         </footer>
     );
 }

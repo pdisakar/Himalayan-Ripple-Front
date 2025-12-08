@@ -76,7 +76,7 @@ export default function Footer() {
                                         </svg>
 
                                         <div className="whatsappbody">
-                                            <span className="block text-sm leading-[100%] text-[15px] text-white/70">
+                                            <span className="block text-sm leading-[100%] text-[14px] text-white/70">
                                                 Call or WhatsApp
                                             </span>
                                             <span className="block text-[13px] leading-[100%] text-white/85 mt-1.5">
@@ -104,11 +104,11 @@ export default function Footer() {
                                         </svg>
 
                                         <div className="whatsappbody">
-                                            <span className="block text-sm leading-[100%] text-[15px] text-white/70">
-                                                Call or WhatsApp
+                                            <span className="block text-sm leading-[100%] text-[14px] text-white/70">
+                                                Email Us
                                             </span>
-                                            <span className="block text-[13px] leading-[100%] text-white/85 mt-1.5">
-                                                +977 {settings?.mobileNumber1}
+                                            <span className="block text-[14px] leading-[100%] text-white/85 mt-1.5">
+                                                {settings?.email}
                                             </span>
                                         </div>
                                     </a>

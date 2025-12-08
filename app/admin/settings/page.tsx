@@ -18,7 +18,10 @@ interface GlobalSettings {
     twitterLink: string;
     facebookLink: string;
     contactPerson1: string;
+    contactPerson1Email: string;
     contactPerson2: string;
+    contactPerson2Email: string;
+    email: string;
     establishedYear: string;
     shortDescription: string;
     mobileNumber1: string;
@@ -41,7 +44,10 @@ const initialSettings: GlobalSettings = {
     twitterLink: '',
     facebookLink: '',
     contactPerson1: '',
+    contactPerson1Email: '',
     contactPerson2: '',
+    contactPerson2Email: '',
+    email: '',
     establishedYear: '',
     shortDescription: '',
     mobileNumber1: '',
@@ -191,11 +197,31 @@ export default function GlobalSettingsPage() {
                                     />
                                 </div>
                                 <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Contact Person 1 Email</label>
+                                    <input
+                                        type="email"
+                                        name="contactPerson1Email"
+                                        value={settings.contactPerson1Email || ''}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-primary/20 outline-none"
+                                    />
+                                </div>
+                                <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Contact Person 2</label>
                                     <input
                                         type="text"
                                         name="contactPerson2"
                                         value={settings?.contactPerson2}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-primary/20 outline-none"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Contact Person 2 Email</label>
+                                    <input
+                                        type="email"
+                                        name="contactPerson2Email"
+                                        value={settings.contactPerson2Email || ''}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-primary/20 outline-none"
                                     />
@@ -268,6 +294,16 @@ export default function GlobalSettingsPage() {
                         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
                             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Social Media & Links</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">General Email</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={settings.email || ''}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-primary/20 outline-none"
+                                    />
+                                </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Facebook</label>
                                     <input

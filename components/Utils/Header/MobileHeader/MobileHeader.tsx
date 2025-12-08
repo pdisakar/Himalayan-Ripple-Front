@@ -76,7 +76,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ menuData = [], settingsData
 
                     <div className="action-group flex items-center sm:gap-5 gap-2">
                         <a
-                            href={`https://wa.me/${settingsData.mobileNumber1?.replace(/\D/g, "")}`}
+                            href={`https://wa.me/${settingsData?.mobileNumber1?.replace(/\D/g, "")}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="whatsapp-mobile flex items-center gap-2 cursor-pointer"
@@ -97,7 +97,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ menuData = [], settingsData
                                     Call or WhatsApp
                                 </span>
                                 <span className="block font-semibold text-[13px] leading-[100%] text-primary mt-1.5">
-                                    +977 {settingsData.mobileNumber1}
+                                    +977 {settingsData?.mobileNumber1}
                                 </span>
                             </div>
                         </a>
@@ -242,7 +242,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ menuData = [], settingsData
 
             {/* Full-screen search overlay */}
             {isSearchOpen && (
-                <div className="fixed inset-0 z-[9999] flex items-start justify-center pt-20">
+                <div className="fixed inset-0 z-9999 flex items-start justify-center pt-20">
                     {/* Blurred backdrop */}
                     <div
                         className="absolute inset-0 bg-black/60 backdrop-blur-md transition-all duration-300 ease-out animate-fadeInScale"

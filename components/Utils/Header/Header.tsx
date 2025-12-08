@@ -22,8 +22,10 @@ export default function Header() {
 
         const fetchData = async () => {
             try {
-                const menu = await fetchHeaderMenu();
-                const globalData = await fetchGlobalData();
+                const [menu, globalData] = await Promise.all([
+                    fetchHeaderMenu(),
+                    fetchGlobalData()
+                ]);
                 setHeaderMenu(menu);
                 setSettings(globalData);
             } catch (error) {
@@ -36,8 +38,8 @@ export default function Header() {
         fetchData();
     }, [shouldHideHeader]);
 
-    if (isLoading || shouldHideHeader) {
-        return null; 
+    if (shouldHideHeader) {
+        return null;
     }
 
     return (

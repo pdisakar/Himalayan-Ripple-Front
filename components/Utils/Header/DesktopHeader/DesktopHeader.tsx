@@ -22,7 +22,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({
           <Image src={logo} alt="logo" height={70} width={220} />
         </Link>
         <a
-          href={`https://wa.me/${settingsData.mobileNumber1?.replace(/\D/g, '')}`}
+          href={`https://wa.me/${settingsData?.mobileNumber1?.replace(/\D/g, '')}`}
           target="_blank"
           rel="noopener noreferrer"
           className="whatsapp flex items-center gap-2 cursor-pointer"
@@ -39,7 +39,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({
               Call or WhatsApp
             </span>
             <span className="block font-semibold text-[17px] leading-[100%] text-primary mt-1.5">
-              +977 {settingsData.mobileNumber1}
+              +977 {settingsData?.mobileNumber1}
             </span>
           </div>
         </a>

@@ -23,8 +23,10 @@ export default function Footer() {
 
         const fetchData = async () => {
             try {
-                const menu = await fetchFooterMenu();
-                const globalData = await fetchGlobalData();
+                const [menu, globalData] = await Promise.all([
+                    fetchFooterMenu(),
+                    fetchGlobalData()
+                ]);
                 setFooterMenu(menu);
                 setSettings(globalData);
             } catch (error) {
@@ -37,7 +39,7 @@ export default function Footer() {
         fetchData();
     }, [shouldHideFooter]);
 
-    if (isLoading || shouldHideFooter) {
+    if (shouldHideFooter) {
         return null;
     }
 

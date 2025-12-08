@@ -43,17 +43,79 @@ export default function Footer() {
         return null;
     }
 
+    console.log(settings);
+
+
     return (
         <footer className="bg-footer common-box">
             <div className="container">
                 <div className="about-company-footer grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="about-body flex gap-3 text-sm">
+                    <div className="about-body space-y-1 text-sm">
                         <Link href='/' className='inline-block min-w-[180px]'>
                             <Image src={logo} alt="logo" height={70} width={220} />
                         </Link>
                         <div className="about-us-footer-body mt-1">
                             <p className='text-white/70'>Himalayan Ripple offers unforgettable journeys across Nepal, blending adventure with warm hospitality always great.</p>
+                            <ul className='mt-3 flex gap-5 flex-wrap'>
+                                <li>
+                                    <a
+                                        href={`https://wa.me/${settings?.mobileNumber1?.replace(/\D/g, "")}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="whatsapp-mobile flex items-center gap-2 cursor-pointer"
+                                    >
+                                        <svg
+                                            className="icon text-white/70"
+                                            width="34"
+                                            height="34"
+                                        >
+                                            <use
+                                                xlinkHref="/icons.svg#mobilewhatsapp"
+                                                fill="currentColor"
+                                            ></use>
+                                        </svg>
+
+                                        <div className="whatsappbody">
+                                            <span className="block text-sm leading-[100%] text-[15px] text-white/70">
+                                                Call or WhatsApp
+                                            </span>
+                                            <span className="block text-[13px] leading-[100%] text-white/85 mt-1.5">
+                                                +977 {settings?.mobileNumber1}
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href={`https://wa.me/${settings?.mobileNumber1?.replace(/\D/g, "")}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="whatsapp-mobile flex items-center gap-2 cursor-pointer"
+                                    >
+                                        <svg
+                                            className="icon text-white/70"
+                                            width="34"
+                                            height="34"
+                                        >
+                                            <use
+                                                xlinkHref="/icons.svg#mobilewhatsapp"
+                                                fill="currentColor"
+                                            ></use>
+                                        </svg>
+
+                                        <div className="whatsappbody">
+                                            <span className="block text-sm leading-[100%] text-[15px] text-white/70">
+                                                Call or WhatsApp
+                                            </span>
+                                            <span className="block text-[13px] leading-[100%] text-white/85 mt-1.5">
+                                                +977 {settings?.mobileNumber1}
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
+
                     </div>
                     <div className="mail-us">
                         <h3 className=' text-white font-semibold text-2xl capitalize'>Keep in touch with us</h3>

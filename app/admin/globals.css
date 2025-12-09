@@ -121,3 +121,64 @@
         @apply bg-background text-foreground;
     }
 }
+
+/* Rich Text Editor & Article Styling */
+.ProseMirror, article {
+    h1 {
+        @apply font-black text-3xl mb-2;
+        color: oklch(0.145 0 0) !important;
+        /* Dark color for light mode */
+    }
+
+    h2 {
+        @apply font-black text-2xl mb-2;
+        color: oklch(0.145 0 0) !important;
+    }
+
+    h3 {
+        @apply font-black text-xl mb-2;
+        color: oklch(0.145 0 0) !important;
+    }
+
+    h4 {
+        @apply font-black text-lg mb-2;
+        color: oklch(0.145 0 0) !important;
+    }
+
+    p {
+        @apply mb-4 leading-[180%];
+        color: oklch(0.205 0 0) !important;
+        /* Slightly lighter dark color */
+    }
+
+    strong,
+    b {
+        @apply font-bold;
+        color: oklch(0.145 0 0) !important;
+    }
+
+    a {
+        @apply underline text-primary cursor-pointer font-medium;
+    }
+}
+
+/* Dark mode overrides */
+.dark .ProseMirror, .dark article {
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        color: oklch(0.985 0 0) !important;
+        /* Light color for dark mode */
+    }
+
+    p {
+        color: oklch(0.708 0 0) !important;
+    }
+
+    strong,
+    b {
+        color: oklch(0.985 0 0) !important;
+    }
+}

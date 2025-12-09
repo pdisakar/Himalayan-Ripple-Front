@@ -25,7 +25,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ data }) => {
                     {data.title}
                 </h2>
                 <p className="text-sm font-light transform transition-all text-shadow-sm duration-300 translate-y-4 opacity-0 group-hover:-translate-y-2 group-hover:opacity-100">
-                    {String(data.packageCount).padStart(2, "0")} Packages
+                    {String(data.packageCount || 0).padStart(2, "0")} Packages
                 </p>
             </figcaption>
         </Link>

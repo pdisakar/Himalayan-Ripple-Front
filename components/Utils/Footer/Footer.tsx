@@ -7,11 +7,16 @@ import Link from 'next/link';
 import logo from '@/public/whitelogo.svg';
 import Image from 'next/image';
 
-export default function Footer() {
+interface FooterProps {
+    initialMenu?: MenuItem[];
+    initialSettings?: any;
+}
+
+export default function Footer({ initialMenu = [], initialSettings = null }: FooterProps) {
     const pathname = usePathname();
-    const [footerMenu, setFooterMenu] = useState<MenuItem[]>([]);
-    const [settings, setSettings] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [footerMenu, setFooterMenu] = useState<MenuItem[]>(initialMenu);
+    const [settings, setSettings] = useState<any>(initialSettings);
+    const [isLoading, setIsLoading] = useState(!initialMenu.length && !initialSettings);
 
 
     const shouldHideFooter = pathname.startsWith('/admin') || pathname.startsWith('/login');
@@ -20,6 +25,12 @@ export default function Footer() {
         if (shouldHideFooter) {
             setIsLoading(false);
             return;
+        }
+
+        // If we already have data from props, don't re-fetch
+        if (footerMenu.length > 0 && settings) {
+             setIsLoading(false);
+             return;
         }
 
         const fetchData = async () => {

@@ -13,6 +13,7 @@ export default function Footer() {
     const [settings, setSettings] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
 
+
     const shouldHideFooter = pathname.startsWith('/admin') || pathname.startsWith('/login');
 
     useEffect(() => {
@@ -46,6 +47,9 @@ export default function Footer() {
     console.log(settings);
 
 
+
+
+
     return (
         <footer className="bg-footer common-box">
             <div className="container">
@@ -66,8 +70,8 @@ export default function Footer() {
                                     >
                                         <svg
                                             className="icon text-white/70"
-                                            width="34"
-                                            height="34"
+                                            width="28"
+                                            height="28"
                                         >
                                             <use
                                                 xlinkHref="/icons.svg#mobilewhatsapp"
@@ -87,23 +91,21 @@ export default function Footer() {
                                 </li>
                                 <li>
                                     <a
-                                        href={`https://wa.me/${settings?.mobileNumber1?.replace(/\D/g, "")}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="whatsapp-mobile flex items-center gap-2 cursor-pointer"
+                                        href={`mailto:${settings?.email}`}
+                                        className="email-mobile flex items-center gap-2 cursor-pointer"
                                     >
                                         <svg
                                             className="icon text-white/70"
-                                            width="34"
-                                            height="34"
+                                            width="28"
+                                            height="28"
                                         >
                                             <use
-                                                xlinkHref="/icons.svg#mobilewhatsapp"
+                                                xlinkHref="/icons.svg#footer_email"
                                                 fill="currentColor"
                                             ></use>
                                         </svg>
 
-                                        <div className="whatsappbody">
+                                        <div className="emailbody">
                                             <span className="block text-sm leading-[100%] text-[14px] text-white/70">
                                                 Email Us
                                             </span>
@@ -112,25 +114,26 @@ export default function Footer() {
                                             </span>
                                         </div>
                                     </a>
+
                                 </li>
                             </ul>
                         </div>
 
                     </div>
                     <div className="mail-us">
-                        <h3 className=' text-white font-semibold text-2xl capitalize'>Keep in touch with us</h3>
+                        <h3 className=' text-white/90 font-semibold text-2xl capitalize'>Keep in touch with us</h3>
                         <p className='text-white/70'>Send us your information we will get right back to you</p>
                         <form className="bg-white rounded-lg flex overflow-hidden mt-3">
                             <input
                                 type="text"
                                 placeholder="Your Name"
-                                className="px-6 py-2 flex-1 border-r border-r-footer outline-none text-[15px] placeholder:text-body-text/80 font-medium"
+                                className="px-6 py-2 flex-1 min-w-0 border-r border-r-footer outline-none text-[15px] placeholder:text-body-text/80 font-medium"
                             />
 
                             <input
                                 type="text"
                                 placeholder="Your Email"
-                                className="px-6 py-2 flex-1 outline-none text-[15px] placeholder:text-body-text/80 font-medium"
+                                className="px-6 py-2 flex-1 min-w-0 outline-none text-[15px] placeholder:text-body-text/80 font-medium"
                             />
 
                             <button
@@ -139,6 +142,7 @@ export default function Footer() {
                                 Submit
                             </button>
                         </form>
+
 
                     </div>
                 </div>
@@ -161,6 +165,43 @@ export default function Footer() {
                         </ li >
                     ))}
                 </ul>
+                <div className="social-media mt-8">
+                    <h3 className='text-white/90 text-lg text-center font-semibold uppercase'>Follow Us</h3>
+                    <ul className="flex items-center justify-center gap-4 mt-3">
+                        {[
+                            { href: settings?.facebookLink, icon: "footer_facebook", label: "Facebook" },
+                            { href: settings?.instagramLink, icon: "footer_instagram", label: "Instagram" },
+                            { href: settings?.linkedinLink, icon: "footer_linkedin", label: "LinkedIn" },
+                            { href: settings?.pinterestLink, icon: "footer_pintrest", label: "Pinterest" },
+                            { href: settings?.twitterLink, icon: "footer_x", label: "(Twitter) X" },
+                            { href: settings?.youtubeLink, icon: "footer_youtube", label: "Youtube" },
+                        ]
+                            .filter(item => item.href)
+                            .map((item, idx) => {
+                                const normalized = item.href.startsWith("http")
+                                    ? item.href
+                                    : `https://${item.href}`;
+
+                                return (
+                                    <li key={idx}>
+                                        <a
+                                            href={normalized}
+                                            className="flex items-center gap-1 text-xs font-medium text-white/80"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <svg className="icon" width="18" height="18">
+                                                <use xlinkHref={`/icons.svg#${item.icon}`} fill="currentColor"></use>
+                                            </svg>
+                                            <span className="leadings-[100%]">{item.label}</span>
+                                        </a>
+                                    </li>
+                                );
+                            })}
+                    </ul>
+
+
+                </div>
             </div>
         </footer>
     );

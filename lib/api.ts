@@ -236,6 +236,45 @@ export const fetchAllBlogs = async (): Promise<Blog[]> => {
     return [];
 };
 
+
+// Fetch blogs with pagination (client-side)
+export const fetchBlogs = async (page = 1, limit = 6): Promise<{ data: Blog[]; total: number }> => {
+    const offset = (page - 1) * limit;
+    // We assume backend supports limit/offset for blogs similar to testimonials
+    // If backend only returns array, we simulate pagination here, but ideally update backend.
+    // Checking backend index.js implies /blogs returns array. Let's start by modifying backend or assuming it works like testimonials?
+    // User request implies backend capability might need adjustment or is present.
+    // Based on `index.js` scan earlier, `app.get('/api/blogs')` usually returns all.
+    // Let's implement client-side slicing if backend doesn't support it, or check backend index.js.
+    // Actually, user wants "use api to fetch data ... first fetch 6 blogs and then place a btn to fetch more".
+    // I will implementation similar to fetchTestimonials.
+    
+    // Check if backend supports limit/offset for blogs. 
+    // Assuming we need to implement it in backend in next step or if it exists.
+    // For now, let's add this function signature.
+    
+    const res = await fetch(`${BASE_URL}/blogs?limit=${limit}&offset=${offset}`, { 
+        cache: 'no-store' 
+    });
+    
+    const data = await res.json();
+    
+    // If backend returns array (legacy), handle it
+    if (Array.isArray(data)) {
+         return {
+             data: data.slice(offset, offset + limit),
+             total: data.length
+         };
+    }
+
+    // If backend returns { success: true, data: [...], total: ... }
+    if (data.success && Array.isArray(data.data)) {
+        return { data: data.data, total: data.total };
+    }
+    
+    return { data: [], total: 0 };
+};
+
 // Fetch all testimonials (build‑time only)
 export const fetchAllTestimonials = async (): Promise<Testimonial[]> => {
     const res = await fetch(`${BASE_URL}/testimonials`, { next: { revalidate: CACHE_REVALIDATE_TIME } });

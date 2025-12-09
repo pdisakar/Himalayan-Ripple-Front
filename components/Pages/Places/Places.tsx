@@ -1,4 +1,5 @@
 import BreadCrumb from '@/components/BreadCrumb/BreadCrumb';
+import PageBanner from '@/components/PageBanner/PageBanner';
 import React from 'react';
 
 interface PlacesProps {
@@ -7,17 +8,32 @@ interface PlacesProps {
 
 export const Places: React.FC<PlacesProps> = ({ content }) => {
     return (
-        <div className="container">
-            <div className="page-common-box">
-                <div className="page-title">
-                    <div className="breadcrumb mb-1">
+        <>
+            {content?.bannerImage && (
+                <PageBanner
+                    image={content.bannerImage}
+                    imageAlt={content.bannerImageAlt}
+                    imageCaption={content.bannerImageCaption}
+                />
+            )}
 
-                    <BreadCrumb data={content.breadcrumbs} />
+            <div className="container">
+                <div className="page-common-box">
+                    <div className="page-title lg:w-9/12 mx-auto">
+                        <div className="breadcrumb mb-1">
+                            <BreadCrumb data={content.breadcrumbs} />
+                        </div>
+                        {content.title && (
+                            <h1 dangerouslySetInnerHTML={{ __html: content.title }} />
+                        )}
+                        {content.description && (
+                            <article className='text-center mt-6' dangerouslySetInnerHTML={{ __html: content.description }} />
+                        )}
                     </div>
-                    {content.title && <h1 dangerouslySetInnerHTML={{ __html: content.title }} />}
+                    <div className="childrents">here map childrents with the place card</div>
+                    <div className="packages">here map childrents with the package card</div>
                 </div>
-
             </div>
-        </div>
+        </>
     );
 };

@@ -1,7 +1,16 @@
 import React from "react";
 import Link from "next/link";
 
-const BreadCrumb = ({ data }) => {
+interface BreadcrumbItem {
+    title: string;
+    url?: string | null;
+}
+
+interface BreadCrumbProps {
+    data: BreadcrumbItem[];
+}
+
+const BreadCrumb: React.FC<BreadCrumbProps> = ({ data }) => {
     if (!data || !Array.isArray(data)) return null;
 
     return (
@@ -15,7 +24,7 @@ const BreadCrumb = ({ data }) => {
                                 {item.title}
                             </Link>
                         ) : (
-                                <span className="font-medium text-headings">{item.title}</span>
+                            <span className="font-medium text-headings">{item.title}</span>
                         )}
                         {!isLast && <span>»</span>}
                     </span>

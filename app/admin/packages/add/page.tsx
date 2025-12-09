@@ -339,12 +339,13 @@ export default function AddPackagePage() {
   };
 
   const handleAddGroupPrice = () => {
+    const isFirst = groupPrices.length === 0;
     const newGroupPrice: GroupPrice = {
       id: Date.now().toString(),
       minPerson: '',
       maxPerson: '',
-      price: '',
-      isDefault: groupPrices.length === 0 // First one is default by default
+      price: isFirst && formData.price ? formData.price : '',
+      isDefault: isFirst // First one is default by default
     };
 
     setGroupPrices(prev => [...prev, newGroupPrice]);
@@ -362,16 +363,31 @@ export default function AddPackagePage() {
   };
 
   const handleGroupPriceChange = (id: string, field: keyof GroupPrice, value: string) => {
-    setGroupPrices(prev => prev.map(gp =>
-      gp.id === id ? { ...gp, [field]: value } : gp
-    ));
+    setGroupPrices(prev => prev.map(gp => {
+      if (gp.id === id) {
+        const updated = { ...gp, [field]: value };
+        // Sync with main price if this is the default group price and we're changing the price
+        if (updated.isDefault && field === 'price') {
+          setFormData(fd => ({ ...fd, price: value }));
+        }
+        return updated;
+      }
+      return gp;
+    }));
   };
 
   const handleSetDefaultPrice = (id: string) => {
+    // Update the group prices state
     setGroupPrices(prev => prev.map(gp => ({
       ...gp,
       isDefault: gp.id === id
     })));
+
+    // Sync with main price
+    const targetPrice = groupPrices.find(gp => gp.id === id)?.price;
+    if (targetPrice) {
+      setFormData(prev => ({ ...prev, price: targetPrice }));
+    }
   };
 
   // Image Handling

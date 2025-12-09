@@ -335,7 +335,7 @@ export default function EditPackagePage() {
       }
 
       // Load group pricing
-      setGroupPriceEnabled(pkg.groupPriceEnabled === 1);
+      setGroupPriceEnabled(pkg.groupPriceEnabled === 1 || pkg.groupPriceEnabled === true);
       if (pkg.groupPrices && pkg.groupPrices.length > 0) {
         setGroupPrices(pkg.groupPrices.map((gp: any) => ({
           id: gp.id.toString(),
@@ -455,9 +455,9 @@ export default function EditPackagePage() {
               className="p-1 hover:bg-gray-200 rounded-full transition-colors"
             >
               {isExpanded ? (
-                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               ) : (
-                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               )}
             </button>
           ) : (
@@ -501,12 +501,13 @@ export default function EditPackagePage() {
   };
 
   const handleAddGroupPrice = () => {
+    const isFirst = groupPrices.length === 0;
     const newGroupPrice: GroupPrice = {
       id: Date.now().toString(),
       minPerson: '',
       maxPerson: '',
-      price: '',
-      isDefault: groupPrices.length === 0 // First one is default by default
+      price: isFirst && formData.price ? formData.price : '',
+      isDefault: isFirst // First one is default by default
     };
 
     setGroupPrices(prev => [...prev, newGroupPrice]);
@@ -524,16 +525,31 @@ export default function EditPackagePage() {
   };
 
   const handleGroupPriceChange = (id: string, field: keyof GroupPrice, value: string) => {
-    setGroupPrices(prev => prev.map(gp =>
-      gp.id === id ? { ...gp, [field]: value } : gp
-    ));
+    setGroupPrices(prev => prev.map(gp => {
+      if (gp.id === id) {
+        const updated = { ...gp, [field]: value };
+        // Sync with main price if this is the default group price and we're changing the price
+        if (updated.isDefault && field === 'price') {
+          setFormData(fd => ({ ...fd, price: value }));
+        }
+        return updated;
+      }
+      return gp;
+    }));
   };
 
   const handleSetDefaultPrice = (id: string) => {
+    // Update the group prices state
     setGroupPrices(prev => prev.map(gp => ({
       ...gp,
       isDefault: gp.id === id
     })));
+
+    // Sync with main price
+    const targetPrice = groupPrices.find(gp => gp.id === id)?.price;
+    if (targetPrice) {
+      setFormData(prev => ({ ...prev, price: targetPrice }));
+    }
   };
 
   // Image Handling
@@ -948,7 +964,7 @@ export default function EditPackagePage() {
     return (
       <MainLayout>
         <div className="flex-1 transition-all duration-300 flex items-center justify-center h-full">
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Loading package...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading package...</p>
         </div>
       </MainLayout>
     );

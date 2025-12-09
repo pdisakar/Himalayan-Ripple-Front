@@ -169,16 +169,16 @@
     h2,
     h3,
     h4 {
-        color: oklch(0.985 0 0) !important;
+        color: oklch(1 0 0) !important;
         /* Light color for dark mode */
     }
 
     p {
-        color: oklch(0.708 0 0) !important;
+        color: oklch(1 0 0) !important;
     }
 
     strong,
     b {
-        color: oklch(0.985 0 0) !important;
+        color: oklch(1 0 0) !important;
     }
 }

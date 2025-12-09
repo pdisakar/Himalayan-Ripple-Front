@@ -11,7 +11,13 @@ interface PackageProps {
 export const Package: React.FC<PackageProps> = ({ content }) => {
     return (
         <>
-            <PageBanner image={content.bannerImage} imageAlt={content.bannerImageAlt} imageCaption={content.bannerImageCaption} />
+            {content?.bannerImage?.trim() && (
+                <PageBanner
+                    image={content.bannerImage}
+                    imageAlt={content.bannerImageAlt}
+                    imageCaption={content.bannerImageCaption}
+                />
+            )}
             <div className="container">
                 <div className="page-common-box">
                     <div className="page-title">
@@ -48,6 +54,11 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                             <div className="trip-overview">
                                 <TripOverview data={content.tripFacts} />
                             </div>
+
+                            {content.tripHighlights && (
+                                <div className="mt-8 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/checkmark.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings" dangerouslySetInnerHTML={{ __html: content.tripHighlights }} />
+                            )}
+
                         </div>
                         <div className="card lg:col-span-3"> this is card</div>
                     </div>

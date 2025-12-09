@@ -12,8 +12,10 @@
 
 
   --font-family-primary: var(--primaryfont);
-
+  --image-checkmark: url('/icons/checkmark.svg');
 }
+
+
 
 
 ::selection {

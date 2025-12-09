@@ -45,10 +45,10 @@ const TripOverview: React.FC<TripOverviewProps> = ({ data }) => {
                         </svg>
 
 
-                        <span className="text-sm font-medium text-muted block leading-[100%] mt-2">
+                        <span className="text-sm text-muted block leading-[100%] mt-2">
                             {formatLabel(key)}
                         </span>
-                        <span className="font-semibold text-[15px] text-headings capitalize leading-[100%] mt-1">
+                        <span className="font-semibold text-headings capitalize leading-[100%] mt-1">
                             {key === 'group-size' && !isNaN(Number(value))
                                 ? `Min ${value} Pax.`
                                 : displayValue

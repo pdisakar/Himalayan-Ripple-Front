@@ -49,7 +49,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
 
                         </div>
                     </div>
-                    <div className=' lg:grid pt-8 package-page lg:grid-cols-10'>
+                    <div className=' lg:grid pt-8 package-page lg:grid-cols-10 mt-8'>
                         <div className="page-left lg:col-span-7">
                             <div className="trip-overview">
                                 <TripOverview data={content.tripFacts} />

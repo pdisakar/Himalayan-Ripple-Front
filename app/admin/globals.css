@@ -123,7 +123,8 @@
 }
 
 /* Rich Text Editor & Article Styling */
-.ProseMirror, article {
+.ProseMirror,
+article {
     h1 {
         @apply font-black text-3xl mb-2;
         color: oklch(0.145 0 0) !important;
@@ -160,10 +161,32 @@
     a {
         @apply underline text-primary cursor-pointer font-medium;
     }
+
+    /* Table styling */
+    table {
+        @apply w-full border-collapse mb-4 mt-2;
+        border: 1px solid oklch(0.85 0 0);
+    }
+
+    th,
+    td {
+        @apply p-3 text-left;
+        border: 1px solid oklch(0.85 0 0);
+    }
+
+    th {
+        @apply font-semibold bg-primary/10;
+        color: oklch(0.145 0 0) !important;
+    }
+
+    tr:nth-child(even) {
+        background-color: oklch(0.97 0 0);
+    }
 }
 
 /* Dark mode overrides */
-.dark .ProseMirror, .dark article {
+.dark .ProseMirror,
+.dark article {
 
     h1,
     h2,
@@ -180,5 +203,23 @@
     strong,
     b {
         color: oklch(1 0 0) !important;
+    }
+
+    /* Table styling for dark mode */
+    table {
+        border-color: oklch(0.3 0 0);
+    }
+
+    th, td {
+        border-color: oklch(0.3 0 0);
+    }
+
+    th {
+        background-color: oklch(0.25 0 0);
+        color: oklch(1 0 0) !important;
+    }
+
+    tr:nth-child(even) {
+        background-color: oklch(0.22 0 0);
     }
 }

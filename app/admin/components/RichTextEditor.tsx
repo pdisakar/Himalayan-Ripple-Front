@@ -5,6 +5,10 @@ import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
+import { Table } from '@tiptap/extension-table';
+import { TableRow } from '@tiptap/extension-table-row';
+import { TableHeader } from '@tiptap/extension-table-header';
+import { TableCell } from '@tiptap/extension-table-cell';
 import { Button } from '@/app/admin/components/ui/button';
 import {
   Bold,
@@ -24,6 +28,7 @@ import {
   Heading5,
   FileCode,
   UploadCloud,
+  Table as TableIcon,
 } from 'lucide-react';
 import { useCallback, useState, useEffect } from 'react';
 
@@ -63,6 +68,12 @@ const RichTextEditor = ({ content, onChange, placeholder = 'Write something...' 
           rel: null,
         },
       }),
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
       Placeholder.configure({
         placeholder,
       }),
@@ -384,6 +395,17 @@ const RichTextEditor = ({ content, onChange, placeholder = 'Write something...' 
               type="button"
             >
               <ImageIcon className="h-4 w-4" />
+            </Button>
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1 self-center" />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+              disabled={isSourceMode}
+              type="button"
+              title="Insert Table"
+            >
+              <TableIcon className="h-4 w-4" />
             </Button>
             <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1 self-center" />
             <Button

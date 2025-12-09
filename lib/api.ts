@@ -1,6 +1,6 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
-const CACHE_REVALIDATE_TIME = 75000000; // 6 hours
+const CACHE_REVALIDATE_TIME = 30; // 6 hours
 
 export interface Package {
     id: number;

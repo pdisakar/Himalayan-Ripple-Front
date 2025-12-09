@@ -56,8 +56,26 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                             </div>
 
                             {content.tripHighlights && (
-                                <div className="mt-8 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/checkmark.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings" dangerouslySetInnerHTML={{ __html: content.tripHighlights }} />
+                                <div className="package-highlights mt-8">
+                                    <div className='page-title'>
+                                        <h2>Trip Highlights</h2>
+                                    </div>
+                                    <div className="mt-3 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/checkmark.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings" dangerouslySetInnerHTML={{ __html: content.tripHighlights }} />
+                                </div>
                             )}
+                            {content.details && (
+                                <div className="package-details mt-8">
+                                    <div className=' page-title'>
+                                        <h2
+                                            dangerouslySetInnerHTML={{
+                                                __html: `About ${content.title}`
+                                            }}
+                                        />
+                                    </div>
+                                    <article className="mt-3" dangerouslySetInnerHTML={{ __html: content.details }} />
+                                </div>
+                            )
+                            }
 
                         </div>
                         <div className="card lg:col-span-3"> this is card</div>

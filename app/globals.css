@@ -92,17 +92,17 @@
   }
 
   h2 {
-    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
-    font-size: clamp(1.5rem, 5vw, 2rem);
+    @apply text-headings font-bold leading-[1.2] tracking-[1px];
+    font-size: clamp(1.25rem, 5vw, 1.6rem);
   }
 
   h3 {
-    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
+    @apply text-headings font-bold leading-[1.2] tracking-[1px];
     font-size: clamp(1.5rem, 4vw, 1.75rem);
   }
 
   h4 {
-    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
+    @apply text-headings font-bold leading-[1.2] tracking-[1px];
     font-size: clamp(1.5rem, 3.5vw, 1.5rem);
   }
 }
@@ -207,10 +207,11 @@
   }
 }
 
+/*  applyed for all article tags */
 article {
-  h2 {
-    @apply text-headings font-black text-3xl mb-2;
-  } 
+  h1 {
+    @apply text-headings font-black text-2xl mb-2;
+  }
 
   h2 {
     @apply text-headings font-black text-2xl mb-2;
@@ -225,7 +226,7 @@ article {
   }
 
   p {
-    @apply mb-[1rem] leading-[180%];
+    @apply mb-[0.89rem] leading-[185%];
   }
 
   p:last-child {
@@ -261,4 +262,5 @@ article {
     }
   }
 
+  @apply [&_ul]:mb-3 [&_ul>li]:mt-1.5 [&_ul>li]:leading-[170%] [&_ul>li]:relative [&_ul>li]:pl-5 [&_ul>li]:before:h-2 [&_ul>li]:before:w-2 [&_ul>li]:before:absolute [&_ul>li]:before:left-0 [&_ul>li]:before:top-2.5 [&_ul>li]:before:content-[''] [&_ul>li]:before:bg-primary [&_ul>li]:before:rounded-full;
 }

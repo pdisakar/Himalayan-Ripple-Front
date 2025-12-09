@@ -31,6 +31,10 @@
     @apply relative pt-[3rem]  pb-[3rem] md:pt-[4rem]  md:pb-[4rem] lg:pt-[6rem] lg:pb-[6rem];
   }
 
+  @utility page-common-box {
+    @apply relative pt-[2rem]  pb-[2rem] md:pt-[3rem]  md:pb-[3rem] lg:pt-[5rem] lg:pb-[5rem];
+  }
+
 @utility font-primary {
   font-family: var(--primaryfont);
 }
@@ -73,6 +77,30 @@
 
   span {
     @apply text-sm font-semibold text-primary flex items-center justify-center mb-1 gap-2 tracking-[0.5px];
+  }
+}
+
+.page-title {
+  @apply mb-4;
+
+  h1 {
+    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  h2 {
+    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  h3 {
+    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
+    font-size: clamp(1.5rem, 4vw, 1.75rem);
+  }
+
+  h4 {
+    @apply text-headings font-bold leading-[1.2] text-center tracking-[1px];
+    font-size: clamp(1.5rem, 3.5vw, 1.5rem);
   }
 }
 

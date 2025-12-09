@@ -44,8 +44,6 @@ export default function Footer() {
         return null;
     }
 
-    console.log(settings);
-
 
 
 

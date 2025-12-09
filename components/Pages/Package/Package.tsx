@@ -1,5 +1,6 @@
 import PageBanner from '@/components/PageBanner/PageBanner';
 import BreadCrumb from '@/components/BreadCrumb/BreadCrumb';
+import TripOverview from '@/components/TripOverview/TripOverview';
 import React from 'react';
 import Link from 'next/link';
 
@@ -13,7 +14,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
             <PageBanner image={content.bannerImage} imageAlt={content.bannerImageAlt} imageCaption={content.bannerImageCaption} />
             <div className="container">
                 <div className="page-common-box">
-                    <div className="page-title lg:w-9/12 mx-auto">
+                    <div className="page-title">
                         <div className="breadcrumb mb-1">
                             <BreadCrumb data={content.breadcrumbs} />
                         </div>
@@ -42,9 +43,15 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
 
                         </div>
                     </div>
-                    <div className="trip-overview">
-                        
+                    <div className=' lg:grid pt-8 package-page lg:grid-cols-10'>
+                        <div className="page-left lg:col-span-7">
+                            <div className="trip-overview">
+                                <TripOverview data={content.tripFacts} />
+                            </div>
+                        </div>
+                        <div className="card lg:col-span-3"> this is card</div>
                     </div>
+
                 </div>
             </div>
         </>

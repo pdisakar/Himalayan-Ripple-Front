@@ -4,6 +4,7 @@ import TripOverview from '@/components/TripOverview/TripOverview';
 import React from 'react';
 import Link from 'next/link';
 import Itinerary from '@/components/Itinerary/Itinerary';
+import BookModule from '@/components/BookModule/BookModule';
 
 interface PackageProps {
     content: any;
@@ -50,7 +51,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
 
                         </div>
                     </div>
-                    <div className=' lg:grid pt-8 package-page lg:grid-cols-10 mt-8'>
+                    <div className=' lg:grid pt-8 package-page lg:grid-cols-10 gap-6 mt-8'>
                         <div className="page-left lg:col-span-7">
                             <div className="trip-overview">
                                 <TripOverview data={content.tripFacts} />
@@ -95,7 +96,12 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                             )}
 
                         </div>
-                        <div className="card lg:col-span-3"> this is card</div>
+                        <div className="lg:col-span-3">
+                            <div className='sticky booking-module top-[20px]'>
+
+                                <BookModule defaultprice={content.defaultPrice} groupprice={content.groupPrices} />
+                            </div>
+                        </div>
                     </div>
 
                 </div>

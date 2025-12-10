@@ -1357,7 +1357,7 @@ export default function AddPackagePage() {
                   onImageRemove={() => removeImage('tripMap')}
                   onAltChange={(value) => setFormData(prev => ({ ...prev, tripMapImageAlt: value }))}
                   onCaptionChange={(value) => setFormData(prev => ({ ...prev, tripMapImageCaption: value }))}
-                  helperText="Upload a trip map (any size accepted)"
+                  helperText="Upload a trip map (any size accepted) aspect ratio 12/19"
                 />
 
                 {/* Media Gallery */}

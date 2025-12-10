@@ -5,6 +5,8 @@ import React from 'react';
 import Link from 'next/link';
 import Itinerary from '@/components/Itinerary/Itinerary';
 import BookModule from '@/components/BookModule/BookModule';
+import { IMAGE_URL } from '@/lib/constants'
+import Image from 'next/image';
 
 interface PackageProps {
     content: any;
@@ -94,6 +96,27 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                     <Itinerary data={content.itinerary} />
                                 </div>
                             )}
+                            {
+                                content.tripMapImage && (
+                                    <div className="package-trip-map mt-8">
+                                        <div className=' page-title'>
+                                            <h2
+                                                dangerouslySetInnerHTML={{
+                                                    __html: `Trip Map`
+                                                }}
+                                            />
+                                        </div>
+                                        <figure className='image-slot shadow-sm overflow-hidden aspect-[12/19]'>
+                                            <Image
+                                                src={IMAGE_URL + content.tripMapImage}
+                                                alt={content.tripMapImageAlt}
+                                                fill
+                                                className='object-cover'
+                                            />
+                                        </figure>
+                                    </div>
+                                )
+                            }
                             {
                                 content.costInclude && (
                                     <div className="package-cost-exclude mt-8">

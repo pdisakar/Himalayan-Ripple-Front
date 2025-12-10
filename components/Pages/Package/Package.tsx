@@ -98,7 +98,6 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                         </div>
                         <div className="lg:col-span-3">
                             <div className='sticky booking-module top-[20px]'>
-
                                 <BookModule defaultprice={content.defaultPrice} groupprice={content.groupPrices} />
                             </div>
                         </div>

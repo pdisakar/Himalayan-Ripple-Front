@@ -115,7 +115,7 @@ const BookModule: React.FC<BookModuleProps> = ({ defaultprice, groupprice }) => 
             {/* When? - Date Picker */}
             <div>
                 <h3 className="text-lg font-semibold text-headings mb-1">When?</h3>
-                <p className="text-sm text-muted mb-2">Pick a Date (Private Date)</p>
+                <p className="text-sm text-muted mb-2">Pick a Date (Journey Start)</p>
                     <div className="relative" ref={calendarRef}>
                     <button
                         onClick={() => setShowCalendar(!showCalendar)}

@@ -100,7 +100,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                         <div className=' page-title'>
                                             <h2
                                                 dangerouslySetInnerHTML={{
-                                                    __html: `Cost Include ${content.title} - ${content.tripFacts.duration}  ${content.tripFacts.durationUnit || content.tripFacts['duration-unit'] || ''}`
+                                                    __html: `Cost Include}`
                                                 }}
                                             />
                                         </div>
@@ -116,7 +116,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                         <div className=' page-title'>
                                             <h2
                                                 dangerouslySetInnerHTML={{
-                                                    __html: `Cost Exclude ${content.title} - ${content.tripFacts.duration}  ${content.tripFacts.durationUnit || content.tripFacts['duration-unit'] || ''}`
+                                                    __html: `Cost Exclude`
                                                 }}
                                             />
                                         </div>

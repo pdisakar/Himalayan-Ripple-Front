@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { format, addDays } from 'date-fns'
@@ -34,10 +34,10 @@ interface LeadTraveler {
     specialRequirements: string
 }
 
-export default function BookingPage() {
+function BookingContent() {
     const searchParams = useSearchParams()
     const router = useRouter()
-
+    
     const packageSlug = searchParams.get('package')
     const startDate = searchParams.get('date')
     const initialTravelers = parseInt(searchParams.get('travelers') || '1')
@@ -72,13 +72,13 @@ export default function BookingPage() {
 
             try {
                 const endpoint = `${API_URL}/packages/${packageSlug}`
-
+                
                 const response = await fetch(endpoint)
-
+                
                 if (!response.ok) throw new Error('Failed to fetch package')
-
+                
                 const data = await response.json()
-
+                
                 if (data.success && data.package) {
                     const pkg = data.package
                     const packageData = {
@@ -148,7 +148,7 @@ export default function BookingPage() {
         const newErrors: Record<string, string> = {}
 
         if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required'
-
+        
         if (!formData.email.trim()) {
             newErrors.email = 'Email is required'
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -166,7 +166,7 @@ export default function BookingPage() {
         }
 
         if (!formData.nationality) newErrors.nationality = 'Nationality is required'
-
+        
         if (!formData.mobileNumber.trim()) {
             newErrors.mobileNumber = 'Mobile number is required'
         } else if (!/^\d{6,15}$/.test(formData.mobileNumber)) {
@@ -256,9 +256,9 @@ export default function BookingPage() {
     const endDate = getEndDate()
     const pricePerPerson = getPricePerPerson()
     const totalPrice = pricePerPerson * travelers
-
-    const imageUrl = packageDetails.featuredImage
-        ? `${SERVER_URL}${packageDetails.featuredImage}`
+    
+    const imageUrl = packageDetails.featuredImage 
+        ? `${SERVER_URL}${packageDetails.featuredImage}` 
         : ''
 
     return (
@@ -612,5 +612,18 @@ export default function BookingPage() {
                 </div>
             </div>
         </div>
+    )
+}
+
+export default function BookingPage() {
+    return (
+        <Suspense fallback={
+            <div className="container py-20 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <p className="mt-4 text-muted">Loading booking...</p>
+            </div>
+        }>
+            <BookingContent />
+        </Suspense>
     )
 }

@@ -68,7 +68,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                     <div className=' page-title'>
                                         <h2
                                             dangerouslySetInnerHTML={{
-                                                __html: `About ${content.title}`
+                                                __html: `About ${content.title} - ${content.tripFacts.duration} ${content.tripFacts.durationUnit || content.tripFacts['duration-unit'] || ''}`
                                             }}
                                         />
                                     </div>

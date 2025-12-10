@@ -13,6 +13,7 @@
 
   --font-family-primary: var(--primaryfont);
   --image-checkmark: url('/icons/checkmark.svg');
+  --image-wrong: url('/icons/checkmark.svg');
 }
 
 

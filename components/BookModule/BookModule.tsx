@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { Calendar } from '@/components/ui/calendar'
 import { Button } from '@/components/ui/button'
 import { CalendarIcon, Minus, Plus } from 'lucide-react'
@@ -15,11 +16,13 @@ interface GroupPrice {
 }
 
 interface BookModuleProps {
+    packageSlug: string
     defaultprice: number
     groupprice: GroupPrice[]
 }
 
-const BookModule: React.FC<BookModuleProps> = ({ defaultprice, groupprice }) => {
+const BookModule: React.FC<BookModuleProps> = ({ packageSlug, defaultprice, groupprice }) => {
+    const router = useRouter()
     const [date, setDate] = useState<Date>()
     const [showCalendar, setShowCalendar] = useState(false)
     const [travelers, setTravelers] = useState(1)
@@ -73,15 +76,11 @@ const BookModule: React.FC<BookModuleProps> = ({ defaultprice, groupprice }) => 
     }
 
     const handleBooking = () => {
-        // Handle booking submission
-        const bookingData = {
-            date: date,
-            travelers: travelers,
-            pricePerPerson: getPricePerPerson(),
-            totalPrice: getTotalPrice()
-        }
-        console.log('Booking data:', bookingData)
-        // Add your booking logic here
+        if (!date) return
+        
+        // Navigate to booking page with query params
+        const bookingUrl = `/booking?package=${packageSlug}&date=${format(date, 'yyyy-MM-dd')}&travelers=${travelers}`
+        router.push(bookingUrl)
     }
 
     return (

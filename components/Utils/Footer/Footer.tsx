@@ -176,7 +176,7 @@ export default function Footer({ initialMenu = [], initialSettings = null }: Foo
                 </ul>
                 <div className="social-media mt-8">
                     <h3 className='text-white/90 text-lg text-center font-semibold uppercase'>Follow Us</h3>
-                    <ul className="flex items-center justify-center gap-4 mt-3">
+                    <ul className="flex items-center justify-center flex-wrap gap-4 mt-3">
                         {[
                             { href: settings?.facebookLink, icon: "footer_facebook", label: "Facebook" },
                             { href: settings?.instagramLink, icon: "footer_instagram", label: "Instagram" },

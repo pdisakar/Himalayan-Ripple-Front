@@ -78,7 +78,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                 </div>
                             )
                             }
-                            {content.itinerary && (
+                            {content.itinerary.length > 0 && (
                                 <div className="package-itinerary mt-8">
                                     <div className=' page-title'>
                                         <h2
@@ -100,7 +100,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                         <div className=' page-title'>
                                             <h2
                                                 dangerouslySetInnerHTML={{
-                                                    __html: `Cost Include}`
+                                                    __html: `Cost Include`
                                                 }}
                                             />
                                         </div>
@@ -127,7 +127,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
 
                         </div>
                         <div className="lg:col-span-3">
-                            <div className='sticky booking-module top-[20px]'>
+                            <div className='sticky booking-module top-0 pt-6'>
                                 <BookModule packageSlug={content.slug} defaultprice={content.defaultPrice} groupprice={content.groupPrices} />
                             </div>
                         </div>

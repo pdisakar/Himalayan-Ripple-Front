@@ -3,6 +3,7 @@ import BreadCrumb from '@/components/BreadCrumb/BreadCrumb';
 import TripOverview from '@/components/TripOverview/TripOverview';
 import React from 'react';
 import Link from 'next/link';
+import Itinerary from '@/components/Itinerary/Itinerary';
 
 interface PackageProps {
     content: any;
@@ -21,11 +22,11 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
             <div className="container">
                 <div className="page-common-box">
                     <div className="page-title">
-                        <div className="breadcrumb mb-1">
+                        <div className="breadcrumb mb-2">
                             <BreadCrumb data={content.breadcrumbs} />
                         </div>
                         {content.title && (
-                            <h1 dangerouslySetInnerHTML={{ __html: content.title }} />
+                            <h1 dangerouslySetInnerHTML={{ __html: `${content.title} - ${content.tripFacts.duration} ${content.tripFacts.durationUnit || content.tripFacts['duration-unit'] || ''}` }} />
                         )}
                         {content.description && (
                             <article className='text-center mt-6' dangerouslySetInnerHTML={{ __html: content.description }} />
@@ -76,6 +77,22 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                 </div>
                             )
                             }
+                            {content.itinerary && (
+                                <div className="package-itinerary mt-8">
+                                    <div className=' page-title'>
+                                        <h2
+                                            dangerouslySetInnerHTML={{
+                                                __html: `Detailed Itinerary ${content.title} - ${content.tripFacts.duration}  ${content.tripFacts.durationUnit || content.tripFacts['duration-unit'] || ''}`
+                                            }}
+                                        />
+                                    </div>
+                                    <div className='space-y-4 p-6 bg-primary/7 rounded-lg text-[15px] mb-6'><p>Below Itinerary is only a generalized itinerary. Actual itinerary may vary based on the season, group size, and other factors. If this itinerary is not suitable for you, please contact us to discuss your requirements.
+                                    </p>
+                                        <Link href='/contact' className='hover:text-primary hover:bg-white font-medium px-6 py-2 bg-primary text-white rounded-lg transform transition-all duration-100 ease-in-out'>Contact Us</Link>
+                                    </div>
+                                    <Itinerary data={content.itinerary} />
+                                </div>
+                            )}
 
                         </div>
                         <div className="card lg:col-span-3"> this is card</div>

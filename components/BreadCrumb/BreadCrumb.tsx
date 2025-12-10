@@ -14,7 +14,7 @@ const BreadCrumb: React.FC<BreadCrumbProps> = ({ data }) => {
     if (!data || !Array.isArray(data)) return null;
 
     return (
-        <nav className="text-[13px] font-medium text-gray-600 flex items-center gap-1 justify-center">
+        <nav className="text-[13px] font-medium text-gray-600 flex items-center gap-x-0.5 justify-center flex-wrap">
             {data.map((item, index) => {
                 const isLast = index === data.length - 1;
                 return (

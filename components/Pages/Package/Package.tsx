@@ -127,7 +127,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                                 }}
                                             />
                                         </div>
-                                        <div className="mt-3 [&_h3]:text-heading [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:my-2.5 [&_h2]:text-heading [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:my-2.5 [&_h4]:text-heading [&_h4]:text-xl [&_h4]:font-semibold [&_h4]:my-2.5 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/checkmark.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings" dangerouslySetInnerHTML={{ __html: content.costInclude }} />
+                                        <div className="mt-3 [&_h3]:text-heading [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:my-2.5 [&_h2]:text-heading [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:my-2.5 [&_h4]:text-heading [&_h4]:text-2xl [&_h4]:font-semibold [&_h4]:my-2.5 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/checkmark.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings [&_p]:mb-2 [&_p:last-child]:mb-0" dangerouslySetInnerHTML={{ __html: content.costInclude }} />
                                     </div>
 
                                 )
@@ -143,7 +143,21 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                                 }}
                                             />
                                         </div>
-                                        <div className="mt-3 [&_h3]:text-heading [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:my-2.5 [&_h2]:text-heading [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:my-2.5 [&_h4]:text-heading [&_h4]:text-xl [&_h4]:font-semibold [&_h4]:my-2.5 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/wrong.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings" dangerouslySetInnerHTML={{ __html: content.costExclude }} />
+                                        <div className="mt-3 [&_h3]:text-heading [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:my-2.5 [&_h2]:text-heading [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:my-2.5 [&_h4]:text-heading [&_h4]:text-xl [&_h4]:font-semibold [&_h4]:my-2.5 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/wrong.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings [&_p]:mb-2 [&_p:last-child]:mb-0" dangerouslySetInnerHTML={{ __html: content.costExclude }} />
+                                    </div>
+                                )
+                            }
+                            {
+                                content.goodToKnow && (
+                                    <div className="package-good-to-know mt-8">
+                                        <div className=' page-title'>
+                                            <h2
+                                                dangerouslySetInnerHTML={{
+                                                    __html: `Know Before You Go`
+                                                }}
+                                            />
+                                        </div>
+                                        <article dangerouslySetInnerHTML={{ __html: content.goodToKnow }} />
                                     </div>
                                 )
                             }

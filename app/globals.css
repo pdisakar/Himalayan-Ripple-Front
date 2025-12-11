@@ -88,22 +88,22 @@
   @apply mb-4;
 
   h1 {
-    @apply text-headings font-bold leading-[1.2] text-center capitalize tracking-[1px];
+    @apply text-headings font-black leading-[1.2] text-center capitalize tracking-[1px];
     font-size: clamp(1.5rem, 5vw, 2rem);
   }
 
   h2 {
-    @apply text-headings font-bold leading-[1.2] capitalize tracking-[1px];
+    @apply text-headings font-black leading-[1.2] capitalize tracking-[1px];
     font-size: clamp(1.25rem, 5vw, 1.825rem);
   }
 
   h3 {
-    @apply text-headings font-bold leading-[1.2] capitalize tracking-[1px];
+    @apply text-headings font-black leading-[1.2] capitalize tracking-[1px];
     font-size: clamp(1.5rem, 4vw, 1.75rem);
   }
 
   h4 {
-    @apply text-headings font-bold leading-[1.2] capitalize tracking-[1px];
+    @apply text-headings font-black leading-[1.2] capitalize tracking-[1px];
     font-size: clamp(1.5rem, 3.5vw, 1.5rem);
   }
 }
@@ -211,19 +211,19 @@
 /*  applyed for all article tags */
 article {
   h1 {
-    @apply text-headings font-black text-2xl mb-2;
+    @apply text-headings font-semibold text-2xl mb-2;
   }
 
   h2 {
-    @apply text-headings font-black text-2xl mb-2;
+    @apply text-headings font-semibold text-2xl mb-2;
   }
 
   h3 {
-    @apply text-headings font-black text-[22px] mb-2;
+    @apply text-headings font-semibold text-[22px] mb-2;
   }
 
   h4 {
-    @apply text-headings font-black text-[20px] mb-2;
+    @apply text-headings font-semibold text-[20px] mb-2;
   }
 
   p {

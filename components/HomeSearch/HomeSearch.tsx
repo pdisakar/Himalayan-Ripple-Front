@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Search } from 'lucide-react';
 import { Package, searchPackages } from '@/lib/api';
 import Link from 'next/link';
 import { IMAGE_URL } from '@/lib/constants';
@@ -63,23 +62,36 @@ export default function HomeSearch({ initialQuery = '', onQueryChange, onResultC
     }, [wrapperRef]);
 
     return (
-        <div ref={wrapperRef} className="relative w-full max-w-2xl mx-auto z-50">
+        <div ref={wrapperRef} className="relative w-full max-w-2xl mx-auto z-10">
             <div className="relative">
                 <input
                     type="text"
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => {
+                        setQuery(e.target.value);
+                        if (query.trim().length > 0) setIsOpen(true);
+                    }}
                     onFocus={() => {
                         if (query.trim().length > 0) setIsOpen(true);
                     }}
-                    placeholder="Search for packages..."
-                    className="w-full px-4 py-3 pl-12 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-sm text-gray-900 bg-white"
+                    placeholder="Places to go, things to do, hotels..."
+                    className="w-full px-4 py-3.5 pl-12 pr-28 rounded-full border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-[0_2px_2px_rgba(0,0,0,0.07)] text-gray-900 bg-white"
                 />
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <svg
+                    className="absolute left-4.5 top-1/2 -translate-y-1/2 text-gray-400"
+                    width="20"
+                    height="20">
+                    <use
+                        xlinkHref="/icons.svg#headersearch"
+                        fill="currentColor"></use>
+                </svg>
+                <button className="absolute right-[4px] top-[4px] bottom-[4px] bg-primary text-white font-medium hover:cursor-pointer px-6 rounded-full transition-colors">
+                    Search
+                </button>
             </div>
 
             {isOpen && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-100 max-h-96 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border  border-gray-100 max-h-96 overflow-y-auto">
                     {loading ? (
                         <div className="p-4 text-center text-gray-500">Loading...</div>
                     ) : results.length > 0 ? (

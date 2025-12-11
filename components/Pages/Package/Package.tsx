@@ -7,6 +7,7 @@ import Itinerary from '@/components/Itinerary/Itinerary';
 import BookModule from '@/components/BookModule/BookModule';
 import { IMAGE_URL } from '@/lib/constants'
 import Image from 'next/image';
+import PackageFaqs from '@/components/PackageFaqs/PackageFaqs';
 
 interface PackageProps {
     content: any;
@@ -159,6 +160,11 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                         </div>
                                         <article dangerouslySetInnerHTML={{ __html: content.goodToKnow }} />
                                     </div>
+                                )
+                            }
+                            {
+                                content.extraFAQs && (
+                                   <PackageFaqs data={content.extraFAQs} />
                                 )
                             }
 

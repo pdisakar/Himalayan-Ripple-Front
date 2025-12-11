@@ -383,6 +383,43 @@ export const apiFetch = async <T>(path: string, init?: RequestInit): Promise<T> 
     return res.json();
 };
 
+// Fetch packages by IDs (for related trips)
+export const fetchPackagesByIds = async (ids: number[]): Promise<Package[]> => {
+    if (!ids || ids.length === 0) return [];
+    
+    try {
+        const idsParam = ids.join(',');
+        const res = await fetch(`${BASE_URL}/packages?ids=${idsParam}`, {
+            next: { revalidate: CACHE_REVALIDATE_TIME }
+        });
+        
+        if (!res.ok) {
+            console.error('Failed to fetch packages by IDs');
+            return [];
+        }
+        
+        const data = await res.json();
+        if (data.success && Array.isArray(data.packages)) {
+            const packages = data.packages.map((pkg: any) => {
+                if (typeof pkg.tripFacts === 'string') {
+                    try {
+                        pkg.tripFacts = JSON.parse(pkg.tripFacts);
+                    } catch (e) {
+                        console.error('Failed to parse tripFacts for package', pkg.id, e);
+                        pkg.tripFacts = {} as Record<string, any>;
+                    }
+                }
+                return pkg as Package;
+            });
+            return packages;
+        }
+        return [];
+    } catch (error) {
+        console.error('Error fetching packages by IDs:', error);
+        return [];
+    }
+};
+
 // Fetch all slugs for static generation
 export const fetchAllSlugs = async (): Promise<Array<{ slug: string; featured?: number }>> => {
     try {

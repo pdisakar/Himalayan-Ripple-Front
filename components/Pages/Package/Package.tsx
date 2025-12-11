@@ -8,6 +8,8 @@ import BookModule from '@/components/BookModule/BookModule';
 import { IMAGE_URL } from '@/lib/constants'
 import Image from 'next/image';
 import PackageFaqs from '@/components/PackageFaqs/PackageFaqs';
+import { TestimonialCard } from '@/components/Cards/TestimonialCard/TestimonialCard';
+import { RelatedTrips } from '@/components/RelatedTrips/RelatedTrips';
 
 interface PackageProps {
     content: any;
@@ -128,7 +130,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                                 }}
                                             />
                                         </div>
-                                        <div className="mt-3 [&_h3]:text-heading [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:my-2.5 [&_h2]:text-heading [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:my-2.5 [&_h4]:text-heading [&_h4]:text-2xl [&_h4]:font-semibold [&_h4]:my-2.5 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/checkmark.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings [&_p]:mb-2 [&_p:last-child]:mb-0" dangerouslySetInnerHTML={{ __html: content.costInclude }} />
+                                        <div className="mt-3 [&_h3]:text-heading [&_h3]:text-xl md:[&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:my-2.5 [&_h2]:text-heading [&_h2]:text-xl md:[&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:my-2.5 [&_h4]:text-heading [&_h4]:text-xl md:[&_h4]:text-2xl [&_h4]:font-semibold [&_h4]:my-2.5 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/checkmark.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings [&_p]:mb-2 [&_p:last-child]:mb-0" dangerouslySetInnerHTML={{ __html: content.costInclude }} />
                                     </div>
 
                                 )
@@ -144,7 +146,7 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                                 }}
                                             />
                                         </div>
-                                        <div className="mt-3 [&_h3]:text-heading [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:my-2.5 [&_h2]:text-heading [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:my-2.5 [&_h4]:text-heading [&_h4]:text-xl [&_h4]:font-semibold [&_h4]:my-2.5 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/wrong.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings [&_p]:mb-2 [&_p:last-child]:mb-0" dangerouslySetInnerHTML={{ __html: content.costExclude }} />
+                                        <div className="mt-3 [&_h3]:text-heading [&_h3]:text-xl md:[&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:my-2.5 [&_h2]:text-heading [&_h2]:text-xl md:[&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:my-2.5 [&_h4]:text-heading [&_h4]:text-xl md:[&_h4]:text-2xl [&_h4]:font-semibold [&_h4]:my-2.5 [&_ul_li]:relative [&_ul_li]:pl-7 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[5px] [&_ul_li]:before:w-4.5 [&_ul_li]:before:h-4.5 [&_ul_li]:before:bg-[url('/icons/wrong.svg')] [&_ul_li]:before:bg-no-repeat [&_ul_li]:before:bg-cover [&_ul]:space-y-1.5 text-headings [&_p]:mb-2 [&_p:last-child]:mb-0" dangerouslySetInnerHTML={{ __html: content.costExclude }} />
                                     </div>
                                 )
                             }
@@ -158,14 +160,40 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                                 }}
                                             />
                                         </div>
-                                        <article dangerouslySetInnerHTML={{ __html: content.goodToKnow }} />
+                                        <article className="mt-3" dangerouslySetInnerHTML={{ __html: content.goodToKnow }} />
                                     </div>
                                 )
                             }
                             {
                                 content.extraFAQs && (
-                                   <PackageFaqs data={content.extraFAQs} />
+                                    <PackageFaqs data={content.extraFAQs} />
                                 )
+                            }
+                            {
+                                content.testimonials.length > 0 && (
+                                    <div className="package-testimonials mt-8">
+                                        <div className=' page-title flex justify-between gap-6 flex-wrap'>
+                                            <h2
+                                                dangerouslySetInnerHTML={{
+                                                    __html: `Testimonials`
+                                                }}
+                                            />
+                                            <a className='mt-auto' href={`/testimonials/${content.slug}`}>
+                                                <span className=' px-5 py-2 bg-primary text-white rounded text-[15px] font-medium'>Write Review</span>
+                                            </a>
+                                        </div>
+                                        <ul className=' space-y-5'>
+                                            {
+                                                content.testimonials.slice(0, 3).map((testimonial: any, index: number) => (
+                                                    <li key={index}>
+                                                        <TestimonialCard data={testimonial} />
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                    </div>
+                                )
+
                             }
 
                         </div>
@@ -175,6 +203,9 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                             </div>
                         </div>
                     </div>
+                    {content.relatedTrip && (
+                        <RelatedTrips relatedTripIds={content.relatedTrip} />
+                    )}
 
                 </div>
             </div>

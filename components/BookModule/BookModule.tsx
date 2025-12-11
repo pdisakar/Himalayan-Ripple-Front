@@ -77,7 +77,7 @@ const BookModule: React.FC<BookModuleProps> = ({ packageSlug, defaultprice, grou
 
     const handleBooking = () => {
         if (!date) return
-        
+
         // Navigate to booking page with query params
         const bookingUrl = `/booking?package=${packageSlug}&date=${format(date, 'yyyy-MM-dd')}&travelers=${travelers}`
         router.push(bookingUrl)
@@ -90,32 +90,40 @@ const BookModule: React.FC<BookModuleProps> = ({ packageSlug, defaultprice, grou
                 <div className="space-y-2">
                     {groupprice && groupprice.length > 0 ? (
                         groupprice.map((tier, index) => (
-                            <div key={index} className="flex justify-between items-center text-sm">
-                                <span className="font-medium">
+                            <div key={index} className="flex justify-between items-center text-sm relative">
+                                <span className="font-medium z-10 bg-white px-1">
                                     {Number(tier.minPerson) === Number(tier.maxPerson)
                                         ? `${tier.minPerson} Person`
-                                        : `${tier.minPerson} – ${tier.maxPerson} Person`
-                                    }
+                                        : `${tier.minPerson} – ${tier.maxPerson} Person`}
                                 </span>
-                                <span className="font-semibold text-headings">
+                                <span className="font-semibold text-headings z-10 bg-white px-1">
                                     US$ {tier.price}
                                 </span>
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="border-t border-0.7 border-primary/10 w-full"></div>
+                                </div>
                             </div>
                         ))
                     ) : (
-                        <div className="flex justify-between items-center text-sm">
-                            <span className="font-medium">Standard Price</span>
-                            <span className="font-semibold text-headings">US$ {defaultprice}</span>
+                        <div className="flex justify-between items-center text-sm relative">
+                            <span className="font-medium z-10 bg-white px-1">Standard Price</span>
+                            <span className="font-semibold text-headings z-10 bg-white px-1">
+                                US$ {defaultprice}
+                            </span>
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="border-t border-dotted border-gray-300 w-full"></div>
+                            </div>
                         </div>
                     )}
                 </div>
+
             </div>
 
             {/* When? - Date Picker */}
             <div>
                 <h3 className="text-lg font-semibold text-headings mb-1">When?</h3>
                 <p className="text-sm text-muted mb-2">Pick a Date (Journey Start)</p>
-                    <div className="relative" ref={calendarRef}>
+                <div className="relative" ref={calendarRef}>
                     <button
                         onClick={() => setShowCalendar(!showCalendar)}
                         className="w-full px-4 py-2.5 text-left border border-gray-300 rounded-md flex items-center justify-between hover:border-gray-400 focus:outline-none focus:border-primary"

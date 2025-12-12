@@ -29,7 +29,7 @@ export function QuickRevalidateButton() {
         return;
       }
 
-      const res = await fetch('/api/revalidate', {
+      const res = await fetch('/admin/api/revalidate', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

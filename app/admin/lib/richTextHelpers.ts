@@ -1,4 +1,4 @@
-import { getApiUrl, getImageUrl } from './api-config';
+import { getApiUrl, getImageUrl, ADMIN_API_URL } from './api-config';
 
 export const extractImagePaths = (html: string): string[] => {
   const imgRegex = /<img[^>]+src="([^"]+)"/g;
@@ -6,8 +6,8 @@ export const extractImagePaths = (html: string): string[] => {
   let match;
   while ((match = imgRegex.exec(html)) !== null) {
     const src = match[1];
-    if (src.startsWith('http://localhost:3001')) {
-      paths.push(src.replace('http://localhost:3001', ''));
+    if (src.startsWith(ADMIN_API_URL)) {
+      paths.push(src.replace(ADMIN_API_URL, ''));
     } else if (src.startsWith('/uploads/')) {
       paths.push(src);
     }
@@ -39,7 +39,7 @@ export const processContentImages = async (html: string): Promise<string> => {
   const imgRegex = /<img[^>]+src="([^"]+)"/g;
   let newHtml = html;
   let match;
-  
+
   // Find all base64 images
   const base64Matches: { fullMatch: string, src: string }[] = [];
   while ((match = imgRegex.exec(html)) !== null) {

@@ -17,7 +17,7 @@ import { TripMapImage } from '@/app/admin/components/TripMapImage';
 import { GalleryUpload, type GalleryImage } from '@/app/admin/components/GalleryUpload';
 import { extractImagePaths, processContentImages, cleanupUnusedImages } from '@/app/admin/lib/richTextHelpers';
 import { processImageToWebP } from '@/app/admin/lib/imageUtils';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, ADMIN_API_URL } from '@/app/admin/lib/api-config';
 
 interface GroupPrice {
   id: string;
@@ -756,8 +756,8 @@ export default function EditPackagePage() {
 
       // Normalize gallery URLs (extract only the path if it's a full URL)
       const normalizedGalleryUrls = newGalleryImageUrls.map(url => {
-        if (url.startsWith('http://localhost:3001')) {
-          return url.replace('http://localhost:3001', '');
+        if (url.startsWith(ADMIN_API_URL)) {
+          return url.replace(ADMIN_API_URL, '');
         }
         return url;
       });

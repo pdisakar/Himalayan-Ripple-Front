@@ -1,5 +1,6 @@
 import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
+import { API_URL } from '@/lib/constants';
 
 /**
  * On-Demand Revalidation API
@@ -22,18 +23,21 @@ export async function POST(request: NextRequest) {
   try {
     // Check if user is authenticated (has admin token)
     const authHeader = request.headers.get('authorization');
-    const token = authHeader?.replace('Bearer ', '') || 
-                  request.cookies.get('token')?.value;
+    const token = authHeader?.replace('Bearer ', '') ||
+      request.cookies.get('token')?.value;
 
     if (!token) {
       return NextResponse.json(
-        { 
-          success: false, 
-          message: 'Unauthorized - Please login to admin panel' 
+        {
+          success: false,
+          message: 'Unauthorized - Please login to admin panel'
         },
         { status: 401 }
       );
     }
+
+    // Verify token with your backend
+    const apiUrl = API_URL;
 
     // Token exists, user is logged in - allow revalidation
     // In production, you can add backend verification if needed

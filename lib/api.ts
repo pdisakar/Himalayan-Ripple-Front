@@ -1,4 +1,6 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+import { API_URL } from '@/lib/constants';
+
+const BASE_URL = API_URL;
 
 /**
  * CACHE STRATEGY: Manual On-Demand Revalidation
@@ -256,30 +258,30 @@ export const fetchBlogs = async (page = 1, limit = 6): Promise<{ data: Blog[]; t
     // Let's implement client-side slicing if backend doesn't support it, or check backend index.js.
     // Actually, user wants "use api to fetch data ... first fetch 6 blogs and then place a btn to fetch more".
     // I will implementation similar to fetchTestimonials.
-    
+
     // Check if backend supports limit/offset for blogs. 
     // Assuming we need to implement it in backend in next step or if it exists.
     // For now, let's add this function signature.
-    
-    const res = await fetch(`${BASE_URL}/blogs?limit=${limit}&offset=${offset}`, { 
-        cache: 'no-store' 
+
+    const res = await fetch(`${BASE_URL}/blogs?limit=${limit}&offset=${offset}`, {
+        cache: 'no-store'
     });
-    
+
     const data = await res.json();
-    
+
     // If backend returns array (legacy), handle it
     if (Array.isArray(data)) {
-         return {
-             data: data.slice(offset, offset + limit),
-             total: data.length
-         };
+        return {
+            data: data.slice(offset, offset + limit),
+            total: data.length
+        };
     }
 
     // If backend returns { success: true, data: [...], total: ... }
     if (data.success && Array.isArray(data.data)) {
         return { data: data.data, total: data.total };
     }
-    
+
     return { data: [], total: 0 };
 };
 
@@ -296,8 +298,8 @@ export const fetchAllTestimonials = async (): Promise<Testimonial[]> => {
 // Fetch testimonials with pagination (client-side)
 export const fetchTestimonials = async (page = 1, limit = 6): Promise<{ data: Testimonial[]; total: number }> => {
     const offset = (page - 1) * limit;
-    const res = await fetch(`${BASE_URL}/testimonials?limit=${limit}&offset=${offset}`, { 
-        cache: 'no-store' 
+    const res = await fetch(`${BASE_URL}/testimonials?limit=${limit}&offset=${offset}`, {
+        cache: 'no-store'
     });
     const data = await res.json();
     if (data.success && Array.isArray(data.data)) {
@@ -317,7 +319,7 @@ export const fetchTestimonialBySlug = async (slug: string): Promise<Testimonial 
             cache: 'no-store'
         });
         console.log('[API] Testimonial response status:', res.status);
-        
+
         if (!res.ok) {
             console.error('[API] Failed to fetch testimonial:', await res.text());
             return null;
@@ -394,18 +396,18 @@ export const apiFetch = async <T>(path: string, init?: RequestInit): Promise<T> 
 // Fetch packages by IDs (for related trips)
 export const fetchPackagesByIds = async (ids: number[]): Promise<Package[]> => {
     if (!ids || ids.length === 0) return [];
-    
+
     try {
         const idsParam = ids.join(',');
         const res = await fetch(`${BASE_URL}/packages?ids=${idsParam}`, {
             cache: 'force-cache'
         });
-        
+
         if (!res.ok) {
             console.error('Failed to fetch packages by IDs');
             return [];
         }
-        
+
         const data = await res.json();
         if (data.success && Array.isArray(data.packages)) {
             const packages = data.packages.map((pkg: any) => {
@@ -431,7 +433,7 @@ export const fetchPackagesByIds = async (ids: number[]): Promise<Package[]> => {
 // Fetch all slugs for static generation
 export const fetchAllSlugs = async (): Promise<Array<{ slug: string; featured?: number }>> => {
     try {
-        const res = await fetch(`${BASE_URL}/all-slugs`, { 
+        const res = await fetch(`${BASE_URL}/all-slugs`, {
             cache: 'force-cache'
         });
         if (!res.ok) {

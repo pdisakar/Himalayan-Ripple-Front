@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
+import NextTopLoader from 'nextjs-toploader';
 import "./globals.css";
 import Header from "@/components/Utils/Header/Header";
 import Footer from "@/components/Utils/Footer/Footer";
@@ -30,6 +31,16 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${instrumentSans.variable} antialiased`}>
+        <NextTopLoader
+          color="#3983C7"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+        />
         <Header initialMenu={headerMenu} initialSettings={globalData} />
         {children}
         <Footer initialMenu={footerMenu} initialSettings={globalData} />

@@ -21,16 +21,21 @@ import type { NextRequest } from 'next/server';
 
 // In-memory cache for slugs
 let cachedSlugs: Set<string> | null = null;
-let lastFetchTime = 0;
-const REVALIDATE_TIME = 24 * 3600 * 1000; // 24 hours (increased from 1 hour)
 const FETCH_TIMEOUT = 2000; // 2 seconds timeout
 const DISABLE_SLUG_CHECK = process.env.DISABLE_PROXY_SLUG_CHECK === 'true';
 
+/**
+ * Manual cache refresh function - call this to force refresh the slug cache
+ * This will be triggered by your revalidation API endpoint
+ */
+export function clearSlugCache() {
+  cachedSlugs = null;
+  console.log('Proxy: Slug cache cleared manually');
+}
+
 async function getValidSlugs() {
-  const now = Date.now();
-  
-  // Return cached slugs if still valid
-  if (cachedSlugs && (now - lastFetchTime < REVALIDATE_TIME)) {
+  // Return cached slugs if available (no time-based expiration)
+  if (cachedSlugs) {
     return cachedSlugs;
   }
 
@@ -71,7 +76,6 @@ async function getValidSlugs() {
       const data = await res.json();
       if (Array.isArray(data)) {
         cachedSlugs = new Set(data.map((item: any) => item.slug));
-        lastFetchTime = now;
         return cachedSlugs;
       }
       

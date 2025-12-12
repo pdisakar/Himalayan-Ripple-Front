@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/app/admin/components/ui/button';
 import { Switch } from '@/app/admin/components/ui/switch';
 import { useTheme } from '@/app/admin/components/AdminThemeProvider';
+import { QuickRevalidateButton } from '@/app/admin/components/QuickRevalidateButton';
 
 interface HeaderProps {
     isCollapsed: boolean;
@@ -78,6 +79,9 @@ export function Header({ isCollapsed, onToggleSidebar, onMobileMenuOpen }: Heade
                 >
                     <Settings className="h-5 w-5" />
                 </Button>
+
+                {/* Quick Revalidate Button */}
+                <QuickRevalidateButton />
 
                 <div className="h-8 w-px bg-gray-100 dark:bg-gray-800" />
 

@@ -1,6 +1,14 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
-const CACHE_REVALIDATE_TIME = 30; // 6 hours
+/**
+ * CACHE STRATEGY: Manual On-Demand Revalidation
+ * 
+ * All static content uses 'force-cache' (infinite cache).
+ * Content will ONLY update when you manually trigger revalidation via:
+ * POST /api/revalidate with { secret: YOUR_SECRET, paths: ['/path1', '/path2'] }
+ * 
+ * This is perfect for content that changes infrequently (once or twice a month).
+ */
 
 export interface Package {
     id: number;
@@ -96,7 +104,7 @@ export interface HomeContent {
 
 // Fetch featured packages (build‑time only)
 export const fetchFeaturedPackages = async (): Promise<Package[]> => {
-    const res = await fetch(`${BASE_URL}/packages?featured=1`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/packages?featured=1`, { cache: 'force-cache' });
     const data = await res.json();
     // The endpoint returns { success, packages, ... }
     if (data.success && Array.isArray(data.packages)) {
@@ -119,7 +127,7 @@ export const fetchFeaturedPackages = async (): Promise<Package[]> => {
 
 // Fetch bestselling packages (build‑time only)
 export const fetchBestsellingPackages = async (): Promise<Package[]> => {
-    const res = await fetch(`${BASE_URL}/packages?isBestselling=1`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/packages?isBestselling=1`, { cache: 'force-cache' });
     const data = await res.json();
     if (data.success && Array.isArray(data.packages)) {
         const packages = data.packages.slice(0, 6).map((pkg: any) => {
@@ -142,7 +150,7 @@ export const fetchBestsellingPackages = async (): Promise<Package[]> => {
 
 // Fetch featured blogs (build‑time only)
 export const fetchFeaturedBlogs = async (): Promise<Blog[]> => {
-    const res = await fetch(`${BASE_URL}/blogs?isFeatured=1`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/blogs?isFeatured=1`, { cache: 'force-cache' });
     const data = await res.json();
     if (Array.isArray(data)) {
         return data.slice(0, 3);
@@ -152,7 +160,7 @@ export const fetchFeaturedBlogs = async (): Promise<Blog[]> => {
 
 // Fetch featured places (build‑time only)
 export const fetchFeaturedPlaces = async (): Promise<Place[]> => {
-    const res = await fetch(`${BASE_URL}/places?isFeatured=1`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/places?isFeatured=1`, { cache: 'force-cache' });
     const data = await res.json();
     if (Array.isArray(data)) {
         return data.slice(0, 6);
@@ -162,7 +170,7 @@ export const fetchFeaturedPlaces = async (): Promise<Place[]> => {
 
 // Fetch featured testimonials (build‑time only)
 export const fetchFeaturedTestimonials = async (): Promise<Testimonial[]> => {
-    const res = await fetch(`${BASE_URL}/testimonials?isFeatured=1`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/testimonials?isFeatured=1`, { cache: 'force-cache' });
     const data = await res.json();
     if (Array.isArray(data)) {
         return data.slice(0, 6);
@@ -172,7 +180,7 @@ export const fetchFeaturedTestimonials = async (): Promise<Testimonial[]> => {
 
 export async function fetchHomeContent(): Promise<HomeContent | null> {
     const res = await fetch(`${BASE_URL}/homecontent`, {
-        next: { revalidate: CACHE_REVALIDATE_TIME }
+        cache: 'force-cache'
     });
     if (!res.ok) return null;
     return res.json();
@@ -195,7 +203,7 @@ export async function fetchPackages(page = 1, limit = 10, search = '', status?: 
 
 // Fetch all packages (build‑time only)
 export const fetchAllPackages = async (): Promise<Package[]> => {
-    const res = await fetch(`${BASE_URL}/packages`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/packages`, { cache: 'force-cache' });
     const data = await res.json();
     if (data.success && Array.isArray(data.packages)) {
         const packages = data.packages.map((pkg: any) => {
@@ -217,7 +225,7 @@ export const fetchAllPackages = async (): Promise<Package[]> => {
 // Search packages
 export const searchPackages = async (query: string): Promise<Package[]> => {
     const res = await fetch(`${BASE_URL}/packages?search=${encodeURIComponent(query)}`, {
-        next: { revalidate: CACHE_REVALIDATE_TIME }
+        cache: 'force-cache'
     });
     const data = await res.json();
     if (data.success && Array.isArray(data.packages)) {
@@ -228,7 +236,7 @@ export const searchPackages = async (query: string): Promise<Package[]> => {
 
 // Fetch all blogs (build‑time only)
 export const fetchAllBlogs = async (): Promise<Blog[]> => {
-    const res = await fetch(`${BASE_URL}/blogs`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/blogs`, { cache: 'force-cache' });
     const data = await res.json();
     if (Array.isArray(data)) {
         return data;
@@ -277,7 +285,7 @@ export const fetchBlogs = async (page = 1, limit = 6): Promise<{ data: Blog[]; t
 
 // Fetch all testimonials (build‑time only)
 export const fetchAllTestimonials = async (): Promise<Testimonial[]> => {
-    const res = await fetch(`${BASE_URL}/testimonials`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/testimonials`, { cache: 'force-cache' });
     const data = await res.json();
     if (Array.isArray(data)) {
         return data;
@@ -324,7 +332,7 @@ export const fetchTestimonialBySlug = async (slug: string): Promise<Testimonial 
 /** Fetch data by slug (for dynamic pages) */
 export const fetchSlugData = async (slug: string): Promise<{ datatype: string; content: any } | null> => {
     const res = await fetch(`${BASE_URL}/resolve-slug/${slug}`, {
-        next: { revalidate: CACHE_REVALIDATE_TIME }
+        cache: 'force-cache'
     });
     if (!res.ok) {
         if (res.status === 404) return null;
@@ -335,7 +343,7 @@ export const fetchSlugData = async (slug: string): Promise<{ datatype: string; c
 
 // Fetch header menu items (build‑time only)
 export const fetchHeaderMenu = async (): Promise<MenuItem[]> => {
-    const res = await fetch(`${BASE_URL}/menus/type/header`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/menus/type/header`, { cache: 'force-cache' });
     if (!res.ok) {
         throw new Error('Failed to fetch menus');
     }
@@ -344,7 +352,7 @@ export const fetchHeaderMenu = async (): Promise<MenuItem[]> => {
 
 // Fetch footer menu items (build‑time only)
 export const fetchFooterMenu = async (): Promise<MenuItem[]> => {
-    const res = await fetch(`${BASE_URL}/menus/type/footer`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/menus/type/footer`, { cache: 'force-cache' });
     if (!res.ok) {
         throw new Error('Failed to fetch menus');
     }
@@ -353,7 +361,7 @@ export const fetchFooterMenu = async (): Promise<MenuItem[]> => {
 
 // Generic API fetch helper (still dynamic when used directly)
 export const fetchGlobalData = async (): Promise<any> => {
-    const res = await fetch(`${BASE_URL}/GlobalData`, { next: { revalidate: CACHE_REVALIDATE_TIME } });
+    const res = await fetch(`${BASE_URL}/GlobalData`, { cache: 'force-cache' });
     if (!res.ok) {
         throw new Error('Failed to fetch global data');
     }
@@ -364,7 +372,7 @@ export const fetchGlobalData = async (): Promise<any> => {
 export const fetchHeroSection = async (): Promise<HeroSectionData | null> => {
     try {
         const res = await fetch(`${BASE_URL}/hero`, {
-            next: { revalidate: CACHE_REVALIDATE_TIME }
+            cache: 'force-cache'
         });
         if (!res.ok) return null;
         return await res.json();
@@ -390,7 +398,7 @@ export const fetchPackagesByIds = async (ids: number[]): Promise<Package[]> => {
     try {
         const idsParam = ids.join(',');
         const res = await fetch(`${BASE_URL}/packages?ids=${idsParam}`, {
-            next: { revalidate: CACHE_REVALIDATE_TIME }
+            cache: 'force-cache'
         });
         
         if (!res.ok) {
@@ -424,7 +432,7 @@ export const fetchPackagesByIds = async (ids: number[]): Promise<Package[]> => {
 export const fetchAllSlugs = async (): Promise<Array<{ slug: string; featured?: number }>> => {
     try {
         const res = await fetch(`${BASE_URL}/all-slugs`, { 
-            next: { revalidate: CACHE_REVALIDATE_TIME } 
+            cache: 'force-cache'
         });
         if (!res.ok) {
             console.error('Failed to fetch all slugs');

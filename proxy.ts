@@ -45,7 +45,7 @@ const notFoundRewrite = (url: string) => {
   return NextResponse.rewrite(new URL('/not-found', url));
 };
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const lowerPath = pathname.toLowerCase();
 

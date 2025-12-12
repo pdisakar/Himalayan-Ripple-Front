@@ -60,13 +60,12 @@ const SidebarTrigger: React.FC<SidebarTriggerProps> = ({ children }) => {
                         className={`absolute right-0 top-0 h-full w-[400px] max-w-[85vw] bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${isAnimating ? 'translate-x-0' : 'translate-x-full'
                             }`}
                     >
-                        <div className="flex flex-col h-full bg-footer text-white">
+                        <div className="flex flex-col h-full bg-page-bg">
                             {/* Header */}
                             <div className="p-6 flex items-center justify-between border-b border-white/10 shrink-0">
-                                <h2 className="text-xl font-bold text-white">Menu</h2>
                                 <button
                                     onClick={() => setIsOpen(false)}
-                                    className="p-2 -mr-2 text-white/70 hover:text-white transition-colors"
+                                    className=" ml-auto mr-2 hover:cursor-pointer"
                                 >
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M6 18L18 6M6 6l12 12" />
@@ -75,7 +74,7 @@ const SidebarTrigger: React.FC<SidebarTriggerProps> = ({ children }) => {
                             </div>
 
                             {/* Content Slot */}
-                            <div className="flex-1 overflow-y-auto p-6">
+                            <div className="flex-1 overflow-y-auto p-6 pt-0">
                                 {children}
                             </div>
                         </div>

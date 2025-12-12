@@ -49,7 +49,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({
           </li>
           <li>
             <SidebarTrigger>
-                <SidePannel settings={settingsData} />
+              <SidePannel settings={settingsData} />
             </SidebarTrigger>
           </li>
         </ul>

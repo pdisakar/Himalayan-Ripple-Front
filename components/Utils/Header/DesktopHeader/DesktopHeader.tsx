@@ -1,5 +1,7 @@
 import React from 'react';
 import NavBar, { MenuItem } from './NavBar';
+import SidePannel from '../../SidePannel/SidePannel';
+import SidebarTrigger from './SidebarTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
 import logo from '@/public/Logo.svg';
@@ -46,9 +48,9 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({
             </a>
           </li>
           <li>
-            <svg className="icon pointer-events-none text-primary" width="32" height="32">
-              <use xlinkHref={`/icons.svg#side-pannel`} fill="currentColor"></use>
-            </svg>
+            <SidebarTrigger>
+                <SidePannel settings={settingsData} />
+            </SidebarTrigger>
           </li>
         </ul>
 

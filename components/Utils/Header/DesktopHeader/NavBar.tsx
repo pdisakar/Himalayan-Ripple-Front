@@ -233,7 +233,7 @@ const NavBar: React.FC<NavBarProps> = ({ menuData = [] }) => {
                 >
                     {/* Blurred backdrop */}
                     <div
-                        className="absolute inset-0 bg-black/60 backdrop-blur-md transition-all duration-300 ease-out animate-fadeInScale"
+                        className="absolute inset-0 bg-black/50 backdrop-blur-md transition-all duration-300 ease-out animate-fadeInScale"
                         onClick={() => setIsSearchOpen(false)}
                     />
 

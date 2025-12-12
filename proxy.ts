@@ -1,13 +1,35 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+/**
+ * PROXY CONFIGURATION
+ * 
+ * This proxy provides security by blocking malicious requests and validating slugs.
+ * 
+ * PERFORMANCE OPTIMIZATIONS:
+ * - Slugs are cached for 24 hours in memory (no DB calls for most requests)
+ * - 2-second timeout prevents slow API calls from blocking requests
+ * - Stale cache is used if API is down/slow (graceful degradation)
+ * - Static assets and known routes bypass slug validation entirely
+ * 
+ * To completely disable slug validation for maximum performance:
+ * Set environment variable: DISABLE_PROXY_SLUG_CHECK=true
+ * 
+ * Note: Disabling slug validation means invalid URLs will reach your app,
+ * but Next.js will still handle them with 404 pages. This is safe but less efficient.
+ */
+
 // In-memory cache for slugs
 let cachedSlugs: Set<string> | null = null;
 let lastFetchTime = 0;
-const REVALIDATE_TIME = 3600 * 1000; // 1 hour
+const REVALIDATE_TIME = 24 * 3600 * 1000; // 24 hours (increased from 1 hour)
+const FETCH_TIMEOUT = 2000; // 2 seconds timeout
+const DISABLE_SLUG_CHECK = process.env.DISABLE_PROXY_SLUG_CHECK === 'true';
 
 async function getValidSlugs() {
   const now = Date.now();
+  
+  // Return cached slugs if still valid
   if (cachedSlugs && (now - lastFetchTime < REVALIDATE_TIME)) {
     return cachedSlugs;
   }
@@ -16,26 +38,72 @@ async function getValidSlugs() {
     let apiUrl = process.env.NEXT_PUBLIC_API_URL;
     if (!apiUrl) {
       if (process.env.NODE_ENV === 'production') {
-        console.warn('Middleware Warning: NEXT_PUBLIC_API_URL is not defined in production. Fallback to localhost might fail.');
+        console.warn('Proxy Warning: NEXT_PUBLIC_API_URL is not defined in production. Fallback to localhost might fail.');
       }
       apiUrl = 'http://localhost:3001/api';
     }
-    const res = await fetch(`${apiUrl}/all-slugs`, { next: { revalidate: 0 } });
-    if (!res.ok) {
-      console.error(`Middleware: Failed to fetch slugs. Status: ${res.status} ${res.statusText}`);
-      const text = await res.text();
-      console.error('Middleware: Response body:', text);
-      return null;
-    }
-    const data = await res.json();
-    if (Array.isArray(data)) {
+
+    // Create abort controller for timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+
+    try {
+      const res = await fetch(`${apiUrl}/all-slugs`, { 
+        signal: controller.signal,
+        cache: 'no-store', // Don't cache at fetch level, we handle caching manually
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+      
+      clearTimeout(timeoutId);
+
+      if (!res.ok) {
+        console.error(`Proxy: Failed to fetch slugs. Status: ${res.status} ${res.statusText}`);
+        // If we have old cached data, keep using it even if expired
+        if (cachedSlugs) {
+          console.warn('Proxy: Using stale cache due to fetch failure');
+          return cachedSlugs;
+        }
+        return null;
+      }
+
+      const data = await res.json();
+      if (Array.isArray(data)) {
         cachedSlugs = new Set(data.map((item: any) => item.slug));
         lastFetchTime = now;
         return cachedSlugs;
+      }
+      
+      // If we have old cached data, keep using it
+      if (cachedSlugs) {
+        console.warn('Proxy: Using stale cache due to invalid response format');
+        return cachedSlugs;
+      }
+      return null;
+    } catch (fetchError: any) {
+      clearTimeout(timeoutId);
+      
+      // If timeout or network error, use stale cache if available
+      if (fetchError.name === 'AbortError') {
+        console.warn('Proxy: Slug fetch timed out after 2s, using stale cache or failing open');
+      } else {
+        console.error('Proxy: Fetch error:', fetchError);
+      }
+      
+      // Return stale cache if available, otherwise fail open
+      if (cachedSlugs) {
+        console.warn('Proxy: Using stale cache due to fetch error');
+        return cachedSlugs;
+      }
+      return null;
     }
-    return null;
   } catch (error) {
-    console.error('Middleware: Error fetching slugs', error);
+    console.error('Proxy: Error in getValidSlugs', error);
+    // Return stale cache if available
+    if (cachedSlugs) {
+      return cachedSlugs;
+    }
     return null;
   }
 }
@@ -112,6 +180,11 @@ export async function proxy(request: NextRequest) {
     // =========================================================
     // 4. DYNAMIC SLUG CHECK (Strict Mode)
     // =========================================================
+    // Skip slug validation if disabled via environment variable
+    if (DISABLE_SLUG_CHECK) {
+        return NextResponse.next();
+    }
+
     const validSlugs = await getValidSlugs();
 
     // If fetch failed (DB down), FAIL OPEN (Allow traffic to dynamic page to handle 404 itself or show content)

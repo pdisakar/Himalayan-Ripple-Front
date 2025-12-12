@@ -68,7 +68,6 @@ export default async function DynamicPage(props: PageProps) {
     if (!data || !data.content) {
         notFound();
     }
-    console.log("page data",data);
 
 
     return (

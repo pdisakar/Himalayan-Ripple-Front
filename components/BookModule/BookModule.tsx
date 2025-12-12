@@ -84,7 +84,7 @@ const BookModule: React.FC<BookModuleProps> = ({ packageSlug, defaultprice, grou
     }
 
     return (
-        <div className="bg-body-bg border border-muted/10 rounded-lg p-6 shadow-xs space-y-6">
+        <div className="bg-body-bg border border-primary/10 rounded-lg p-6 shadow-custom-shadow space-y-6">
             <div>
                 <h3 className="text-lg font-semibold text-primary mb-3">Group size and price</h3>
                 <div className="space-y-2">

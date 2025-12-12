@@ -1,5 +1,6 @@
 import { fetchHeroSection } from '@/lib/api';
 import { IMAGE_URL } from '@/lib/constants';
+import Link from 'next/link';
 import Image from 'next/image';
 import HomeSearch from '@/components/HomeSearch/HomeSearch';
 
@@ -42,84 +43,7 @@ export default async function HeroSection() {
                         </div>
                         <div className="w-full overflow-x-auto">
 
-                            <ul className="flex gap-6 mt-8 [&>li]:shrink-0 pb-2 px-6 snap-x snap-mandatory [&>li]:snap-start justify-center">
-                                <li>
-                                    <div className="icon flex gap-3">
-                                        <svg
-                                            className="icon text-headings"
-                                            width="42"
-                                            height="42"
-                                        >
-                                            <use
-                                                xlinkHref="/icons.svg#trekking"
-                                                fill="currentColor"
-                                            ></use>
-                                        </svg>
-                                        <div className="icon-meta flex flex-col justify-center">
-                                            <span className='block leading-[100%] font-semibold'>Trekking In Nepal</span>
-                                            <span className='block leading-[100%] mt-1.5 text-[15px]'>07 Places</span>
-                                        </div>
-
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="icon flex gap-3">
-                                        <svg
-                                            className="icon text-headings"
-                                            width="42"
-                                            height="42"
-                                        >
-                                            <use
-                                                xlinkHref="/icons.svg#tour"
-                                                fill="currentColor"
-                                            ></use>
-                                        </svg>
-                                        <div className="icon-meta flex flex-col justify-center">
-                                            <span className='block leading-[100%] font-semibold'>Tours In Nepal</span>
-                                            <span className='block leading-[100%] mt-1.5 text-[15px]'>03 Places</span>
-                                        </div>
-
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="icon flex gap-3">
-                                        <svg
-                                            className="icon text-headings"
-                                            width="42"
-                                            height="42"
-                                        >
-                                            <use
-                                                xlinkHref="/icons.svg#heli"
-                                                fill="currentColor"
-                                            ></use>
-                                        </svg>
-                                        <div className="icon-meta flex flex-col justify-center">
-                                            <span className='block leading-[100%] font-semibold'>Heli Tours</span>
-                                            <span className='block leading-[100%] mt-1.5 text-[15px]'>07 Places</span>
-                                        </div>
-
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="icon flex gap-3">
-                                        <svg
-                                            className="icon text-headings"
-                                            width="42"
-                                            height="42"
-                                        >
-                                            <use
-                                                xlinkHref="/icons.svg#safari"
-                                                fill="currentColor"
-                                            ></use>
-                                        </svg>
-                                        <div className="icon-meta flex flex-col justify-center">
-                                            <span className='block leading-[100%] font-semibold'>Jungle Safari</span>
-                                            <span className='block leading-[100%] mt-1.5 text-[15px]'>07 Places</span>
-                                        </div>
-
-                                    </div>
-                                </li>
-                            </ul>
+                            <ul className="flex gap-8 mt-8 [&>li]:shrink-0 pb-2 pl-6 pr-6 snap-x snap-mandatory [&>li]:snap-start md:justify-center"> <li> <div className="icon flex gap-3"> <svg className="icon text-headings" width="42" height="42" > <use xlinkHref="/icons.svg#trekking" fill="currentColor" ></use> </svg> <div className="icon-meta flex flex-col justify-center"> <Link href="/trekking-in-nepal" className="hover:text-primary"> <span className='block leading-[100%] font-semibold'>Trekking In Nepal</span> </Link> <span className='block leading-[100%] mt-1.5 text-sm'>Majestic Adventures </span> </div> </div> </li> <li> <div className="icon flex gap-3"> <svg className="icon text-headings" width="42" height="42" > <use xlinkHref="/icons.svg#tour" fill="currentColor" ></use> </svg> <div className="icon-meta flex flex-col justify-center"> <Link href="/tours-in-nepal" className="hover:text-primary"> <span className='block leading-[100%] font-semibold'>Tours In Nepal</span> </Link> <span className='block leading-[100%] mt-1.5 text-sm'>Scenic Journeys</span> </div> </div> </li> <li> <div className="icon flex gap-3"> <svg className="icon text-headings" width="42" height="42" > <use xlinkHref="/icons.svg#heli" fill="currentColor" ></use> </svg> <div className="icon-meta flex flex-col justify-center"> <Link href="/helicopter-tours" className="hover:text-primary"> <span className='block leading-[100%] font-semibold'>Heli Tours</span> </Link> <span className='block leading-[100%] mt-1.5 text-sm'>Explore Sky</span> </div> </div> </li> <li> <div className="icon flex gap-3"> <svg className="icon text-headings" width="42" height="42" > <use xlinkHref="/icons.svg#safari" fill="currentColor" ></use> </svg> <div className="icon-meta flex flex-col justify-center"> <Link href="/jungle-safari" className="hover:text-primary"> <span className='block leading-[100%] font-semibold'>Jungle Safari</span> </Link> <span className='block leading-[100%] mt-1.5 text-sm'>Wildlife Quest </span> </div> </div> </li> </ul>
                         </div>
                         <div className="hero-image relative">
                             <span className="absolute inset-0 bg-black/17 rounded-lg z-3"></span>

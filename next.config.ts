@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'himalayan-server.onrender.com',
+        hostname: 'himalayan-ripple-server.onrender.com',
         port: '',
         pathname: '/uploads/**',
       },

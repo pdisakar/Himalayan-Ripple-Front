@@ -47,7 +47,7 @@ const SidebarTrigger: React.FC<SidebarTriggerProps> = ({ children }) => {
             </button>
 
             {isVisible && (
-                <div className={`fixed inset-0 z-[99999]`}>
+                <div className={`fixed inset-0 z-99999`}>
                     {/* Backdrop */}
                     <div
                         className={`absolute inset-0 bg-black/50 backdrop-blur-md transition-all duration-300 ease-in-out origin-center ${isAnimating ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
@@ -66,6 +66,7 @@ const SidebarTrigger: React.FC<SidebarTriggerProps> = ({ children }) => {
                                 <button
                                     onClick={() => setIsOpen(false)}
                                     className=" ml-auto mr-2 hover:cursor-pointer"
+                                    aria-label="Close side panel"
                                 >
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M6 18L18 6M6 6l12 12" />

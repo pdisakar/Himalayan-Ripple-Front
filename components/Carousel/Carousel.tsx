@@ -116,6 +116,7 @@ const CarouselPrevious = ({ className, children }: { className?: string, childre
             )}
             onClick={scrollPrev}
             disabled={prevBtnDisabled}
+            aria-label="Previous slide"
         >
             {children || <ChevronLeft className="w-6 h-6" />}
         </button>
@@ -132,6 +133,7 @@ const CarouselNext = ({ className, children }: { className?: string, children?: 
             )}
             onClick={scrollNext}
             disabled={nextBtnDisabled}
+            aria-label="Next slide"
         >
             {children || <ChevronRight className="w-6 h-6" />}
         </button>
@@ -141,17 +143,17 @@ const CarouselNext = ({ className, children }: { className?: string, children?: 
 const CarouselDots = ({ className }: { className?: string }) => {
     const { scrollSnaps, selectedIndex, scrollTo } = useCarousel();
     return (
-        <div className={cn("flex justify-center gap-2", className)}>
+        <div className={cn("flex justify-center gap-2.5", className)}>
             {scrollSnaps.map((_, index) => (
                 <button
                     key={index}
                     aria-label={`Go to slide ${index + 1}`}
                     title={`Go to slide ${index + 1}`}
                     className={cn(
-                        "w-2 h-2 rounded-full transition-all duration-300",
+                        "w-2.5 h-2.5 rounded-full transition-all duration-300",
                         index === selectedIndex
-                            ? "bg-primary w-8"
-                            : "bg-primary/20 hover:bg-primary/80 hover:cursor-pointer"
+                            ? "bg-primary w-12"
+                            : "bg-primary/40 hover:bg-primary/90 hover:cursor-pointer"
                     )}
                     onClick={() => scrollTo(index)}
                 />

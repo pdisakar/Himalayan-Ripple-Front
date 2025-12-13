@@ -1,4 +1,4 @@
-const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://himalayan-server.onrender.com";
+const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://himalayan-ripple-server.onrender.com";
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 export const API_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
 export const SERVER_URL = rawApiUrl.replace(/\/api$/, '');

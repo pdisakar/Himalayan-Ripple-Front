@@ -109,12 +109,13 @@ export const Package: React.FC<PackageProps> = ({ content }) => {
                                                 }}
                                             />
                                         </div>
-                                        <figure className='image-slot shadow-custom-shadow rounded-lg border border-primary/10 overflow-hidden aspect-[12/19]'>
+                                        <figure className='image-slot shadow-custom-shadow rounded-lg border border-primary/10 overflow-hidden aspect-12/19'>
                                             <Image
                                                 src={IMAGE_URL + content.tripMapImage}
                                                 alt={content.tripMapImageAlt}
                                                 fill
                                                 className='object-cover rounded-lg'
+                                                sizes="(max-width: 1024px) 100vw, 900px"
                                             />
                                         </figure>
                                     </div>

@@ -27,7 +27,7 @@ const nextConfig: NextConfig = {
     // Enable modern image formats
     formats: ['image/webp', 'image/avif'],
     // Define device sizes for responsive images
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1400, 1600, 1920],
     // Define image sizes for different breakpoints
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Disable optimization for localhost in development

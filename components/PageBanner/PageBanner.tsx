@@ -18,6 +18,8 @@ const PageBanner: React.FC<PageBannerProps> = ({ image, imageAlt, imageCaption }
                 className='object-cover'
                 priority
                 fetchPriority='high'
+                sizes="100vw"
+                quality={60}
             />
 
             {imageCaption && (

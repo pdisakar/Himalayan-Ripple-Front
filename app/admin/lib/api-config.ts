@@ -1,4 +1,4 @@
-import { SERVER_URL } from '@/lib/constants';
+import { SERVER_URL, API_KEY } from '@/lib/constants';
 
 // Admin API configuration
 // Use environment variable for production, fallback to localhost for development
@@ -17,6 +17,7 @@ export const getAuthHeaders = () => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   return {
     'Content-Type': 'application/json',
+    'x-api-key': API_KEY,
     ...(token ? { 'Authorization': `Bearer ${token}` } : {})
   };
 };

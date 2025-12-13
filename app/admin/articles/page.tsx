@@ -95,7 +95,7 @@ export default function ArticlesPage() {
       // Bulk delete
       const response = await fetch(getApiUrl('articles/bulk-delete'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ ids: selectedArticles }),
       });
 

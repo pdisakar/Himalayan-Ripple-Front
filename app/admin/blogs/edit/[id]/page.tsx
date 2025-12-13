@@ -148,7 +148,7 @@ export default function EditBlogPage() {
     try {
       await fetch(getApiUrl('upload/image'), {
         method: 'DELETE',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ path: imagePath }),
       });
     } catch (err) {
@@ -160,7 +160,7 @@ export default function EditBlogPage() {
     try {
       const response = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ image: base64Image, type }),
       });
       const data = await response.json();
@@ -225,7 +225,7 @@ export default function EditBlogPage() {
 
       const res = await fetch(getApiUrl(`blogs/${blogId}`), {
         method: 'PUT',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
 

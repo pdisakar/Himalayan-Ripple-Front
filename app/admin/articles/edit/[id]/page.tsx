@@ -247,7 +247,7 @@ export default function EditArticlePage() {
     try {
       const response = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ image: base64Image, type }),
       });
       const data = await response.json();
@@ -265,7 +265,7 @@ export default function EditArticlePage() {
     try {
       await fetch(getApiUrl('upload/image'), {
         method: 'DELETE',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ path: imagePath }),
       });
     } catch (err) {
@@ -335,7 +335,7 @@ export default function EditArticlePage() {
 
       const response = await fetch(getApiUrl(`articles/${articleId}`), {
         method: 'PUT',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
 

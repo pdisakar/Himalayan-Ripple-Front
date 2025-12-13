@@ -117,7 +117,7 @@ export default function EditAuthorPage() {
     try {
       await fetch(getApiUrl('upload/image'), {
         method: 'DELETE',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ path: imagePath }),
       });
     } catch (err) {
@@ -145,7 +145,7 @@ export default function EditAuthorPage() {
     const base64 = await fileToBase64(file);
     const res = await fetch(getApiUrl('upload/image'), {
       method: 'POST',
-      headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ image: base64 }),
     });
     if (!res.ok) throw new Error('Image upload failed');
@@ -201,7 +201,7 @@ export default function EditAuthorPage() {
 
       const res = await fetch(getApiUrl(`authors/${params.id}`), {
         method: 'PUT',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
 

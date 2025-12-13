@@ -115,7 +115,7 @@ export default function EditTeamPage() {
         try {
             await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ path: imagePath }),
             });
         } catch (err) {
@@ -143,7 +143,7 @@ export default function EditTeamPage() {
         const base64 = await fileToBase64(file);
         const res = await fetch(getApiUrl('upload/image'), {
             method: 'POST',
-            headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+            headers: getAuthHeaders(),
             body: JSON.stringify({ image: base64 }),
         });
         if (!res.ok) throw new Error('Image upload failed');
@@ -199,7 +199,7 @@ export default function EditTeamPage() {
 
             const res = await fetch(getApiUrl(`teams/${params.id}`), {
                 method: 'PUT',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(payload),
             });
 

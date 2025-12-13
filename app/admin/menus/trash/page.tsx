@@ -74,7 +74,7 @@ export default function MenusTrashPage() {
         try {
             const response = await fetch(getApiUrl('menus/bulk-restore'), {
                 method: 'POST',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ ids: selectedMenus })
             });
             if (!response.ok) throw new Error('Failed to restore menus');
@@ -94,7 +94,7 @@ export default function MenusTrashPage() {
         try {
             const response = await fetch(getApiUrl('menus/bulk-delete-permanent'), {
                 method: 'POST',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ ids: selectedMenus })
             });
             if (!response.ok) throw new Error('Failed to permanently delete menus');

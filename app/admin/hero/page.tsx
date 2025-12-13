@@ -59,7 +59,7 @@ export default function HeroSectionPage() {
         try {
             await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ path: imagePath }),
             });
         } catch (err) {
@@ -95,7 +95,7 @@ export default function HeroSectionPage() {
             if (hero.image && hero.image.startsWith('data:')) {
                 const res = await fetch(getApiUrl('upload/image'), {
                     method: 'POST',
-                    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                    headers: getAuthHeaders(),
                     body: JSON.stringify({ image: hero.image, type: 'hero' }),
                 });
                 const data = await res.json();
@@ -109,7 +109,7 @@ export default function HeroSectionPage() {
 
             await apiFetch('/hero', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ ...hero, image: imagePath }),
             });
             setMessage({ type: 'success', text: 'Hero section saved successfully!' });

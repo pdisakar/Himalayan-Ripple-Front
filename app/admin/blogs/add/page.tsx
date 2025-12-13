@@ -120,7 +120,7 @@ export default function AddBlogPage() {
         try {
             await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ path: imagePath }),
             });
         } catch (err) {
@@ -132,7 +132,7 @@ export default function AddBlogPage() {
         try {
             const response = await fetch(getApiUrl('upload/image'), {
                 method: 'POST',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ image: base64Image, type }),
             });
             const data = await response.json();
@@ -200,7 +200,7 @@ export default function AddBlogPage() {
 
             const res = await fetch(getApiUrl('blogs'), {
                 method: 'POST',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(payload),
             });
 

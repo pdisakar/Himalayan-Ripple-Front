@@ -92,7 +92,7 @@ export default function TestimonialsPage() {
             // Bulk delete
             const response = await fetch(getApiUrl('testimonials/bulk-delete'), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ ids: selectedTestimonials }),
             });
 

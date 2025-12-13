@@ -95,7 +95,7 @@ export default function MenusPage() {
 
             const response = await fetch(getApiUrl('menus/reorder'), {
                 method: 'POST',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ items: updates }),
             });
 
@@ -121,7 +121,7 @@ export default function MenusPage() {
         try {
             const response = await fetch(getApiUrl('menus/bulk-delete'), {
                 method: 'POST',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ ids: selectedMenus }),
             });
 

@@ -109,7 +109,7 @@ export default function AddMenuPage() {
 
             const response = await fetch(getApiUrl('menus'), {
                 method: 'POST',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(payload)
             });
 

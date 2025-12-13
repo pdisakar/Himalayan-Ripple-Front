@@ -524,7 +524,7 @@ export default function AddPackagePage() {
 
       const res = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ image: base64 }),
       });
 
@@ -677,7 +677,7 @@ export default function AddPackagePage() {
 
       const res = await fetch(getApiUrl('packages'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
 
@@ -693,7 +693,7 @@ export default function AddPackagePage() {
             try {
               await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ path }),
               });
             } catch (cleanupErr) {
@@ -713,7 +713,7 @@ export default function AddPackagePage() {
           try {
             await fetch(getApiUrl('upload/image'), {
               method: 'DELETE',
-              headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+              headers: getAuthHeaders(),
               body: JSON.stringify({ path }),
             });
           } catch (cleanupErr) {

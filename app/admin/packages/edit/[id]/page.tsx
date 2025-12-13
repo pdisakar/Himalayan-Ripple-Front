@@ -686,7 +686,7 @@ export default function EditPackagePage() {
 
       const res = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ image: base64 }),
       });
 

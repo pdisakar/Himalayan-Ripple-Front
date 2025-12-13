@@ -96,7 +96,7 @@ export default function placesPage() {
       // Bulk delete
       const response = await fetch(getApiUrl('places/bulk-delete'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ ids: selectedplaces }),
       });
 

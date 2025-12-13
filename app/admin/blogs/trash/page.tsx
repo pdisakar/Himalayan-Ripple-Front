@@ -76,7 +76,7 @@ export default function BlogsTrashPage() {
     try {
       const response = await fetch(getApiUrl('blogs/bulk-restore'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ ids: selectedBlogs }),
       });
       if (!response.ok) throw new Error('Failed to restore blogs');
@@ -96,7 +96,7 @@ export default function BlogsTrashPage() {
     try {
       const response = await fetch(getApiUrl('blogs/bulk-delete-permanent'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ ids: selectedBlogs }),
       });
       if (!response.ok) throw new Error('Failed to delete blogs');

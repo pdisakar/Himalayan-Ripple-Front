@@ -134,7 +134,7 @@ export default function EditMenuPage({ params }: { params: Promise<{ id: string 
 
             const response = await fetch(getApiUrl(`menus/${id}`), {
                 method: 'PUT',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(payload)
             });
 

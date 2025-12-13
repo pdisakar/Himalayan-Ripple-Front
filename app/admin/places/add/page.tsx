@@ -253,7 +253,7 @@ export default function AddplacePage() {
       };
       const response = await fetch(getApiUrl('places'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       const data = await response.json();
@@ -307,7 +307,7 @@ export default function AddplacePage() {
     try {
       await fetch(getApiUrl('upload/image'), {
         method: 'DELETE',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ path: imageUrl }),
       });
     } catch (err) {
@@ -319,7 +319,7 @@ export default function AddplacePage() {
     try {
       const response = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ image: base64Image, type: 'featured' }),
       });
       const data = await response.json();

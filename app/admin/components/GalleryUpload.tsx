@@ -151,7 +151,7 @@ export function GalleryUpload({
       try {
         await fetch(getApiUrl('upload/image'), {
           method: 'DELETE',
-          headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+          headers: getAuthHeaders(),
           body: JSON.stringify({ path: imageToDelete.preview }),
         });
         console.log('[DEBUG] Deleted gallery image from server:', imageToDelete.preview);

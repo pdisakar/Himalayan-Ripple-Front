@@ -77,7 +77,7 @@ export default function TestimonialsTrashPage() {
         try {
             const response = await fetch(getApiUrl('testimonials/bulk-restore'), {
                 method: 'POST',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ ids: selectedTestimonials }),
             });
             if (!response.ok) throw new Error('Failed to restore testimonials');
@@ -97,7 +97,7 @@ export default function TestimonialsTrashPage() {
         try {
             const response = await fetch(getApiUrl('testimonials/bulk-delete-permanent'), {
                 method: 'POST',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ ids: selectedTestimonials }),
             });
             if (!response.ok) throw new Error('Failed to delete testimonials');

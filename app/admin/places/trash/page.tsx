@@ -82,7 +82,7 @@ export default function TrashPage() {
     try {
       const response = await fetch(getApiUrl('places/bulk-restore'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ ids: selectedplaces }),
       });
       if (!response.ok) throw new Error('Failed to restore places');
@@ -102,7 +102,7 @@ export default function TrashPage() {
     try {
       const response = await fetch(getApiUrl('places/bulk-delete-permanent'), {
         method: 'POST',
-        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ ids: selectedplaces }),
       });
       if (!response.ok) throw new Error('Failed to delete places');

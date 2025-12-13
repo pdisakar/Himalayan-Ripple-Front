@@ -177,7 +177,7 @@ export default function EditTestimonialPage() {
         try {
             await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ path: imagePath }),
             });
         } catch (err) {
@@ -188,7 +188,7 @@ export default function EditTestimonialPage() {
     const uploadImage = async (base64Image: string): Promise<string> => {
         const res = await fetch(getApiUrl('upload/image'), {
             method: 'POST',
-            headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+            headers: getAuthHeaders(),
             body: JSON.stringify({ image: base64Image, type: 'avatar' }),
         });
         if (!res.ok) throw new Error('Image upload failed');
@@ -228,7 +228,7 @@ export default function EditTestimonialPage() {
 
             const res = await fetch(getApiUrl(`testimonials/${id}`), {
                 method: 'PUT',
-                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(payload),
             });
 

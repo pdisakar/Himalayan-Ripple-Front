@@ -82,6 +82,7 @@ export default function PackagesPage() {
         selectedPackages.map(id =>
           fetch(getApiUrl(`packages/${id}`), {
             method: 'DELETE',
+            headers: getAuthHeaders()
           })
         )
       );

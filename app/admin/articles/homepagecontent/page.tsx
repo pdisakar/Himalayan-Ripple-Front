@@ -7,7 +7,7 @@ import { Button } from '@/app/admin/components/ui/button';
 import { BannerImage } from '@/app/admin/components/BannerImage';
 import { extractImagePaths, processContentImages, cleanupUnusedImages } from '@/app/admin/lib/richTextHelpers';
 import dynamic from 'next/dynamic';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 const RichTextEditor = dynamic(() => import('@/app/admin/components/RichTextEditor'), { ssr: false });
 
@@ -40,7 +40,9 @@ export default function HomeContentPage() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch(getApiUrl('homecontent'));
+            const response = await fetch(getApiUrl('homecontent'), {
+                headers: getAuthHeaders()
+            });
             const data = await response.json();
 
             if (data) {
@@ -71,7 +73,7 @@ export default function HomeContentPage() {
         try {
             await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ path: imagePath }),
             });
         } catch (err) {
@@ -84,7 +86,7 @@ export default function HomeContentPage() {
         try {
             const response = await fetch(getApiUrl('upload/image'), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ image: base64Image, type }),
             });
             const data = await response.json();
@@ -119,7 +121,7 @@ export default function HomeContentPage() {
 
             const response = await fetch(getApiUrl('homecontent'), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({
                     title,
                     content: processedContent,

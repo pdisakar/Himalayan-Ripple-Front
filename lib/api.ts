@@ -393,7 +393,8 @@ export const fetchHeaderMenu = async (): Promise<MenuItem[]> => {
         headers: { 'x-api-key': API_KEY }
     });
     if (!res.ok) {
-        throw new Error('Failed to fetch menus');
+        console.error('Failed to fetch header menus');
+        return [];
     }
     return res.json();
 };
@@ -405,7 +406,8 @@ export const fetchFooterMenu = async (): Promise<MenuItem[]> => {
         headers: { 'x-api-key': API_KEY }
     });
     if (!res.ok) {
-        throw new Error('Failed to fetch menus');
+        console.error('Failed to fetch footer menus');
+        return [];
     }
     return res.json();
 };
@@ -417,7 +419,8 @@ export const fetchGlobalData = async (): Promise<any> => {
         headers: { 'x-api-key': API_KEY }
     });
     if (!res.ok) {
-        throw new Error('Failed to fetch global data');
+        console.error('Failed to fetch global data');
+        return null;
     }
     return res.json();
 };

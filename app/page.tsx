@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: homeContent?.meta?.title,
     description: homeContent?.meta?.description,
     alternates: {
-      canonical: process.env.CANONICAL_BASE,
+      canonical: '/',
     },
     openGraph: {
       title: homeContent?.meta?.title,

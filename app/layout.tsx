@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Utils/Header/Header";
 import Footer from "@/components/Utils/Footer/Footer";
 import { fetchGlobalData, fetchHeaderMenu, fetchFooterMenu } from "@/lib/api";
+import { BASE_URL } from "@/lib/constants";
 
 const instrumentSans = Instrument_Sans({
   variable: "--primaryfont",
@@ -13,6 +14,7 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE_URL),
   title: "TravelApp - Explore the World",
   description: "Discover amazing travel packages and destinations",
 };

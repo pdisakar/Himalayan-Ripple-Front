@@ -19,7 +19,7 @@ const PageBanner: React.FC<PageBannerProps> = ({ image, imageAlt, imageCaption }
                 priority
                 fetchPriority='high'
                 sizes="100vw"
-                quality={60}
+                quality={75}
             />
 
             {imageCaption && (

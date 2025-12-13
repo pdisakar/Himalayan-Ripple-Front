@@ -52,7 +52,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
         title: meta.title,
         description: meta.description,
         alternates: {
-            canonical: `${process.env.NEXT_PUBLIC_CANONICAL_BASE}/${params.slug}`,
+            canonical: `/${params.slug}`,
         },
         openGraph: {
             title: meta.title,

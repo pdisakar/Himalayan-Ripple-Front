@@ -1,9 +1,9 @@
 /**
- * Process an image file to WebP format with quality optimization
+ * Process an image file for upload (backend will convert to AVIF)
  * @param file - The image file to process
  * @param quality - Quality setting (0.0 to 1.0), default 0.92
  * @param maxSize - Maximum file size in bytes, default 5MB
- * @returns Base64 encoded WebP image string
+ * @returns Base64 encoded image string
  */
 export async function processImageToWebP(
   file: File,
@@ -25,19 +25,34 @@ export async function processImageToWebP(
           return;
         }
 
-        // Preserve original resolution
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
+        // Calculate dimensions (max 4000px to prevent huge uploads)
+        const maxDimension = 4000;
+        let width = img.naturalWidth;
+        let height = img.naturalHeight;
+
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = (height / width) * maxDimension;
+            width = maxDimension;
+          } else {
+            width = (width / height) * maxDimension;
+            height = maxDimension;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
 
         // Enable high-quality image smoothing
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
 
         // Draw the image
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, width, height);
 
-        // Convert to WebP
-        let webpImage = canvas.toDataURL('image/webp', quality);
+        // Convert to high-quality JPEG for upload (backend will convert to AVIF)
+        // Using JPEG here ensures compatibility and the backend handles final optimization
+        let imageData = canvas.toDataURL('image/jpeg', quality);
         let currentQuality = quality;
 
         // Check file size and reduce quality if needed
@@ -47,13 +62,13 @@ export async function processImageToWebP(
           return bytes;
         };
 
-        let size = await checkSize(webpImage);
+        let size = await checkSize(imageData);
 
         // Reduce quality if file is too large
         while (size > maxSize && currentQuality > 0.5) {
           currentQuality *= 0.9;
-          webpImage = canvas.toDataURL('image/webp', currentQuality);
-          size = await checkSize(webpImage);
+          imageData = canvas.toDataURL('image/jpeg', currentQuality);
+          size = await checkSize(imageData);
         }
 
         if (size > maxSize) {
@@ -61,7 +76,7 @@ export async function processImageToWebP(
           return;
         }
 
-        resolve(webpImage);
+        resolve(imageData);
       };
 
       img.onerror = () => {

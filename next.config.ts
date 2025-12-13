@@ -24,8 +24,8 @@ const nextConfig: NextConfig = {
     ],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
-    // Enable modern image formats
-    formats: ['image/webp', 'image/avif'],
+    // Enable modern image formats (AVIF prioritized for better compression)
+    formats: ['image/avif', 'image/webp'],
     // Define device sizes for responsive images
     deviceSizes: [640, 750, 828, 1080, 1200, 1400, 1600, 1920],
     // Define image sizes for different breakpoints

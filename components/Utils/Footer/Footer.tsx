@@ -77,6 +77,7 @@ export default function Footer({ initialMenu = [], initialSettings = null }: Foo
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="whatsapp-mobile flex items-center gap-2 cursor-pointer"
+                                            aria-label="Contact us on WhatsApp"
                                         >
                                             <svg
                                                 className="icon text-white/70"
@@ -103,6 +104,7 @@ export default function Footer({ initialMenu = [], initialSettings = null }: Foo
                                         <a
                                             href={`mailto:${settings?.email}`}
                                             className="email-mobile flex items-center gap-2 cursor-pointer"
+                                            aria-label="Email us"
                                         >
                                             <svg
                                                 className="icon text-white/70"

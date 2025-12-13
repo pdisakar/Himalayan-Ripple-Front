@@ -80,6 +80,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ menuData = [], settingsData
                             target="_blank"
                             rel="noopener noreferrer"
                             className="whatsapp-mobile flex items-center gap-2 cursor-pointer"
+                            aria-label="Contact us on WhatsApp"
                         >
                             <svg
                                 className="icon text-primary"

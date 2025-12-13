@@ -87,7 +87,7 @@ export default async function HomeContent({ pretitle }: HomeContentProps) {
           <ul className='mt-6 flex flex-wrap items-center gap-6'>
             <li>
               <PrimaryButton href='/about-us'>
-                Read more
+                Learn more about us
               </PrimaryButton>
             </li>
             <li className='flex items-center gap-2'>

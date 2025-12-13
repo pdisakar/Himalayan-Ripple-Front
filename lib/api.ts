@@ -1,4 +1,4 @@
-import { API_URL } from '@/lib/constants';
+import { API_URL, API_KEY } from '@/lib/constants';
 
 const BASE_URL = API_URL;
 
@@ -106,7 +106,10 @@ export interface HomeContent {
 
 // Fetch featured packages (build‑time only)
 export const fetchFeaturedPackages = async (): Promise<Package[]> => {
-    const res = await fetch(`${BASE_URL}/packages?featured=1`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/packages?featured=1`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     const data = await res.json();
     // The endpoint returns { success, packages, ... }
     if (data.success && Array.isArray(data.packages)) {
@@ -129,7 +132,10 @@ export const fetchFeaturedPackages = async (): Promise<Package[]> => {
 
 // Fetch bestselling packages (build‑time only)
 export const fetchBestsellingPackages = async (): Promise<Package[]> => {
-    const res = await fetch(`${BASE_URL}/packages?isBestselling=1`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/packages?isBestselling=1`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     const data = await res.json();
     if (data.success && Array.isArray(data.packages)) {
         const packages = data.packages.slice(0, 6).map((pkg: any) => {
@@ -152,7 +158,10 @@ export const fetchBestsellingPackages = async (): Promise<Package[]> => {
 
 // Fetch featured blogs (build‑time only)
 export const fetchFeaturedBlogs = async (): Promise<Blog[]> => {
-    const res = await fetch(`${BASE_URL}/blogs?isFeatured=1`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/blogs?isFeatured=1`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     const data = await res.json();
     if (Array.isArray(data)) {
         return data.slice(0, 3);
@@ -162,7 +171,10 @@ export const fetchFeaturedBlogs = async (): Promise<Blog[]> => {
 
 // Fetch featured places (build‑time only)
 export const fetchFeaturedPlaces = async (): Promise<Place[]> => {
-    const res = await fetch(`${BASE_URL}/places?isFeatured=1`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/places?isFeatured=1`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     const data = await res.json();
     if (Array.isArray(data)) {
         return data.slice(0, 6);
@@ -172,7 +184,10 @@ export const fetchFeaturedPlaces = async (): Promise<Place[]> => {
 
 // Fetch featured testimonials (build‑time only)
 export const fetchFeaturedTestimonials = async (): Promise<Testimonial[]> => {
-    const res = await fetch(`${BASE_URL}/testimonials?isFeatured=1`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/testimonials?isFeatured=1`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     const data = await res.json();
     if (Array.isArray(data)) {
         return data.slice(0, 6);
@@ -182,7 +197,8 @@ export const fetchFeaturedTestimonials = async (): Promise<Testimonial[]> => {
 
 export async function fetchHomeContent(): Promise<HomeContent | null> {
     const res = await fetch(`${BASE_URL}/homecontent`, {
-        cache: 'force-cache'
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
     });
     if (!res.ok) return null;
     return res.json();
@@ -198,14 +214,20 @@ export async function fetchPackages(page = 1, limit = 10, search = '', status?: 
         params.append('status', String(status));
     }
 
-    const res = await fetch(`${BASE_URL}/packages?${params.toString()}`, { cache: 'no-store' });
+    const res = await fetch(`${BASE_URL}/packages?${params.toString()}`, { 
+        cache: 'no-store',
+        headers: { 'x-api-key': API_KEY }
+    });
     if (!res.ok) throw new Error('Failed to fetch packages');
     return res.json();
 }
 
 // Fetch all packages (build‑time only)
 export const fetchAllPackages = async (): Promise<Package[]> => {
-    const res = await fetch(`${BASE_URL}/packages`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/packages`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     const data = await res.json();
     if (data.success && Array.isArray(data.packages)) {
         const packages = data.packages.map((pkg: any) => {
@@ -227,7 +249,8 @@ export const fetchAllPackages = async (): Promise<Package[]> => {
 // Search packages
 export const searchPackages = async (query: string): Promise<Package[]> => {
     const res = await fetch(`${BASE_URL}/packages?search=${encodeURIComponent(query)}`, {
-        cache: 'force-cache'
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
     });
     const data = await res.json();
     if (data.success && Array.isArray(data.packages)) {
@@ -238,7 +261,10 @@ export const searchPackages = async (query: string): Promise<Package[]> => {
 
 // Fetch all blogs (build‑time only)
 export const fetchAllBlogs = async (): Promise<Blog[]> => {
-    const res = await fetch(`${BASE_URL}/blogs`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/blogs`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     const data = await res.json();
     if (Array.isArray(data)) {
         return data;
@@ -264,7 +290,8 @@ export const fetchBlogs = async (page = 1, limit = 6): Promise<{ data: Blog[]; t
     // For now, let's add this function signature.
 
     const res = await fetch(`${BASE_URL}/blogs?limit=${limit}&offset=${offset}`, {
-        cache: 'no-store'
+        cache: 'no-store',
+        headers: { 'x-api-key': API_KEY }
     });
 
     const data = await res.json();
@@ -287,7 +314,10 @@ export const fetchBlogs = async (page = 1, limit = 6): Promise<{ data: Blog[]; t
 
 // Fetch all testimonials (build‑time only)
 export const fetchAllTestimonials = async (): Promise<Testimonial[]> => {
-    const res = await fetch(`${BASE_URL}/testimonials`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/testimonials`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     const data = await res.json();
     if (Array.isArray(data)) {
         return data;
@@ -299,7 +329,8 @@ export const fetchAllTestimonials = async (): Promise<Testimonial[]> => {
 export const fetchTestimonials = async (page = 1, limit = 6): Promise<{ data: Testimonial[]; total: number }> => {
     const offset = (page - 1) * limit;
     const res = await fetch(`${BASE_URL}/testimonials?limit=${limit}&offset=${offset}`, {
-        cache: 'no-store'
+        cache: 'no-store',
+        headers: { 'x-api-key': API_KEY }
     });
     const data = await res.json();
     if (data.success && Array.isArray(data.data)) {
@@ -316,7 +347,8 @@ export const fetchTestimonialBySlug = async (slug: string): Promise<Testimonial 
     console.log('[API] Fetching testimonial:', url);
     try {
         const res = await fetch(url, {
-            cache: 'no-store'
+            cache: 'no-store',
+            headers: { 'x-api-key': API_KEY }
         });
         console.log('[API] Testimonial response status:', res.status);
 
@@ -334,7 +366,8 @@ export const fetchTestimonialBySlug = async (slug: string): Promise<Testimonial 
 /** Fetch data by slug (for dynamic pages) */
 export const fetchSlugData = async (slug: string): Promise<{ datatype: string; content: any } | null> => {
     const res = await fetch(`${BASE_URL}/resolve-slug/${slug}`, {
-        cache: 'force-cache'
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
     });
     if (!res.ok) {
         if (res.status === 404) return null;
@@ -345,7 +378,10 @@ export const fetchSlugData = async (slug: string): Promise<{ datatype: string; c
 
 // Fetch header menu items (build‑time only)
 export const fetchHeaderMenu = async (): Promise<MenuItem[]> => {
-    const res = await fetch(`${BASE_URL}/menus/type/header`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/menus/type/header`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     if (!res.ok) {
         throw new Error('Failed to fetch menus');
     }
@@ -354,7 +390,10 @@ export const fetchHeaderMenu = async (): Promise<MenuItem[]> => {
 
 // Fetch footer menu items (build‑time only)
 export const fetchFooterMenu = async (): Promise<MenuItem[]> => {
-    const res = await fetch(`${BASE_URL}/menus/type/footer`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/menus/type/footer`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     if (!res.ok) {
         throw new Error('Failed to fetch menus');
     }
@@ -363,7 +402,10 @@ export const fetchFooterMenu = async (): Promise<MenuItem[]> => {
 
 // Generic API fetch helper (still dynamic when used directly)
 export const fetchGlobalData = async (): Promise<any> => {
-    const res = await fetch(`${BASE_URL}/GlobalData`, { cache: 'force-cache' });
+    const res = await fetch(`${BASE_URL}/GlobalData`, { 
+        cache: 'force-cache',
+        headers: { 'x-api-key': API_KEY }
+    });
     if (!res.ok) {
         throw new Error('Failed to fetch global data');
     }
@@ -374,7 +416,8 @@ export const fetchGlobalData = async (): Promise<any> => {
 export const fetchHeroSection = async (): Promise<HeroSectionData | null> => {
     try {
         const res = await fetch(`${BASE_URL}/hero`, {
-            cache: 'force-cache'
+            cache: 'force-cache',
+            headers: { 'x-api-key': API_KEY }
         });
         if (!res.ok) return null;
         return await res.json();
@@ -385,7 +428,8 @@ export const fetchHeroSection = async (): Promise<HeroSectionData | null> => {
 };
 
 export const apiFetch = async <T>(path: string, init?: RequestInit): Promise<T> => {
-    const res = await fetch(`${BASE_URL}${path}`, init);
+    const headers = { ...init?.headers, 'x-api-key': API_KEY };
+    const res = await fetch(`${BASE_URL}${path}`, { ...init, headers });
     if (!res.ok) {
         const errorText = await res.text();
         throw new Error(`API request failed: ${res.status} ${res.statusText} - ${errorText}`);
@@ -400,7 +444,8 @@ export const fetchPackagesByIds = async (ids: number[]): Promise<Package[]> => {
     try {
         const idsParam = ids.join(',');
         const res = await fetch(`${BASE_URL}/packages?ids=${idsParam}`, {
-            cache: 'force-cache'
+            cache: 'force-cache',
+            headers: { 'x-api-key': API_KEY }
         });
 
         if (!res.ok) {
@@ -434,7 +479,8 @@ export const fetchPackagesByIds = async (ids: number[]): Promise<Package[]> => {
 export const fetchAllSlugs = async (): Promise<Array<{ slug: string; featured?: number }>> => {
     try {
         const res = await fetch(`${BASE_URL}/all-slugs`, {
-            cache: 'force-cache'
+            cache: 'force-cache',
+            headers: { 'x-api-key': API_KEY }
         });
         if (!res.ok) {
             console.error('Failed to fetch all slugs');

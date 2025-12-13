@@ -17,7 +17,7 @@ import { TripMapImage } from '@/app/admin/components/TripMapImage';
 import { GalleryUpload, type GalleryImage } from '@/app/admin/components/GalleryUpload';
 import { extractImagePaths, processContentImages, cleanupUnusedImages } from '@/app/admin/lib/richTextHelpers';
 import { processImageToWebP } from '@/app/admin/lib/imageUtils';
-import { getApiUrl, getImageUrl, ADMIN_API_URL } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, ADMIN_API_URL, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface GroupPrice {
   id: string;
@@ -575,7 +575,7 @@ export default function EditPackagePage() {
       try {
         await fetch(getApiUrl('upload/image'), {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAuthHeaders(),
           body: JSON.stringify({ path: imageUrl }),
         });
       } catch (err) {
@@ -686,9 +686,7 @@ export default function EditPackagePage() {
 
       const res = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ image: base64 }),
       });
 
@@ -867,9 +865,7 @@ export default function EditPackagePage() {
 
       const res = await fetch(getApiUrl(`packages/${packageId}`), {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
 

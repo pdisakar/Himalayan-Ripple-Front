@@ -12,6 +12,15 @@ export const getApiUrl = (path: string) => {
   return `${ADMIN_API_BASE}/${cleanPath}`;
 };
 
+// Helper to get auth headers
+export const getAuthHeaders = () => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+  };
+};
+
 // Helper function for image URLs
 export const getImageUrl = (path: string) => {
   if (!path) return '';
@@ -22,7 +31,7 @@ export const getImageUrl = (path: string) => {
 export const uploadImage = async (base64Image: string, type: string = 'image'): Promise<string> => {
   const res = await fetch(getApiUrl('upload/image'), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ image: base64Image, type }),
   });
   if (!res.ok) throw new Error('Image upload failed');
@@ -36,7 +45,7 @@ export const deleteImage = async (imagePath: string): Promise<void> => {
   try {
     await fetch(getApiUrl('upload/image'), {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ path: imagePath }),
     });
   } catch (err) {

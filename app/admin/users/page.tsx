@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
 import { Search, Edit } from 'lucide-react';
-import { getApiUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface User {
   id: number;
@@ -41,7 +41,9 @@ export default function UsersPage() {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(getApiUrl('users'));
+      const response = await fetch(getApiUrl('users'), {
+        headers: getAuthHeaders()
+      });
       const data = await response.json();
 
       if (!response.ok) {
@@ -91,6 +93,7 @@ export default function UsersPage() {
         // Single delete
         const response = await fetch(getApiUrl(`users/${selectedUsers[0]}`), {
           method: 'DELETE',
+          headers: getAuthHeaders(),
         });
 
         if (!response.ok) {
@@ -101,7 +104,7 @@ export default function UsersPage() {
         // Bulk delete
         const response = await fetch(getApiUrl('users/bulk-delete'), {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAuthHeaders(),
           body: JSON.stringify({ ids: selectedUsers }),
         });
 

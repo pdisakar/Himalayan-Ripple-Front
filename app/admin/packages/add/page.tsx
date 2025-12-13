@@ -17,7 +17,7 @@ import { TripMapImage } from '@/app/admin/components/TripMapImage';
 import { GalleryUpload, GalleryImage } from '@/app/admin/components/GalleryUpload';
 import { processContentImages } from '@/app/admin/lib/richTextHelpers';
 import { processImageToWebP } from '@/app/admin/lib/imageUtils';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface GroupPrice {
   id: string;
@@ -413,7 +413,7 @@ export default function AddPackagePage() {
       try {
         await fetch(getApiUrl('upload/image'), {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAuthHeaders(),
           body: JSON.stringify({ path: imageUrl }),
         });
       } catch (err) {
@@ -524,9 +524,7 @@ export default function AddPackagePage() {
 
       const res = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ image: base64 }),
       });
 
@@ -679,9 +677,7 @@ export default function AddPackagePage() {
 
       const res = await fetch(getApiUrl('packages'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
 
@@ -697,7 +693,7 @@ export default function AddPackagePage() {
             try {
               await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ path }),
               });
             } catch (cleanupErr) {
@@ -717,7 +713,7 @@ export default function AddPackagePage() {
           try {
             await fetch(getApiUrl('upload/image'), {
               method: 'DELETE',
-              headers: { 'Content-Type': 'application/json' },
+              headers: getAuthHeaders(),
               body: JSON.stringify({ path }),
             });
           } catch (cleanupErr) {

@@ -110,6 +110,7 @@ export const fetchFeaturedPackages = async (): Promise<Package[]> => {
         cache: 'force-cache',
         headers: { 'x-api-key': API_KEY }
     });
+    if (!res.ok) return [];
     const data = await res.json();
     // The endpoint returns { success, packages, ... }
     if (data.success && Array.isArray(data.packages)) {
@@ -136,6 +137,7 @@ export const fetchBestsellingPackages = async (): Promise<Package[]> => {
         cache: 'force-cache',
         headers: { 'x-api-key': API_KEY }
     });
+    if (!res.ok) return [];
     const data = await res.json();
     if (data.success && Array.isArray(data.packages)) {
         const packages = data.packages.slice(0, 6).map((pkg: any) => {
@@ -162,6 +164,7 @@ export const fetchFeaturedBlogs = async (): Promise<Blog[]> => {
         cache: 'force-cache',
         headers: { 'x-api-key': API_KEY }
     });
+    if (!res.ok) return [];
     const data = await res.json();
     if (Array.isArray(data)) {
         return data.slice(0, 3);
@@ -175,6 +178,7 @@ export const fetchFeaturedPlaces = async (): Promise<Place[]> => {
         cache: 'force-cache',
         headers: { 'x-api-key': API_KEY }
     });
+    if (!res.ok) return [];
     const data = await res.json();
     if (Array.isArray(data)) {
         return data.slice(0, 6);
@@ -188,6 +192,7 @@ export const fetchFeaturedTestimonials = async (): Promise<Testimonial[]> => {
         cache: 'force-cache',
         headers: { 'x-api-key': API_KEY }
     });
+    if (!res.ok) return [];
     const data = await res.json();
     if (Array.isArray(data)) {
         return data.slice(0, 6);
@@ -228,6 +233,7 @@ export const fetchAllPackages = async (): Promise<Package[]> => {
         cache: 'force-cache',
         headers: { 'x-api-key': API_KEY }
     });
+    if (!res.ok) return [];
     const data = await res.json();
     if (data.success && Array.isArray(data.packages)) {
         const packages = data.packages.map((pkg: any) => {
@@ -252,6 +258,7 @@ export const searchPackages = async (query: string): Promise<Package[]> => {
         cache: 'force-cache',
         headers: { 'x-api-key': API_KEY }
     });
+    if (!res.ok) return [];
     const data = await res.json();
     if (data.success && Array.isArray(data.packages)) {
         return data.packages;
@@ -265,6 +272,7 @@ export const fetchAllBlogs = async (): Promise<Blog[]> => {
         cache: 'force-cache',
         headers: { 'x-api-key': API_KEY }
     });
+    if (!res.ok) return [];
     const data = await res.json();
     if (Array.isArray(data)) {
         return data;
@@ -318,6 +326,7 @@ export const fetchAllTestimonials = async (): Promise<Testimonial[]> => {
         cache: 'force-cache',
         headers: { 'x-api-key': API_KEY }
     });
+    if (!res.ok) return [];
     const data = await res.json();
     if (Array.isArray(data)) {
         return data;
@@ -332,6 +341,7 @@ export const fetchTestimonials = async (page = 1, limit = 6): Promise<{ data: Te
         cache: 'no-store',
         headers: { 'x-api-key': API_KEY }
     });
+    if (!res.ok) return { data: [], total: 0 };
     const data = await res.json();
     if (data.success && Array.isArray(data.data)) {
         return { data: data.data, total: data.total };

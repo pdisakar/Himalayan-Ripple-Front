@@ -56,7 +56,7 @@ export default async function HomeContent({ pretitle }: HomeContentProps) {
             <h1 className='capitalize text-left!' dangerouslySetInnerHTML={{ __html: HomePageData?.title || '' }} />
           </div>
           <article dangerouslySetInnerHTML={{ __html: HomePageData?.content || '' }} />
-          <ul className="sercives grid grid-cols-1 md:grid-cols-2 mt-6 [&>*]:bg-primary/5 [&>*:first-child]:rounded-tl-lg [&>*:first-child]:bg-primary/15 [&>*:nth-child(2)]:rounded-tr-lg [&>*:nth-child(3)]:rounded-bl-lg [&>*:last-child]:bg-primary/15 [&>*:last-child]:rounded-br-lg">
+          <ul className="sercives grid grid-cols-1 md:grid-cols-2 mt-6 *:bg-primary/5 [&>*:first-child]:rounded-tl-lg [&>*:first-child]:bg-primary/15 [&>*:nth-child(2)]:rounded-tr-lg [&>*:nth-child(3)]:rounded-bl-lg [&>*:last-child]:bg-primary/15 [&>*:last-child]:rounded-br-lg">
 
             {services.map((service, index) => (
               <li key={index} className="service-item flex gap-2.5 p-8 md:p-4">
@@ -126,6 +126,7 @@ export default async function HomeContent({ pretitle }: HomeContentProps) {
               alt={HomePageData?.bannerImageAlt || 'Banner Image'}
               className='bg-page-body object-fill rounded-lg'
               fill
+              sizes="(max-width: 1024px) 100vw, 650px"
             />
           </figure>
           <figcaption className="bg-primary/90 w-fit text-white flex items-center justify-center gap-2 py-2 px-3 absolute top-20 rounded-l-[12px] border-4 border-r-0 border-page-body right-0 z-10"><span className="text-[35px] leading-1 font-semibold">05</span><span className="text-semibold text-[15px] leading-[18px]">Years of <br /> experience</span></figcaption>

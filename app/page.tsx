@@ -5,11 +5,15 @@ import { FeaturedPlaces } from "@/components/FeaturedPlaces/FeaturedPlaces";
 import FeaturedTestimonials from "@/components/FeaturedTestimonials/FeaturedTestimonials";
 import HeroSection from "@/components/HeroSection/HeroSection";
 import HomeContent from "@/components/HomeContent/HomeContent";
-import { fetchHomeContent } from "@/lib/api";
+import { fetchHomeContent, fetchHeroSection } from "@/lib/api";
+import { IMAGE_URL } from "@/lib/constants";
 import type { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const homeContent = await fetchHomeContent();
+  const [homeContent, heroData] = await Promise.all([
+    fetchHomeContent(),
+    fetchHeroSection()
+  ]);
 
 
   return {
@@ -21,6 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: homeContent?.meta?.title,
       description: homeContent?.meta?.description,
+      images: heroData?.image ? [{ url: `${IMAGE_URL}${heroData.image}` }] : undefined,
     },
   };
 }

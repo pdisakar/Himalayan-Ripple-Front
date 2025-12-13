@@ -12,13 +12,13 @@ export const PackageCard = ({ data }: PackageCardProps) => {
 
   return (
     <div className='card group shadow-custom-shadow rounded-lg border border-primary/5'>
-      <figure className='image-slot aspect-[420/350] rounded-t-lg relative overflow-hidden'>
+      <figure className='image-slot aspect-420/350 rounded-t-lg relative overflow-hidden'>
         <Link href={`/${data.slug}`} className='group'>
           <Image
             src={data.featuredImage ? `${IMAGE_URL}${data.featuredImage}` : '/placeholder.jpg'}
             alt={data.featuredImageAlt || data.title}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 450px"
             className='rounded-lg transition-all duration-500 ease-out group-hover:scale-110 group-hover:blur-[0.5px]'
           />
         </Link>

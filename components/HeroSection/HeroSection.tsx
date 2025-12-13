@@ -55,7 +55,7 @@ export default async function HeroSection() {
                                     height={750}
                                     priority
                                     fetchPriority="high"
-                                    sizes="(max-width: 768px) 100vw, 100vw"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
                                     className="object-cover min-h-[400px]"
                                 />
 

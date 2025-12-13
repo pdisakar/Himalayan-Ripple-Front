@@ -12,7 +12,7 @@ import { FeaturedImage } from '@/app/admin/components/FeaturedImage';
 import { ASPECT_RATIOS, DISPLAY_ASPECT_RATIOS } from '@/app/admin/lib/aspect-ratios';
 import { BannerImage } from '@/app/admin/components/BannerImage';
 import { processContentImages } from '@/app/admin/lib/richTextHelpers';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 const RichTextEditor = dynamic(() => import('@/app/admin/components/RichTextEditor'), { ssr: false });
 
@@ -72,7 +72,7 @@ export default function AddArticlePage() {
   useEffect(() => {
     const fetchParents = async () => {
       try {
-        const res = await fetch(getApiUrl('articles'));
+        const res = await fetch(getApiUrl('articles'), { headers: getAuthHeaders() });
         const data = await res.json();
         if (Array.isArray(data)) {
           setParentOptions(data);
@@ -138,9 +138,9 @@ export default function AddArticlePage() {
               className="p-1 hover:bg-gray-200 rounded-full transition-colors"
             >
               {isExpanded ? (
-                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               ) : (
-                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               )}
             </button>
           ) : (
@@ -212,7 +212,7 @@ export default function AddArticlePage() {
     try {
       await fetch(getApiUrl('upload/image'), {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify({ path: imagePath }),
       });
     } catch (err) {
@@ -225,7 +225,7 @@ export default function AddArticlePage() {
     try {
       const response = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: base64Image, type }),
       });
       const data = await response.json();
@@ -296,7 +296,7 @@ export default function AddArticlePage() {
       };
       const response = await fetch(getApiUrl('articles'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       const data = await response.json();
@@ -394,7 +394,7 @@ export default function AddArticlePage() {
                       <div className="py-2.5 px-4 flex items-center justify-between">
                         <span className="text-sm text-gray-900 dark:text-white">
                           {formData.parentId.length === 0 ? (
-                            <span className="text-gray-500 dark:text-gray-400 dark:text-gray-500">None (Top Level)</span>
+                            <span className="text-gray-500 dark:text-gray-400">None (Top Level)</span>
                           ) : (
                             <span>
                               {formData.parentId.map((id) => {
@@ -415,9 +415,9 @@ export default function AddArticlePage() {
                           )}
                         </span>
                         {showAccordion ? (
-                          <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                          <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                         ) : (
-                          <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                          <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                         )}
                       </div>
                       {showAccordion && (
@@ -445,7 +445,7 @@ export default function AddArticlePage() {
                         onCheckedChange={(checked) => setFormData({ ...formData, status: checked })}
                         disabled={loading}
                       />
-                      <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
                         {formData.status ? 'Published' : 'Draft'}
                       </span>
                     </div>
@@ -594,7 +594,7 @@ export default function AddArticlePage() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Success!</h3>
-              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Article has been created successfully.
               </p>
               <Button

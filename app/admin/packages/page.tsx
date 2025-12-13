@@ -182,7 +182,7 @@ export default function PackagesPage() {
           <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-4 md:p-6 mb-6">
             <div className="flex flex-col md:flex-row md:items-center gap-4">
               {/* Info Message */}
-              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <div className="h-5 w-5 rounded-full border-2 border-orange-400 flex items-center justify-center">
                   <span className="text-orange-400 text-xs">i</span>
                 </div>
@@ -232,13 +232,13 @@ export default function PackagesPage() {
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {loading ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                       Loading packages...
                     </td>
                   </tr>
                 ) : filteredPackages.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                       No packages found
                     </td>
                   </tr>
@@ -267,7 +267,7 @@ export default function PackagesPage() {
                           {pkg.status === true || pkg.status === 1 ? 'Active' : 'Inactive'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">{formatDate(pkg.updatedAt)}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{formatDate(pkg.updatedAt)}</td>
                       <td className="px-6 py-4">
                         <Button
                           onClick={() => handleEdit(pkg.id)}
@@ -275,7 +275,7 @@ export default function PackagesPage() {
                           size="sm"
                           className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-800"
                         >
-                          <Edit className="h-4 w-4 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
+                          <Edit className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                         </Button>
                       </td>
                     </tr>
@@ -291,7 +291,7 @@ export default function PackagesPage() {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Confirm Delete</h3>
-              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 {`Are you sure you want to delete ${selectedPackages.length} package${selectedPackages.length > 1 ? 's' : ''}? This action cannot be undone.`}
               </p>
               <div className="flex items-center gap-3 justify-end">

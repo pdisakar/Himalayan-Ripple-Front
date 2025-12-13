@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
 import { Search, RotateCcw, ArrowLeft } from 'lucide-react';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface Package {
     id: number;
@@ -34,7 +34,7 @@ export default function TrashPackagesPage() {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch(getApiUrl('packages/trash/all'));
+            const response = await fetch(getApiUrl('packages/trash/all'), { headers: getAuthHeaders() });
             const data = await response.json();
 
             if (!response.ok) {
@@ -59,7 +59,8 @@ export default function TrashPackagesPage() {
         setProcessing(true);
         try {
             const res = await fetch(getApiUrl(`packages/${id}/restore`), {
-                method: 'PUT'
+                method: 'PUT',
+                headers: getAuthHeaders()
             });
 
             if (res.ok) {
@@ -87,6 +88,7 @@ export default function TrashPackagesPage() {
                 selectedPackages.map(id =>
                     fetch(getApiUrl(`packages/${id}/permanent`), {
                         method: 'DELETE',
+                        headers: getAuthHeaders()
                     })
                 )
             );
@@ -149,7 +151,7 @@ export default function TrashPackagesPage() {
                                 variant="ghost"
                                 className="p-2 hover:bg-gray-100 dark:bg-gray-800 rounded-full"
                             >
-                                <ArrowLeft className="h-6 w-6 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
+                                <ArrowLeft className="h-6 w-6 text-gray-600 dark:text-gray-400" />
                             </Button>
                             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Trash Packages</h1>
                         </div>
@@ -178,7 +180,7 @@ export default function TrashPackagesPage() {
                     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-4 md:p-6 mb-6">
                         <div className="flex flex-col md:flex-row md:items-center gap-4">
                             {/* Info Message */}
-                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                                 <div className="h-5 w-5 rounded-full border-2 border-orange-400 flex items-center justify-center">
                                     <span className="text-orange-400 text-xs">i</span>
                                 </div>
@@ -228,13 +230,13 @@ export default function TrashPackagesPage() {
                             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                 {loading ? (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                                        <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                                             Loading trash...
                                         </td>
                                     </tr>
                                 ) : filteredPackages.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                                        <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                                             No deleted packages found
                                         </td>
                                     </tr>
@@ -260,7 +262,7 @@ export default function TrashPackagesPage() {
                                                     Deleted
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">{formatDate(pkg.deletedAt)}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{formatDate(pkg.deletedAt)}</td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-2">
                                                     <Button
@@ -291,7 +293,7 @@ export default function TrashPackagesPage() {
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                                 {bulkDeleteStep === 1 ? 'Confirm Permanent Delete' : 'Are you absolutely sure?'}
                             </h3>
-                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+                            <p className="text-gray-600 dark:text-gray-400 mb-6">
                                 {bulkDeleteStep === 1
                                     ? `Permanently delete ${selectedPackages.length} package(s)? This action CANNOT be undone.`
                                     : 'This will permanently remove these packages and all their images. There is no going back. Confirm?'}

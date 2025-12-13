@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
 import { Search, Edit } from 'lucide-react';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getAuthHeaders, getImageUrl } from '@/app/admin/lib/api-config';
 
 interface TeamMember {
     id: number;
@@ -42,7 +42,9 @@ export default function TeamsPage() {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch(getApiUrl('teams'));
+            const response = await fetch(getApiUrl('teams'), {
+        headers: getAuthHeaders()
+      });
             const data = await response.json();
 
             if (!response.ok) {
@@ -187,7 +189,7 @@ export default function TeamsPage() {
                     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-4 md:p-6 mb-6">
                         <div className="flex flex-col md:flex-row md:items-center gap-4">
                             {/* Info Message */}
-                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                                 <div className="h-5 w-5 rounded-full border-2 border-orange-400 flex items-center justify-center">
                                     <span className="text-orange-400 text-xs">i</span>
                                 </div>
@@ -239,13 +241,13 @@ export default function TeamsPage() {
                             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                 {loading ? (
                                     <tr>
-                                        <td colSpan={8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                                        <td colSpan={8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                                             Loading team members...
                                         </td>
                                     </tr>
                                 ) : filteredTeams.length === 0 ? (
                                     <tr>
-                                        <td colSpan={8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                                        <td colSpan={8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                                             No team members found
                                         </td>
                                     </tr>
@@ -272,7 +274,7 @@ export default function TeamsPage() {
                                                     />
                                                 ) : (
                                                     <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                                        <span className="text-gray-500 dark:text-gray-400 dark:text-gray-500 text-sm font-medium">
+                                                        <span className="text-gray-500 dark:text-gray-400 text-sm font-medium">
                                                             {team.fullName.charAt(0).toUpperCase()}
                                                         </span>
                                                     </div>
@@ -290,7 +292,7 @@ export default function TeamsPage() {
                                                     {team.status === 1 ? 'Active' : 'Inactive'}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">{formatDate(team.updatedAt)}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{formatDate(team.updatedAt)}</td>
                                             <td className="px-6 py-4">
                                                 <Button
                                                     onClick={() => handleEdit(team.id)}
@@ -298,7 +300,7 @@ export default function TeamsPage() {
                                                     size="sm"
                                                     className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-800"
                                                 >
-                                                    <Edit className="h-4 w-4 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
+                                                    <Edit className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                                                 </Button>
                                             </td>
                                         </tr>
@@ -314,7 +316,7 @@ export default function TeamsPage() {
                     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Confirm Delete</h3>
-                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+                            <p className="text-gray-600 dark:text-gray-400 mb-6">
                                 {`Are you sure you want to delete ${selectedTeams.length} team member${selectedTeams.length > 1 ? 's' : ''}? This action cannot be undone.`}
                             </p>
                             <div className="flex items-center gap-3 justify-end">

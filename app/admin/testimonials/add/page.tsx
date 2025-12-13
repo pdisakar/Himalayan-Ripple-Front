@@ -12,7 +12,7 @@ import { FeaturedImage } from '@/app/admin/components/FeaturedImage';
 import { ASPECT_RATIOS, DISPLAY_ASPECT_RATIOS } from '@/app/admin/lib/aspect-ratios';
 import { COUNTRIES } from '@/app/admin/lib/countries';
 import { Star } from 'lucide-react';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 const RichTextEditor = dynamic(() => import('@/app/admin/components/RichTextEditor'), { ssr: false });
 
@@ -68,8 +68,8 @@ export default function AddTestimonialPage() {
         const fetchData = async () => {
             try {
                 const [packagesRes, teamsRes] = await Promise.all([
-                    fetch(getApiUrl('packages?limit=100')),
-                    fetch(getApiUrl('teams'))
+                    fetch(getApiUrl('packages?limit=100'), { headers: getAuthHeaders() }),
+                    fetch(getApiUrl('teams'), { headers: getAuthHeaders() })
                 ]);
 
                 if (packagesRes.ok) {
@@ -142,7 +142,7 @@ export default function AddTestimonialPage() {
         try {
             await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path: imagePath }),
             });
         } catch (err) {
@@ -153,7 +153,7 @@ export default function AddTestimonialPage() {
     const uploadImage = async (base64Image: string): Promise<string> => {
         const res = await fetch(getApiUrl('upload/image'), {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
             body: JSON.stringify({ image: base64Image, type: 'avatar' }),
         });
         if (!res.ok) throw new Error('Image upload failed');
@@ -193,7 +193,7 @@ export default function AddTestimonialPage() {
 
             const res = await fetch(getApiUrl('testimonials'), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
 
@@ -423,7 +423,7 @@ export default function AddTestimonialPage() {
                                                     onCheckedChange={(checked) => setFormData(prev => ({ ...prev, status: checked }))}
                                                     disabled={loading}
                                                 />
-                                                <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                                                <span className="text-sm text-gray-600 dark:text-gray-400">
                                                     {formData.status ? 'Published' : 'Draft'}
                                                 </span>
                                             </div>
@@ -436,7 +436,7 @@ export default function AddTestimonialPage() {
                                                     onCheckedChange={(checked) => setFormData(prev => ({ ...prev, isFeatured: checked }))}
                                                     disabled={loading}
                                                 />
-                                                <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                                                <span className="text-sm text-gray-600 dark:text-gray-400">
                                                     {formData.isFeatured ? 'Featured' : 'Not Featured'}
                                                 </span>
                                             </div>
@@ -534,7 +534,7 @@ export default function AddTestimonialPage() {
                                 </svg>
                             </div>
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Success!</h3>
-                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+                            <p className="text-gray-600 dark:text-gray-400 mb-6">
                                 Testimonial created successfully.
                             </p>
                             <Button

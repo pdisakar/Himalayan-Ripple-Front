@@ -12,7 +12,7 @@ import { FeaturedImage } from '@/app/admin/components/FeaturedImage';
 import { ASPECT_RATIOS, DISPLAY_ASPECT_RATIOS } from '@/app/admin/lib/aspect-ratios';
 import { BannerImage } from '@/app/admin/components/BannerImage';
 import { processImageToWebP } from '@/app/admin/lib/imageUtils';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 const RichTextEditor = dynamic(() => import('@/app/admin/components/RichTextEditor'), { ssr: false });
 
@@ -58,7 +58,7 @@ export default function EditTeamPage() {
 
     const fetchTeamMember = async () => {
         try {
-            const res = await fetch(getApiUrl(`teams/${params.id}`));
+            const res = await fetch(getApiUrl(`teams/${params.id}`), { headers: getAuthHeaders() });
             if (!res.ok) throw new Error('Failed to fetch team member');
             const data = await res.json();
 
@@ -115,7 +115,7 @@ export default function EditTeamPage() {
         try {
             await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path: imagePath }),
             });
         } catch (err) {
@@ -143,7 +143,7 @@ export default function EditTeamPage() {
         const base64 = await fileToBase64(file);
         const res = await fetch(getApiUrl('upload/image'), {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
             body: JSON.stringify({ image: base64 }),
         });
         if (!res.ok) throw new Error('Image upload failed');
@@ -199,7 +199,7 @@ export default function EditTeamPage() {
 
             const res = await fetch(getApiUrl(`teams/${params.id}`), {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
 
@@ -232,7 +232,7 @@ export default function EditTeamPage() {
         return (
             <MainLayout>
                 <div className="flex-1 p-8 flex items-center justify-center h-full">
-                    <div className="text-gray-500 dark:text-gray-400 dark:text-gray-500">Loading team member data...</div>
+                    <div className="text-gray-500 dark:text-gray-400">Loading team member data...</div>
                 </div>
             </MainLayout>
         );
@@ -329,7 +329,7 @@ export default function EditTeamPage() {
                                                 checked={formData.status}
                                                 onCheckedChange={(checked) => setFormData({ ...formData, status: checked })}
                                             />
-                                            <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                                            <span className="text-sm text-gray-600 dark:text-gray-400">
                                                 {formData.status ? 'Published' : 'Draft'}
                                             </span>
                                         </div>
@@ -443,7 +443,7 @@ export default function EditTeamPage() {
                                 </svg>
                             </div>
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Success!</h3>
-                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+                            <p className="text-gray-600 dark:text-gray-400 mb-6">
                                 Team member has been updated successfully.
                             </p>
                             <Button

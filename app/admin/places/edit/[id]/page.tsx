@@ -13,7 +13,7 @@ import { ASPECT_RATIOS, DISPLAY_ASPECT_RATIOS } from '@/app/admin/lib/aspect-rat
 import { BannerImage } from '@/app/admin/components/BannerImage';
 import { extractImagePaths, processContentImages, cleanupUnusedImages } from '@/app/admin/lib/richTextHelpers';
 import { processImageToWebP } from '@/app/admin/lib/imageUtils';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 const RichTextEditor = dynamic(() => import('@/app/admin/components/RichTextEditor'), { ssr: false });
 
@@ -77,7 +77,7 @@ export default function EditPlacePage() {
     useEffect(() => {
         const fetchParents = async () => {
             try {
-                const res = await fetch(getApiUrl('places'));
+                const res = await fetch(getApiUrl('places'), { headers: getAuthHeaders() });
                 const data = await res.json();
                 if (Array.isArray(data)) {
                     const getDescendantIds = (places: Place[], parentId: number): number[] => {
@@ -115,7 +115,7 @@ export default function EditPlacePage() {
         setError('');
 
         try {
-            const response = await fetch(getApiUrl(`places/${placeId}`));
+            const response = await fetch(getApiUrl(`places/${placeId}`), { headers: getAuthHeaders() });
             const data = await response.json();
 
             if (!response.ok) {
@@ -206,9 +206,9 @@ export default function EditPlacePage() {
                             className="p-1 hover:bg-gray-200 rounded-full transition-colors"
                         >
                             {isExpanded ? (
-                                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                             ) : (
-                                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                             )}
                         </button>
                     ) : (
@@ -243,7 +243,7 @@ export default function EditPlacePage() {
         try {
             const response = await fetch(getApiUrl('upload/image'), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify({ image: base64Image, type }),
             });
             const data = await response.json();
@@ -270,7 +270,7 @@ export default function EditPlacePage() {
         try {
             await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path: imageUrl }),
             });
         } catch (err) {
@@ -333,7 +333,7 @@ export default function EditPlacePage() {
 
             const response = await fetch(getApiUrl(`places/${placeId}`), {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
 
@@ -362,7 +362,7 @@ export default function EditPlacePage() {
         return (
             <MainLayout>
                 <div className="flex-1 transition-all duration-300 flex items-center justify-center h-full">
-                    <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Loading place...</p>
+                    <p className="text-gray-600 dark:text-gray-400">Loading place...</p>
                 </div>
             </MainLayout>
         );
@@ -415,7 +415,7 @@ export default function EditPlacePage() {
                                         <div className="py-2.5 px-4 flex items-center justify-between">
                                             <span className="text-sm text-gray-900 dark:text-white">
                                                 {formData.parentId.length === 0 ? (
-                                                    <span className="text-gray-500 dark:text-gray-400 dark:text-gray-500">None (Top Level)</span>
+                                                    <span className="text-gray-500 dark:text-gray-400">None (Top Level)</span>
                                                 ) : (
                                                     <span>
                                                         {formData.parentId.map((id) => {
@@ -436,9 +436,9 @@ export default function EditPlacePage() {
                                                 )}
                                             </span>
                                             {showAccordion ? (
-                                                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                                                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                                             ) : (
-                                                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                                                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                                             )}
                                         </div>
                                         {showAccordion && (
@@ -464,7 +464,7 @@ export default function EditPlacePage() {
                                             onCheckedChange={(checked) => setFormData({ ...formData, status: checked })}
                                             disabled={saving}
                                         />
-                                        <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                                        <span className="text-sm text-gray-600 dark:text-gray-400">
                                             {formData.status ? 'Published' : 'Draft'}
                                         </span>
                                     </div>
@@ -478,7 +478,7 @@ export default function EditPlacePage() {
                                             onCheckedChange={(checked) => setFormData({ ...formData, isFeatured: checked })}
                                             disabled={saving}
                                         />
-                                        <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                                        <span className="text-sm text-gray-600 dark:text-gray-400">
                                             {formData.isFeatured ? 'Featured' : 'Standard'}
                                         </span>
                                     </div>
@@ -618,7 +618,7 @@ export default function EditPlacePage() {
                                 </svg>
                             </div>
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Success!</h3>
-                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+                            <p className="text-gray-600 dark:text-gray-400 mb-6">
                                 Place has been updated successfully.
                             </p>
                             <Button

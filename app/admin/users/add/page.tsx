@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
 import { Switch } from '@/app/admin/components/ui/switch';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 export default function AddUserPage() {
   const router = useRouter();
@@ -71,6 +71,7 @@ export default function AddUserPage() {
       const response = await fetch(getApiUrl('users'), {
         method: 'POST',
         headers: {
+          ...getAuthHeaders(),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
@@ -254,7 +255,7 @@ export default function AddUserPage() {
                   onCheckedChange={(checked) => setFormData({ ...formData, status: checked })}
                   disabled={loading}
                 />
-                <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
                   {formData.status ? 'Active' : 'Not Active'}
                 </span>
               </div>

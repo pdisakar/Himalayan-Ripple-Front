@@ -7,7 +7,7 @@ import { Button } from '@/app/admin/components/ui/button';
 import { Switch } from '@/app/admin/components/ui/switch';
 
 import { HierarchySelector } from '@/app/admin/components/HierarchySelector';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface Menu {
     id: number;
@@ -63,10 +63,10 @@ export default function EditMenuPage({ params }: { params: Promise<{ id: string 
     const fetchData = async () => {
         try {
             const [menuRes, menusRes, articlesRes, placesRes] = await Promise.all([
-                fetch(getApiUrl(`menus/${id}`)),
-                fetch(getApiUrl('menus')),
-                fetch(getApiUrl('articles')),
-                fetch(getApiUrl('places'))
+                fetch(getApiUrl(`menus/${id}`), { headers: getAuthHeaders() }),
+                fetch(getApiUrl('menus'), { headers: getAuthHeaders() }),
+                fetch(getApiUrl('articles'), { headers: getAuthHeaders() }),
+                fetch(getApiUrl('places'), { headers: getAuthHeaders() })
             ]);
 
             if (!menuRes.ok) {
@@ -134,7 +134,7 @@ export default function EditMenuPage({ params }: { params: Promise<{ id: string 
 
             const response = await fetch(getApiUrl(`menus/${id}`), {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 

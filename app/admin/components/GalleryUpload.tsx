@@ -18,7 +18,7 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 export interface GalleryImage {
   id: string;
@@ -117,7 +117,7 @@ export function GalleryUpload({
   const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setUploadError('');
-    
+
     for (const file of files) {
       try {
         // Convert to WebP with 90% quality and 2MB limit
@@ -126,7 +126,7 @@ export function GalleryUpload({
           0.90, // 90% quality for gallery images
           1024 * 1024 * 2 // 2MB limit
         );
-        
+
         const newImage: GalleryImage = {
           id: Date.now() + Math.random().toString(),
           file,
@@ -138,7 +138,7 @@ export function GalleryUpload({
         setUploadError(error instanceof Error ? error.message : 'Failed to process image. Please try a smaller file.');
       }
     }
-    
+
     if (galleryInputRef.current) galleryInputRef.current.value = '';
   };
 
@@ -151,7 +151,7 @@ export function GalleryUpload({
       try {
         await fetch(getApiUrl('upload/image'), {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
           body: JSON.stringify({ path: imageToDelete.preview }),
         });
         console.log('[DEBUG] Deleted gallery image from server:', imageToDelete.preview);
@@ -174,7 +174,7 @@ export function GalleryUpload({
   return (
     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">{label}</h2>
-      
+
       {uploadError && (
         <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
           <p className="text-sm text-red-800 dark:text-red-300">{uploadError}</p>

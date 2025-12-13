@@ -17,7 +17,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { processContentImages, cleanupUnusedImages, extractImagePaths } from '@/app/admin/lib/richTextHelpers';
 import { processImageToWebP } from '@/app/admin/lib/imageUtils';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 const RichTextEditor = dynamic(() => import('@/app/admin/components/RichTextEditor'), { ssr: false });
 
@@ -79,7 +79,7 @@ export default function EditBlogPage() {
 
   const fetchAuthors = async () => {
     try {
-      const res = await fetch(getApiUrl('authors'));
+      const res = await fetch(getApiUrl('authors'), { headers: getAuthHeaders() });
       const data = await res.json();
       if (Array.isArray(data)) {
         setAuthors(data);
@@ -93,7 +93,7 @@ export default function EditBlogPage() {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(getApiUrl(`blogs/${blogId}`));
+      const response = await fetch(getApiUrl(`blogs/${blogId}`), { headers: getAuthHeaders() });
       const data = await response.json();
 
       if (!response.ok) {
@@ -148,7 +148,7 @@ export default function EditBlogPage() {
     try {
       await fetch(getApiUrl('upload/image'), {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify({ path: imagePath }),
       });
     } catch (err) {
@@ -160,7 +160,7 @@ export default function EditBlogPage() {
     try {
       const response = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: base64Image, type }),
       });
       const data = await response.json();
@@ -225,7 +225,7 @@ export default function EditBlogPage() {
 
       const res = await fetch(getApiUrl(`blogs/${blogId}`), {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
@@ -264,7 +264,7 @@ export default function EditBlogPage() {
     return (
       <MainLayout>
         <div className="flex-1 transition-all duration-300 flex items-center justify-center h-full">
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Loading blog...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading blog...</p>
         </div>
       </MainLayout>
     );
@@ -386,7 +386,7 @@ export default function EditBlogPage() {
                         onCheckedChange={(checked) => setFormData({ ...formData, status: checked })}
                         disabled={saving}
                       />
-                      <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
                         {formData.status ? 'Published' : 'Draft'}
                       </span>
                     </div>
@@ -401,7 +401,7 @@ export default function EditBlogPage() {
                         onCheckedChange={(checked) => setFormData({ ...formData, isFeatured: checked })}
                         disabled={saving}
                       />
-                      <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
                         {formData.isFeatured ? 'Featured' : 'Not Featured'}
                       </span>
                     </div>
@@ -535,7 +535,7 @@ export default function EditBlogPage() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Success!</h3>
-              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Blog has been updated successfully.
               </p>
               <Button

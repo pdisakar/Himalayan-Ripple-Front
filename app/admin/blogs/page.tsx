@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
 import { Search, Edit } from 'lucide-react';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface Blog {
     id: number;
@@ -44,7 +44,9 @@ export default function BlogsPage() {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch(getApiUrl('blogs'));
+            const response = await fetch(getApiUrl('blogs'), {
+                headers: getAuthHeaders()
+            });
             const data = await response.json();
 
             if (!response.ok) {
@@ -183,7 +185,7 @@ export default function BlogsPage() {
                     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-4 md:p-6 mb-6">
                         <div className="flex flex-col md:flex-row md:items-center gap-4">
                             {/* Info Message */}
-                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                                 <div className="h-5 w-5 rounded-full border-2 border-orange-400 flex items-center justify-center">
                                     <span className="text-orange-400 text-xs">i</span>
                                 </div>
@@ -234,13 +236,13 @@ export default function BlogsPage() {
                             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                 {loading ? (
                                     <tr>
-                                        <td colSpan={7} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                                        <td colSpan={7} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                                             Loading blogs...
                                         </td>
                                     </tr>
                                 ) : filteredBlogs.length === 0 ? (
                                     <tr>
-                                        <td colSpan={7} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                                        <td colSpan={7} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                                             No blogs found
                                         </td>
                                     </tr>
@@ -261,7 +263,7 @@ export default function BlogsPage() {
                                             <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
                                                 {blog.title}
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
                                                 {formatDate(blog.publishedDate)}
                                             </td>
                                             <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
@@ -270,7 +272,7 @@ export default function BlogsPage() {
                                                     {blog.status === 1 ? 'Active' : 'Inactive'}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">{formatDate(blog.updatedAt)}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{formatDate(blog.updatedAt)}</td>
                                             <td className="px-6 py-4">
                                                 <Button
                                                     onClick={() => handleEdit(blog.id)}
@@ -278,7 +280,7 @@ export default function BlogsPage() {
                                                     size="sm"
                                                     className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-800"
                                                 >
-                                                    <Edit className="h-4 w-4 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
+                                                    <Edit className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                                                 </Button>
                                             </td>
                                         </tr>
@@ -294,7 +296,7 @@ export default function BlogsPage() {
                     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Confirm Delete</h3>
-                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+                            <p className="text-gray-600 dark:text-gray-400 mb-6">
                                 {`Are you sure you want to delete ${selectedBlogs.length} blog${selectedBlogs.length > 1 ? 's' : ''}? This action cannot be undone.`}
                             </p>
                             <div className="flex items-center gap-3 justify-end">

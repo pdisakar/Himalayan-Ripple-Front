@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
 import { Search, RotateCcw, ArrowLeft } from 'lucide-react';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface TeamMember {
     id: number;
@@ -44,7 +44,7 @@ export default function TeamsTrashPage() {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch(getApiUrl('teams/trash/all'));
+            const response = await fetch(getApiUrl('teams/trash/all'), { headers: getAuthHeaders() });
             const data = await response.json();
 
             if (!response.ok) {
@@ -64,6 +64,7 @@ export default function TeamsTrashPage() {
         try {
             const response = await fetch(getApiUrl(`teams/${id}/restore`), {
                 method: 'PUT',
+                headers: getAuthHeaders()
             });
             if (!response.ok) throw new Error('Failed to restore team member');
             await fetchTrash();
@@ -80,7 +81,7 @@ export default function TeamsTrashPage() {
         try {
             await Promise.all(
                 selectedTeams.map(id =>
-                    fetch(getApiUrl(`teams/${id}/restore`), { method: 'PUT' })
+                    fetch(getApiUrl(`teams/${id}/restore`), { method: 'PUT', headers: getAuthHeaders() })
                 )
             );
             await fetchTrash();
@@ -99,7 +100,7 @@ export default function TeamsTrashPage() {
         try {
             await Promise.all(
                 selectedTeams.map(id =>
-                    fetch(getApiUrl(`teams/${id}/permanent`), { method: 'DELETE' })
+                    fetch(getApiUrl(`teams/${id}/permanent`), { method: 'DELETE', headers: getAuthHeaders() })
                 )
             );
             await fetchTrash();
@@ -189,7 +190,7 @@ export default function TeamsTrashPage() {
                     {/* Filters */}
                     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-4 md:p-6 mb-6">
                         <div className="flex flex-col md:flex-row md:items-center gap-4">
-                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                                 <div className="h-5 w-5 rounded-full border-2 border-orange-400 flex items-center justify-center">
                                     <span className="text-orange-400 text-xs">i</span>
                                 </div>
@@ -236,9 +237,9 @@ export default function TeamsTrashPage() {
                             </thead>
                             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                 {loading ? (
-                                    <tr><td colSpan={8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">Loading trash...</td></tr>
+                                    <tr><td colSpan={8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">Loading trash...</td></tr>
                                 ) : filteredTeams.length === 0 ? (
-                                    <tr><td colSpan={8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">Trash is empty</td></tr>
+                                    <tr><td colSpan={8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">Trash is empty</td></tr>
                                 ) : (
                                     filteredTeams.map((team, index) => (
                                         <tr key={team.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
@@ -250,7 +251,7 @@ export default function TeamsTrashPage() {
                                                     className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-primary focus:ring-primary cursor-pointer"
                                                 />
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                                            <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                                                 {index + 1}
                                             </td>
                                             <td className="px-6 py-4">
@@ -262,7 +263,7 @@ export default function TeamsTrashPage() {
                                                     />
                                                 ) : (
                                                     <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                                        <span className="text-gray-500 dark:text-gray-400 dark:text-gray-500 text-sm font-medium">
+                                                        <span className="text-gray-500 dark:text-gray-400 text-sm font-medium">
                                                             {team.fullName.charAt(0).toUpperCase()}
                                                         </span>
                                                     </div>
@@ -281,7 +282,7 @@ export default function TeamsTrashPage() {
                                                     Deleted
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">{formatDate(team.deletedAt)}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{formatDate(team.deletedAt)}</td>
                                             <td className="px-6 py-4">
                                                 <div className="flex gap-2">
                                                     <Button
@@ -308,7 +309,7 @@ export default function TeamsTrashPage() {
                     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Confirm Restore</h3>
-                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">Restore {selectedTeams.length} team member(s)? They will appear in the main list again.</p>
+                            <p className="text-gray-600 dark:text-gray-400 mb-6">Restore {selectedTeams.length} team member(s)? They will appear in the main list again.</p>
                             <div className="flex gap-3 justify-end">
                                 <Button onClick={() => setShowRestoreConfirm(false)} variant="outline">Cancel</Button>
                                 <Button onClick={handleBulkRestore} className="bg-green-600 hover:bg-green-700 text-white">Restore</Button>
@@ -324,7 +325,7 @@ export default function TeamsTrashPage() {
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                                 {bulkDeleteStep === 1 ? 'Confirm Permanent Delete' : 'Are you absolutely sure?'}
                             </h3>
-                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+                            <p className="text-gray-600 dark:text-gray-400 mb-6">
                                 {bulkDeleteStep === 1
                                     ? `Permanently delete ${selectedTeams.length} team member(s)? This action CANNOT be undone.`
                                     : 'This will permanently remove these team members and all their images. There is no going back. Confirm?'}

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/app/admin/components/ui/button';
 import { Save, Loader2 } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
+import { getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface GlobalSettings {
     id?: number;
@@ -71,7 +72,9 @@ export default function GlobalSettingsPage() {
 
     const fetchSettings = async () => {
         try {
-            const data = await apiFetch<GlobalSettings>('/settings');
+            const data = await apiFetch<GlobalSettings>('/settings', {
+                headers: getAuthHeaders()
+            });
             if (data) {
                 // Merge with initial to ensure all fields exist even if API returns partial
                 setSettings({ ...initialSettings, ...data });
@@ -97,7 +100,7 @@ export default function GlobalSettingsPage() {
         try {
             await apiFetch('/settings', {
                 method: 'POST', // Or PUT, depending on backend implementation
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify(settings),
             });
             setMessage({ type: 'success', text: 'Settings saved successfully!' });

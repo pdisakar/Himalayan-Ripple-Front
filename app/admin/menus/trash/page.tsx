@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
 import { Search, RotateCcw, ArrowLeft, ChevronRight, ChevronDown } from 'lucide-react';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface Menu {
     id: number;
@@ -39,7 +39,9 @@ export default function MenusTrashPage() {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch(getApiUrl('menus/trash/all'));
+            const response = await fetch(getApiUrl('menus/trash/all'), {
+                headers: getAuthHeaders()
+            });
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Failed to fetch trash');
             setMenus(Array.isArray(data) ? data : []);
@@ -53,7 +55,10 @@ export default function MenusTrashPage() {
     const handleRestore = async (id: number) => {
         setProcessing(true);
         try {
-            const response = await fetch(getApiUrl(`menus/${id}/restore`), { method: 'PUT' });
+            const response = await fetch(getApiUrl(`menus/${id}/restore`), {
+                method: 'PUT',
+                headers: getAuthHeaders()
+            });
             if (!response.ok) throw new Error('Failed to restore menu');
             await fetchTrash();
         } catch (err: any) {
@@ -69,7 +74,7 @@ export default function MenusTrashPage() {
         try {
             const response = await fetch(getApiUrl('menus/bulk-restore'), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ids: selectedMenus })
             });
             if (!response.ok) throw new Error('Failed to restore menus');
@@ -89,7 +94,7 @@ export default function MenusTrashPage() {
         try {
             const response = await fetch(getApiUrl('menus/bulk-delete-permanent'), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ids: selectedMenus })
             });
             if (!response.ok) throw new Error('Failed to permanently delete menus');
@@ -159,7 +164,7 @@ export default function MenusTrashPage() {
                     {/* Filters */}
                     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-4 md:p-6 mb-6">
                         <div className="flex flex-col md:flex-row md:items-center gap-4">
-                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                                 <div className="h-5 w-5 rounded-full border-2 border-orange-400 flex items-center justify-center">
                                     <span className="text-orange-400 text-xs">i</span>
                                 </div>

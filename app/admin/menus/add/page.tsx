@@ -7,7 +7,7 @@ import { Button } from '@/app/admin/components/ui/button';
 import { Switch } from '@/app/admin/components/ui/switch';
 
 import { HierarchySelector } from '@/app/admin/components/HierarchySelector';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface Menu {
     id: number;
@@ -56,9 +56,9 @@ export default function AddMenuPage() {
     const fetchData = async () => {
         try {
             const [menusRes, articlesRes, placesRes] = await Promise.all([
-                fetch(getApiUrl('menus')),
-                fetch(getApiUrl('articles')),
-                fetch(getApiUrl('places'))
+                fetch(getApiUrl('menus'), { headers: getAuthHeaders() }),
+                fetch(getApiUrl('articles'), { headers: getAuthHeaders() }),
+                fetch(getApiUrl('places'), { headers: getAuthHeaders() })
             ]);
 
             const menusData = await menusRes.json();
@@ -109,7 +109,7 @@ export default function AddMenuPage() {
 
             const response = await fetch(getApiUrl('menus'), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 

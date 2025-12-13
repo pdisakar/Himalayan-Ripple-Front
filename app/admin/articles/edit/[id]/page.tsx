@@ -12,7 +12,7 @@ import { FeaturedImage } from '@/app/admin/components/FeaturedImage';
 import { ASPECT_RATIOS, DISPLAY_ASPECT_RATIOS } from '@/app/admin/lib/aspect-ratios';
 import { BannerImage } from '@/app/admin/components/BannerImage';
 import { extractImagePaths, processContentImages, cleanupUnusedImages } from '@/app/admin/lib/richTextHelpers';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 const RichTextEditor = dynamic(() => import('@/app/admin/components/RichTextEditor'), { ssr: false });
 
@@ -77,7 +77,7 @@ export default function EditArticlePage() {
   useEffect(() => {
     const fetchParents = async () => {
       try {
-        const res = await fetch(getApiUrl('articles'));
+        const res = await fetch(getApiUrl('articles'), { headers: getAuthHeaders() });
         const data = await res.json();
         if (Array.isArray(data)) {
           // Get all descendant IDs of current article to prevent circular dependencies
@@ -118,7 +118,7 @@ export default function EditArticlePage() {
     setError('');
 
     try {
-      const response = await fetch(getApiUrl(`articles/${articleId}`));
+      const response = await fetch(getApiUrl(`articles/${articleId}`), { headers: getAuthHeaders() });
       const data = await response.json();
 
       if (!response.ok) {
@@ -209,9 +209,9 @@ export default function EditArticlePage() {
               className="p-1 hover:bg-gray-200 rounded-full transition-colors"
             >
               {isExpanded ? (
-                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               ) : (
-                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               )}
             </button>
           ) : (
@@ -247,7 +247,7 @@ export default function EditArticlePage() {
     try {
       const response = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: base64Image, type }),
       });
       const data = await response.json();
@@ -265,7 +265,7 @@ export default function EditArticlePage() {
     try {
       await fetch(getApiUrl('upload/image'), {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify({ path: imagePath }),
       });
     } catch (err) {
@@ -335,7 +335,7 @@ export default function EditArticlePage() {
 
       const response = await fetch(getApiUrl(`articles/${articleId}`), {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
@@ -365,7 +365,7 @@ export default function EditArticlePage() {
     return (
       <MainLayout>
         <div className="flex-1 transition-all duration-300 flex items-center justify-center h-full">
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Loading article...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading article...</p>
         </div>
       </MainLayout>
     );
@@ -424,7 +424,7 @@ export default function EditArticlePage() {
                       <div className="py-2.5 px-4 flex items-center justify-between">
                         <span className="text-sm text-gray-900 dark:text-white">
                           {formData.parentId.length === 0 ? (
-                            <span className="text-gray-500 dark:text-gray-400 dark:text-gray-500">None (Top Level)</span>
+                            <span className="text-gray-500 dark:text-gray-400">None (Top Level)</span>
                           ) : (
                             <span>
                               {formData.parentId.map((id) => {
@@ -445,9 +445,9 @@ export default function EditArticlePage() {
                           )}
                         </span>
                         {showAccordion ? (
-                          <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                          <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                         ) : (
-                          <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                          <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                         )}
                       </div>
                       {showAccordion && (
@@ -475,7 +475,7 @@ export default function EditArticlePage() {
                         onCheckedChange={(checked) => setFormData({ ...formData, status: checked })}
                         disabled={saving}
                       />
-                      <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
                         {formData.status ? 'Published' : 'Draft'}
                       </span>
                     </div>
@@ -627,7 +627,7 @@ export default function EditArticlePage() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Success!</h3>
-              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Article has been updated successfully.
               </p>
               <Button

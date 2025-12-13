@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
 import { Switch } from '@/app/admin/components/ui/switch';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 export default function EditUserPage() {
   const router = useRouter();
@@ -42,7 +42,7 @@ export default function EditUserPage() {
     setError('');
 
     try {
-      const response = await fetch(getApiUrl(`users`));
+      const response = await fetch(getApiUrl(`users`), { headers: getAuthHeaders() });
       const data = await response.json();
 
       if (!response.ok) {
@@ -130,6 +130,7 @@ export default function EditUserPage() {
       const response = await fetch(getApiUrl(`users/${userId}`), {
         method: 'PUT',
         headers: {
+          ...getAuthHeaders(),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(updateData),
@@ -157,7 +158,7 @@ export default function EditUserPage() {
     return (
       <MainLayout>
         <div className="flex-1 transition-all duration-300 flex items-center justify-center h-full">
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Loading user data...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading user data...</p>
         </div>
       </MainLayout>
     );
@@ -297,7 +298,7 @@ export default function EditUserPage() {
                     onCheckedChange={(checked) => setFormData({ ...formData, status: checked })}
                     disabled={saving}
                   />
-                  <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
                     {formData.status ? 'Active' : 'Not Active'}
                   </span>
                 </div>
@@ -318,7 +319,7 @@ export default function EditUserPage() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Success!</h3>
-              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 User has been updated successfully.
               </p>
               <Button

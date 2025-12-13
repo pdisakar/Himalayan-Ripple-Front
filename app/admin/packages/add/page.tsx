@@ -193,7 +193,7 @@ export default function AddPackagePage() {
     const fetchData = async () => {
       try {
         // 1. Fetch Categories
-        const catRes = await fetch(getApiUrl('fact-categories'));
+        const catRes = await fetch(getApiUrl('fact-categories'), { headers: getAuthHeaders() });
         const cats: Category[] = await catRes.json();
         setCategories(cats);
 
@@ -201,7 +201,7 @@ export default function AddPackagePage() {
         const options: Record<string, Attribute[]> = {};
         await Promise.all(
           cats.map(async (cat) => {
-            const attrRes = await fetch(getApiUrl(`attributes/${cat.slug}`));
+            const attrRes = await fetch(getApiUrl(`attributes/${cat.slug}`), { headers: getAuthHeaders() });
             options[cat.slug] = await attrRes.json();
           })
         );
@@ -218,8 +218,8 @@ export default function AddPackagePage() {
     const fetchData = async () => {
       try {
         const [placesRes, packagesRes] = await Promise.all([
-          fetch(getApiUrl('places')),
-          fetch(getApiUrl('packages'))
+          fetch(getApiUrl('places'), { headers: getAuthHeaders() }),
+          fetch(getApiUrl('packages'), { headers: getAuthHeaders() })
         ]);
 
         if (placesRes.ok) {
@@ -293,9 +293,9 @@ export default function AddPackagePage() {
               className="p-1 hover:bg-gray-200 rounded-full transition-colors"
             >
               {isExpanded ? (
-                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               ) : (
-                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               )}
             </button>
           ) : (
@@ -524,7 +524,7 @@ export default function AddPackagePage() {
 
       const res = await fetch(getApiUrl('upload/image'), {
         method: 'POST',
-        headers: getAuthHeaders(),
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: base64 }),
       });
 
@@ -677,7 +677,7 @@ export default function AddPackagePage() {
 
       const res = await fetch(getApiUrl('packages'), {
         method: 'POST',
-        headers: getAuthHeaders(),
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
@@ -693,7 +693,7 @@ export default function AddPackagePage() {
             try {
               await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: getAuthHeaders(),
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path }),
               });
             } catch (cleanupErr) {
@@ -713,7 +713,7 @@ export default function AddPackagePage() {
           try {
             await fetch(getApiUrl('upload/image'), {
               method: 'DELETE',
-              headers: getAuthHeaders(),
+              headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
               body: JSON.stringify({ path }),
             });
           } catch (cleanupErr) {
@@ -916,7 +916,7 @@ export default function AddPackagePage() {
                         name="slug"
                         value={formData.slug}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-500 dark:text-gray-400 dark:text-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-500 dark:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -962,7 +962,7 @@ export default function AddPackagePage() {
                         <div className="py-2.5 px-4 flex items-center justify-between">
                           <span className="text-sm text-gray-900 dark:text-white">
                             {formData.placeIds.length === 0 ? (
-                              <span className="text-gray-500 dark:text-gray-400 dark:text-gray-500">Select places...</span>
+                              <span className="text-gray-500 dark:text-gray-400">Select places...</span>
                             ) : (
                               <span>
                                 {formData.placeIds.map((id) => {
@@ -983,9 +983,9 @@ export default function AddPackagePage() {
                             )}
                           </span>
                           {showPlaceAccordion ? (
-                            <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                            <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                           ) : (
-                            <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-500" />
+                            <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                           )}
                         </div>
                         {showPlaceAccordion && (
@@ -1010,7 +1010,7 @@ export default function AddPackagePage() {
                         onClick={() => setGroupPriceEnabled(true)}
                         className={`px-6 py-2 rounded-lg font-medium transition-all ${groupPriceEnabled
                           ? 'bg-primary text-white'
-                          : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200'
                           }`}
                       >
                         Group
@@ -1020,7 +1020,7 @@ export default function AddPackagePage() {
                         onClick={() => setGroupPriceEnabled(false)}
                         className={`px-6 py-2 rounded-lg font-medium transition-all ${!groupPriceEnabled
                           ? 'bg-primary text-white'
-                          : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200'
                           }`}
                       >
                         No Group
@@ -1086,7 +1086,7 @@ export default function AddPackagePage() {
                                     } inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-900 transition-transform`}
                                 />
                               </button>
-                              <span className={`text-sm ${gp.isDefault ? 'text-green-600 font-medium' : 'text-gray-500 dark:text-gray-400 dark:text-gray-500'}`}>
+                              <span className={`text-sm ${gp.isDefault ? 'text-green-600 font-medium' : 'text-gray-500 dark:text-gray-400'}`}>
                                 {gp.isDefault ? 'Default Price' : 'Not Default Price'}
                               </span>
                             </div>
@@ -1137,7 +1137,7 @@ export default function AddPackagePage() {
                           checked={status}
                           onCheckedChange={setStatus}
                         />
-                        <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
                           {status ? 'Publish' : 'Draft'}
                         </span>
                       </div>
@@ -1151,7 +1151,7 @@ export default function AddPackagePage() {
                           checked={featured}
                           onCheckedChange={setFeatured}
                         />
-                        <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
                           {featured ? 'Featured' : 'Not Featured'}
                         </span>
                       </div>
@@ -1165,7 +1165,7 @@ export default function AddPackagePage() {
                           checked={isBestselling}
                           onCheckedChange={setIsBestselling}
                         />
-                        <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
                           {isBestselling ? 'Bestselling' : 'Not Bestselling'}
                         </span>
                       </div>
@@ -1491,7 +1491,7 @@ export default function AddPackagePage() {
                 <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Extra FAQS</h2>
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-3">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                       Title <span className="text-blue-600">should be heading 3</span>, question <span className="text-blue-600">should be heading 4</span>, and answer <span className="text-blue-600">should be paragraph</span>
                     </p>
                     <RichTextEditor
@@ -1602,7 +1602,7 @@ export default function AddPackagePage() {
 
                   {itinerary.length === 0 ? (
                     <div className="text-center py-12 bg-gray-50 dark:bg-gray-950 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
-                      <p className="text-gray-500 dark:text-gray-400 dark:text-gray-500 mb-4">No itinerary days added yet.</p>
+                      <p className="text-gray-500 dark:text-gray-400 mb-4">No itinerary days added yet.</p>
                       <Button
                         type="button"
                         onClick={addDay}
@@ -1630,7 +1630,7 @@ export default function AddPackagePage() {
                                     {day.title || `Day ${day.dayNumber}`}
                                   </h3>
                                   {!expandedDayId && day.title && (
-                                    <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500 truncate mt-1 max-w-md">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 truncate mt-1 max-w-md">
                                       {day.description.replace(/<[^>]*>/g, '').substring(0, 60)}...
                                     </p>
                                   )}
@@ -1817,7 +1817,7 @@ export default function AddPackagePage() {
                               onClick={() => addDayBetween(index)}
                               variant="outline"
                               size="sm"
-                              className="bg-white dark:bg-gray-900 border-dashed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 dark:text-gray-500 hover:text-primary hover:border-primary rounded-full text-xs shadow-sm"
+                              className="bg-white dark:bg-gray-900 border-dashed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:text-primary hover:border-primary rounded-full text-xs shadow-sm"
                               title="Insert day after this one"
                             >
                               <Plus className="h-3 w-3 mr-1" />
@@ -1926,7 +1926,7 @@ export default function AddPackagePage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Confirm Discard</h3>
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
               Are you sure you want to discard all changes? This action cannot be undone.
             </p>
             <div className="flex items-center gap-3 justify-end">
@@ -1959,7 +1959,7 @@ export default function AddPackagePage() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Success!</h3>
-              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Package has been created successfully.
               </p>
               <Button

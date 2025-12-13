@@ -2,9 +2,10 @@
 
 import { MainLayout } from '@/app/admin/components/MainLayout';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
-import { Trash2, Plus, Pencil, Check, X, FolderPlus } from 'lucide-react';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { Search, Edit, Trash2, Plus, Pencil, Check, X, FolderPlus } from 'lucide-react';
+import { getApiUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface Attribute {
   id: number;
@@ -46,7 +47,9 @@ export default function TripFactsPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch(getApiUrl('fact-categories'));
+      const res = await fetch(getApiUrl('fact-categories'), {
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       setCategories(data);
       if (data.length > 0 && !activeTab) {
@@ -60,7 +63,9 @@ export default function TripFactsPage() {
   const fetchAttributes = async () => {
     try {
       setLoading(true);
-      const res = await fetch(getApiUrl(`attributes/${activeTab}`));
+      const res = await fetch(getApiUrl(`attributes/${activeTab}`), {
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       setAttributes(data);
     } catch (error) {
@@ -77,7 +82,7 @@ export default function TripFactsPage() {
     try {
       const res = await fetch(getApiUrl('fact-categories'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ label: newCategory }),
       });
       if (res.ok) {
@@ -105,6 +110,7 @@ export default function TripFactsPage() {
     try {
       const res = await fetch(getApiUrl(`fact-categories/${categoryToDelete.id}`), {
         method: 'DELETE',
+        headers: getAuthHeaders()
       });
       if (res.ok) {
         const newCategories = categories.filter(c => c.id !== categoryToDelete.id);
@@ -135,7 +141,7 @@ export default function TripFactsPage() {
     try {
       const res = await fetch(getApiUrl('attributes'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ name: newAttribute, type: activeTab }),
       });
       if (res.ok) {
@@ -158,6 +164,7 @@ export default function TripFactsPage() {
     try {
       const res = await fetch(getApiUrl(`attributes/${attributeToDelete.id}`), {
         method: 'DELETE',
+        headers: getAuthHeaders()
       });
       if (res.ok) {
         fetchAttributes();
@@ -184,7 +191,7 @@ export default function TripFactsPage() {
     try {
       const res = await fetch(getApiUrl(`attributes/${id}`), {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ name: editValue }),
       });
       if (res.ok) {
@@ -229,10 +236,11 @@ export default function TripFactsPage() {
               <div key={cat.id} className="relative group">
                 <button
                   onClick={() => setActiveTab(cat.slug)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${cat.isDefault ? 'pr-4' : 'pr-8'} ${activeTab === cat.slug
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${cat.isDefault ? 'pr-4' : 'pr-8'} ${
+                    activeTab === cat.slug
                       ? 'bg-primary text-white shadow-sm'
-                      : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
-                    }`}
+                      : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
+                  }`}
                 >
                   {cat.label}
                 </button>
@@ -242,8 +250,9 @@ export default function TripFactsPage() {
                       e.stopPropagation();
                       handleDeleteCategory(cat.id, cat.label);
                     }}
-                    className={`absolute right-1 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-red-100 hover:text-red-600 transition-colors ${activeTab === cat.slug ? 'text-white/80 hover:text-white hover:bg-white dark:bg-gray-900/20' : 'text-gray-400 dark:text-gray-500'
-                      }`}
+                    className={`absolute right-1 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-red-100 hover:text-red-600 transition-colors ${
+                      activeTab === cat.slug ? 'text-white/80 hover:text-white hover:bg-white dark:bg-gray-900/20' : 'text-gray-400 dark:text-gray-500'
+                    }`}
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -251,7 +260,7 @@ export default function TripFactsPage() {
               </div>
             ))}
             {categories.length === 0 && !loading && (
-              <div className="text-gray-500 dark:text-gray-400 dark:text-gray-500 text-sm py-2">No categories yet. Create one!</div>
+              <div className="text-gray-500 dark:text-gray-400 text-sm py-2">No categories yet. Create one!</div>
             )}
           </div>
 
@@ -277,9 +286,9 @@ export default function TripFactsPage() {
 
               <div className="space-y-3">
                 {loading ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400 dark:text-gray-500">Loading...</div>
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">Loading...</div>
                 ) : attributes.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-950 rounded-lg border border-dashed border-gray-200 dark:border-gray-700">
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-950 rounded-lg border border-dashed border-gray-200 dark:border-gray-700">
                     No options found. Add one above.
                   </div>
                 ) : (
@@ -297,7 +306,7 @@ export default function TripFactsPage() {
                           <button onClick={() => saveEdit(attr.id)} className="p-1.5 text-green-600 hover:bg-green-50 rounded">
                             <Check className="h-4 w-4" />
                           </button>
-                          <button onClick={cancelEdit} className="p-1.5 text-gray-500 dark:text-gray-400 dark:text-gray-500 hover:bg-gray-200 rounded">
+                          <button onClick={cancelEdit} className="p-1.5 text-gray-500 dark:text-gray-400 hover:bg-gray-200 rounded">
                             <X className="h-4 w-4" />
                           </button>
                         </div>
@@ -330,7 +339,7 @@ export default function TripFactsPage() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               {deleteStep === 1 ? 'Confirm Delete Category' : 'Are you absolutely sure?'}
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
               {deleteStep === 1
                 ? `Delete "${categoryToDelete.label}" and all its options? This action CANNOT be undone.`
                 : `This will permanently remove "${categoryToDelete.label}" category and all associated options from packages. There is no going back. Confirm?`}
@@ -353,7 +362,7 @@ export default function TripFactsPage() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               {attributeDeleteStep === 1 ? 'Confirm Delete Option' : 'Are you absolutely sure?'}
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
               {attributeDeleteStep === 1
                 ? `Delete "${attributeToDelete.name}" option? This action CANNOT be undone.`
                 : `This will permanently remove "${attributeToDelete.name}" from all packages using it. There is no going back. Confirm?`}

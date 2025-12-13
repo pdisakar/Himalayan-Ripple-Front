@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { Button } from '@/app/admin/components/ui/button';
+import { getAuthHeaders } from '@/app/admin/lib/api-config';
 
 /**
  * Quick Revalidation Button
@@ -20,20 +21,11 @@ export function QuickRevalidateButton() {
     setStatus('idle');
     
     try {
-      // Get admin token from localStorage (same as your admin panel uses)
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        alert('Please login to admin panel first');
-        setLoading(false);
-        return;
-      }
-
       const res = await fetch('/admin/api/revalidate', {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          ...getAuthHeaders(),
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           revalidateAll: true

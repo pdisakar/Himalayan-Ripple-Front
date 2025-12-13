@@ -4,8 +4,8 @@ import { MainLayout } from '@/app/admin/components/MainLayout';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
-import { Search, Edit, ChevronRight, ChevronDown, ArrowUp, ArrowDown } from 'lucide-react';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { Search, Edit, ChevronDown, ChevronRight, ArrowUp, ArrowDown } from 'lucide-react';
+import { getApiUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface Menu {
     id: number;
@@ -48,7 +48,9 @@ export default function MenusPage() {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch(getApiUrl('menus'));
+            const response = await fetch(getApiUrl('menus'), {
+                headers: getAuthHeaders()
+            });
             const data = await response.json();
 
             if (!response.ok) {
@@ -93,7 +95,7 @@ export default function MenusPage() {
 
             const response = await fetch(getApiUrl('menus/reorder'), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify({ items: updates }),
             });
 
@@ -119,7 +121,7 @@ export default function MenusPage() {
         try {
             const response = await fetch(getApiUrl('menus/bulk-delete'), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ids: selectedMenus }),
             });
 

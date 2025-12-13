@@ -6,7 +6,7 @@ import { Button } from '@/app/admin/components/ui/button';
 import { Save, Loader2 } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
 import { BannerImage } from '@/app/admin/components/BannerImage';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface HeroSection {
     id?: number;
@@ -59,7 +59,7 @@ export default function HeroSectionPage() {
         try {
             await fetch(getApiUrl('upload/image'), {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path: imagePath }),
             });
         } catch (err) {
@@ -95,7 +95,7 @@ export default function HeroSectionPage() {
             if (hero.image && hero.image.startsWith('data:')) {
                 const res = await fetch(getApiUrl('upload/image'), {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
                     body: JSON.stringify({ image: hero.image, type: 'hero' }),
                 });
                 const data = await res.json();

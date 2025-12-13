@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/app/admin/components/ui/button';
 import { Search, Edit } from 'lucide-react';
-import { getApiUrl, getImageUrl } from '@/app/admin/lib/api-config';
+import { getApiUrl, getImageUrl, getAuthHeaders } from '@/app/admin/lib/api-config';
 
 interface Package {
   id: number;
@@ -41,7 +41,9 @@ export default function PackagesPage() {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(getApiUrl('packages'));
+      const response = await fetch(getApiUrl('packages'), {
+        headers: getAuthHeaders()
+      });
       const data = await response.json();
 
       if (!response.ok) {
